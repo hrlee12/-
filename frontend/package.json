@@ -1,14 +1,40 @@
 {
-  "name": "my-electron-app",
-  "version": "1.0.0",
-  "description": "Hello World!",
-  "main": "main.js",
-  "author": "Jane Doe",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^29.3.0"
-  },
+  "name": "mokak",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "electron ."
-  }
+    "dev": "concurrently \"pnpm start\" \"pnpm electron\"",
+    "start": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint mokak --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "electron": "wait-on http://localhost:5173 && electron .",
+    "compile-main": "tsc ./src/main/main.ts --outdir ./compile-main && tsc ./src/main/preload.ts --outdir ./compile-main"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.6",
+    "jest": "^29.7.0",
+    "typescript": "^5.2.2",
+    "vite": "^5.2.0",
+    "wait-on": "^7.2.0"
+  },
+  "homepage": "./",
+  "main": "compile-main/main.js"
 }
