@@ -3,7 +3,10 @@ plugins {
 	id 'org.springframework.boot' version '3.2.5'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
-
+// plain jar 생성 X 설정
+jar {
+	enabled = false
+}
 group = 'com.chilbaeksan'
 version = '0.0.1-SNAPSHOT'
 
