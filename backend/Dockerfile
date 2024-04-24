@@ -2,14 +2,18 @@
 FROM amazoncorretto:17
 
 # 작업 디렉토리 설정 (원하는 경로로 수정 가능)
-WORKDIR /shboard
+#WORKDIR /shboard
 
 # 변수 설정
-ARG JAR_FILE=./build/libs/*.jar
+#ARG JAR_FILE=./build/libs/*.jar
 
 # 빌드한 JAR 파일 원하는 경로에 복사
-COPY ${JAR_FILE} /shboard/shboard.jar
+#COPY ${JAR_FILE} /shboard/shboard.jar
 
 # 어플리케이션 실행 명령어를 지정합니다.
 # CMD / ENTRYPOINT
-ENTRYPOINT ["nohup", "java", "-jar", "shboard.jar", ">", "app.log", "2>&1", "&"]
+#ENTRYPOINT ["nohup", "java", "-jar", "shboard.jar", ">", "app.log", "2>&1", "&"]
+
+COPY build/libs/mokaknyang-0.0.1-SNAPSHOT.jar app.jar
+
+CMD ["java", "-jar", "app.jar"]
