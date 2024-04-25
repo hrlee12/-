@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE member SET member_deleted_at = NOW() WHERE member_id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,20 +72,4 @@ public class Member {
     @Column(name="member_behit_number")
     @ColumnDefault("0")
     private Integer behitNumber;
-
-    @Builder
-    public Member(Group group, String catColor, String loginId,
-                  String loginPwd, String catName, String goal,
-                  Integer exp, Boolean isDeleted, Integer hitNumber, Integer behitNumber){
-        this.group = group;
-        this.catColor = catColor;
-        this.loginId = loginId;
-        this.loginPwd = loginPwd;
-        this.catName = catName;
-        this.goal = goal;
-        this.exp = exp;
-        this.isDeleted = isDeleted;
-        this.hitNumber = hitNumber;
-        this.behitNumber = behitNumber;
-    }
 }

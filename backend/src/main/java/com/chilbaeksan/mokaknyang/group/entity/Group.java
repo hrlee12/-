@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE group SET group_deleted_at = NOW() WHERE group_id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,14 +48,4 @@ public class Group {
     @ManyToOne
     @JoinColumn(name="member_id")
     private Member member;
-
-    @Builder
-    public Group(String purpose, String name, Byte participateNumber, Byte maxNumber, Boolean isDeleted, Member member){
-        this.purpose = purpose;
-        this.name = name;
-        this.participateNumber = participateNumber;
-        this.maxNumber = maxNumber;
-        this.isDeleted = isDeleted;
-        this.member = member;
-    }
 }

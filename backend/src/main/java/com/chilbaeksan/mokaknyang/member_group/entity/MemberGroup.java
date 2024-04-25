@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Table(name="member_group")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Builder
 public class MemberGroup{
     @Id
     @JoinColumn(name="member_id")
@@ -31,10 +32,4 @@ public class MemberGroup{
     @CreationTimestamp
     @Column(name="group_created_at")
     private LocalDateTime createdAt;
-
-    @Builder
-    public MemberGroup(Member member, Group group){
-        this.member = member;
-        this.group = group;
-    }
 }
