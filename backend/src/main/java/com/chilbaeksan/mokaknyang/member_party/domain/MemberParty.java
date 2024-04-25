@@ -1,4 +1,4 @@
-package com.chilbaeksan.mokaknyang.member_group.domain;
+package com.chilbaeksan.mokaknyang.member_party.domain;
 
 import com.chilbaeksan.mokaknyang.party.domain.Party;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
@@ -8,14 +8,14 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@IdClass(MemberGroupPK.class)
+@IdClass(MemberPartyPK.class)
 @Entity
 @Table(name="member_group")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
-public class MemberGroup{
+public class MemberParty {
     @Id
     @JoinColumn(name="member_id")
     @ManyToOne
