@@ -3,6 +3,7 @@ package com.chilbaeksan.mokaknyang.group.domain;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 
@@ -41,6 +42,7 @@ public class Group {
     private LocalDateTime deletedAt;
 
     @Column(name="group_is_deleted")
+    @ColumnDefault("false")
     private Boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
