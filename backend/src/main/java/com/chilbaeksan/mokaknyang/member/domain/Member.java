@@ -23,8 +23,8 @@ public class Member {
     @Column(name="member_id")
     private Integer memberId;
 
-    @ManyToOne
-    @JoinColumn(name="group_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="group_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Group group;
 
     @Column(name="member_cat_color")
