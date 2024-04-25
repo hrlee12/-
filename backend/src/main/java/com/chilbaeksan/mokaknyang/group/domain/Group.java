@@ -43,7 +43,7 @@ public class Group {
     @Column(name="group_is_deleted")
     private Boolean isDeleted;
 
-    @ManyToOne
-    @JoinColumn(name="member_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
 }
