@@ -8,9 +8,9 @@ const RouterComponent = () => {
   return (
     <HashRouter>
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/example' element={<Example />} />
-        <Route path='/cat' element={<Cat />} />
+        <Route path={'/'} element={<Landing />} />
+        <Route path={'/example'} element={<Example />} />
+        <Route path={'/cat'} element={<Cat />} />
       </Routes>
     </HashRouter>
   );
