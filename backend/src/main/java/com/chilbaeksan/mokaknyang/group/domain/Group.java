@@ -1,11 +1,8 @@
-package com.chilbaeksan.mokaknyang.group.entity;
+package com.chilbaeksan.mokaknyang.group.domain;
 
-import com.chilbaeksan.mokaknyang.member.entity.Member;
+import com.chilbaeksan.mokaknyang.member.domain.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="`group`")
 @SQLDelete(sql = "UPDATE group SET group_deleted_at = NOW() WHERE group_id = ?")
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder

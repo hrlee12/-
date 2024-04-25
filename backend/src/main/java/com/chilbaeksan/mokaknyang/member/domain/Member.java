@@ -1,11 +1,8 @@
-package com.chilbaeksan.mokaknyang.member.entity;
+package com.chilbaeksan.mokaknyang.member.domain;
 
-import com.chilbaeksan.mokaknyang.group.entity.Group;
+import com.chilbaeksan.mokaknyang.group.domain.Group;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="member")
 @SQLDelete(sql = "UPDATE member SET member_deleted_at = NOW() WHERE member_id = ?")
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
