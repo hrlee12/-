@@ -3,18 +3,15 @@ package com.chilbaeksan.mokaknyang.member_group.entity;
 import com.chilbaeksan.mokaknyang.group.entity.Group;
 import com.chilbaeksan.mokaknyang.member.entity.Member;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @IdClass(MemberGroupPK.class)
 @Entity
 @Table(name="member_group")
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
