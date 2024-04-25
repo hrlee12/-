@@ -5,6 +5,10 @@ export default {
     colors: {
       inputBoxColor: '#EAD8C6',
       frameColor: '#CBA57F',
+      btnBlue: '#04B1D9',
+      btnGreen: '#4CA732',
+      btnNavy: '#201D35',
+      btnGray: '#7d7d7d',
     },
     extend: {
       fontFamily: {
