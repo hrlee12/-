@@ -1,17 +1,17 @@
-import { createBrowserRouter} from 'react-router-dom';
+import { Routes, Route, HashRouter } from 'react-router-dom';
 
-import Landing from '../pages/landing/index'
-import Example from "../pages/expample";
+import Landing from '../pages/landing/index';
+import Example from '../pages/expample';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Landing />
-  },
-    {
-      path: '/example',
-      element: <Example />
-  },
-]);
+const RouterComponent = () => {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path='/' element={<Landing />} />
+        <Route path='/example' element={<Example />} />
+      </Routes>
+    </HashRouter>
+  );
+};
 
-export default router
+export default RouterComponent;
