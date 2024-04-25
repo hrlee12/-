@@ -1,4 +1,4 @@
-package com.chilbaeksan.mokaknyang.group.domain;
+package com.chilbaeksan.mokaknyang.party.domain;
 
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import jakarta.persistence.*;
@@ -10,38 +10,38 @@ import org.hibernate.annotations.SQLDelete;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="`group`")
-@SQLDelete(sql = "UPDATE group SET group_deleted_at = NOW() WHERE group_id = ?")
+@Table(name="party")
+@SQLDelete(sql = "UPDATE party SET party_deleted_at = NOW() WHERE party_id = ?")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
-public class Group {
+public class Party {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="group_id")
-    private Integer groupId;
+    @Column(name="party_id")
+    private Integer partyId;
 
-    @Column(name="group_purpose")
+    @Column(name="party_purpose")
     private String purpose;
 
-    @Column(name="group_name")
+    @Column(name="party_name")
     private String name;
 
-    @Column(name="group_participate_number")
+    @Column(name="party_participate_number")
     private Byte participateNumber;
 
-    @Column(name="group_max_number")
+    @Column(name="party_max_number")
     private Byte maxNumber;
 
     @CreationTimestamp
-    @Column(name="group_created_at")
+    @Column(name="party_created_at")
     private LocalDateTime createdAt;
 
-    @Column(name="group_deleted_at")
+    @Column(name="party_deleted_at")
     private LocalDateTime deletedAt;
 
-    @Column(name="group_is_deleted")
+    @Column(name="party_is_deleted")
     @ColumnDefault("false")
     private Boolean isDeleted;
 

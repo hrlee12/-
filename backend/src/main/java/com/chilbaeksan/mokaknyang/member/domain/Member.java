@@ -1,6 +1,6 @@
 package com.chilbaeksan.mokaknyang.member.domain;
 
-import com.chilbaeksan.mokaknyang.group.domain.Group;
+import com.chilbaeksan.mokaknyang.party.domain.Party;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -24,8 +24,8 @@ public class Member {
     private Integer memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="group_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Group group;
+    @JoinColumn(name="party_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Party party;
 
     @Column(name="member_cat_color")
     @ColumnDefault("'#ffd440'")

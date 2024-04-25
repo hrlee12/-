@@ -1,10 +1,9 @@
 package com.chilbaeksan.mokaknyang.attack_situation.domain;
 
-import com.chilbaeksan.mokaknyang.group.domain.Group;
+import com.chilbaeksan.mokaknyang.party.domain.Party;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
 
 import java.time.LocalDateTime;
 
@@ -21,8 +20,8 @@ public class AttackSituation {
     private Integer attackSituationId;
 
     @ManyToOne
-    @JoinColumn(name="group_id")
-    private Group group;
+    @JoinColumn(name="party_id")
+    private Party party;
 
     @Column(name="attack_situation_code")
     private AttackSituationCode attackSituationCode;

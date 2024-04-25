@@ -1,6 +1,6 @@
 package com.chilbaeksan.mokaknyang.member_group.domain;
 
-import com.chilbaeksan.mokaknyang.group.domain.Group;
+import com.chilbaeksan.mokaknyang.party.domain.Party;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,9 +22,9 @@ public class MemberGroup{
     private Member member;
 
     @Id
-    @JoinColumn(name="group_id")
+    @JoinColumn(name="party_id")
     @ManyToOne
-    private Group group;
+    private Party party;
 
     @CreationTimestamp
     @Column(name="group_created_at")
