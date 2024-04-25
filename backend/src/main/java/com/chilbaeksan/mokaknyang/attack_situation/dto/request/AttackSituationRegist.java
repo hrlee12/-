@@ -8,6 +8,6 @@ import lombok.Data;
 @Data
 @Builder
 public class AttackSituationRegist {
-    private Group group;
+    private Integer groupId;
     private AttackSituationCode attackSituationCode;
 }
