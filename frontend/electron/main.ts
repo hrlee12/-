@@ -32,14 +32,14 @@ function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   const windowWidth = 540;
   const windowHeight = 600;
-  const x = width - windowWidth;
-  const y = height - windowHeight;
+  const windowPosX = width - windowWidth;
+  const windowPosY = height - windowHeight;
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
     width: windowWidth,
     height: windowHeight,
-    x: x,
-    y: y,
+    x: windowPosX,
+    y: windowPosY,
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
