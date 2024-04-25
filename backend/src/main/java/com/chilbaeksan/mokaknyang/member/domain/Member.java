@@ -1,6 +1,6 @@
-package com.chilbaeksan.mokaknyang.member.entity;
+package com.chilbaeksan.mokaknyang.member.domain;
 
-import com.chilbaeksan.mokaknyang.group.entity.Group;
+import com.chilbaeksan.mokaknyang.group.domain.Group;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;

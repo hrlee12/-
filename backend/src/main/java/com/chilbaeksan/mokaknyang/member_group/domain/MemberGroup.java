@@ -1,7 +1,7 @@
-package com.chilbaeksan.mokaknyang.member_group.entity;
+package com.chilbaeksan.mokaknyang.member_group.domain;
 
-import com.chilbaeksan.mokaknyang.group.entity.Group;
-import com.chilbaeksan.mokaknyang.member.entity.Member;
+import com.chilbaeksan.mokaknyang.group.domain.Group;
+import com.chilbaeksan.mokaknyang.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
