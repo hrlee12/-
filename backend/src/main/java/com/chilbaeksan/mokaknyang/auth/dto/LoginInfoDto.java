@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class LoginInfoDto {
-    String memberId;
+    Integer memberId;
     String connectedIP;
     String refreshToken;
 }

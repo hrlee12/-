@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 
-public interface LoginRepository extends CrudRepository<Login, String> {
-    Optional<Login> findByMemberId(String memberId);
+public interface LoginRepository extends CrudRepository<Login, Integer> {
+    Optional<Login> findByMemberId(Integer memberId);
 }
