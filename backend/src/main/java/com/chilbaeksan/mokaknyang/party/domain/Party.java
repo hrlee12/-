@@ -22,16 +22,19 @@ public class Party {
     @Column(name="party_id")
     private Integer partyId;
 
-    @Column(name="party_purpose")
-    private String purpose;
-
-    @Column(name="party_name")
+    @Column(name="party_name", nullable = false)
     private String name;
 
-    @Column(name="party_participate_number")
+    @Column(name="party_purpose", nullable = false)
+    private String purpose;
+
+    @Column(name="party_invite_message")
+    private String inviteMessage;
+
+    @Column(name="party_participate_number", nullable = false)
     private Byte participateNumber;
 
-    @Column(name="party_max_number")
+    @Column(name="party_max_number", nullable = false)
     private Byte maxNumber;
 
     @CreationTimestamp
@@ -46,6 +49,6 @@ public class Party {
     private Boolean isDeleted;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="member_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name="member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
 }

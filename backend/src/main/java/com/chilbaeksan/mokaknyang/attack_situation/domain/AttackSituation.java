@@ -20,7 +20,7 @@ public class AttackSituation {
     private Integer attackSituationId;
 
     @ManyToOne
-    @JoinColumn(name="party_id")
+    @JoinColumn(name="party_id", nullable = false)
     private Party party;
 
     @Column(name="attack_situation_code")
