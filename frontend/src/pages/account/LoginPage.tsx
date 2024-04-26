@@ -2,10 +2,13 @@ import Button from '@/components/button';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   const loginClick = () => {
     const id: string = userid;
@@ -58,7 +61,7 @@ const LoginPage = () => {
               text={'회원가입'}
               size={'small'}
               color={'green'}
-              onClick={loginClick}
+              onClick={() => navigate('/signup')}
             />
           </div>
         </div>
