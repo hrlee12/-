@@ -21,17 +21,13 @@ public class AttackSituationService {
     private final PartyRepository partyRepository;
 
     public AttackSituation registAttackSituation(AttackSituationRegist attackSituationRegist){
-        log.debug("attack_situation_id:"+attackSituationRegist.getGroupId());
-
-        Party party = partyRepository.findByPartyId(attackSituationRegist.getGroupId())
+        Party party = partyRepository.findByPartyId(attackSituationRegist.getPartyId())
                 .orElseThrow(() -> new NoSuchElementException("Value not present"));
 
-        AttackSituation attackSituation = attackSituationRepository.save(
+        return attackSituationRepository.save(
                 AttackSituation.builder()
                 .party(party)
                 .attackSituationCode(attackSituationRegist.getAttackSituationCode())
                 .build());
-
-        return attackSituation;
     }
 }

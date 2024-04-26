@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 @Builder
 public class AttackSituationRegist {
-    private Integer groupId;
+    private Integer partyId;
     private AttackSituationCode attackSituationCode;
 }

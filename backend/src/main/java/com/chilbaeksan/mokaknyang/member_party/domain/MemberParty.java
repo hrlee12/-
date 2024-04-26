@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @IdClass(MemberPartyPK.class)
 @Entity
-@Table(name="member_group")
+@Table(name="member_party")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -27,6 +27,6 @@ public class MemberParty {
     private Party party;
 
     @CreationTimestamp
-    @Column(name="group_created_at")
+    @Column(name="party_created_at")
     private LocalDateTime createdAt;
 }
