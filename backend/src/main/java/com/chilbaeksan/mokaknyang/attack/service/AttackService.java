@@ -24,10 +24,18 @@ public class AttackService {
     public Attack registAttack(AttackRegist attackRegist){
         AttackSituation attackSituation = attackSituationRepository.findByAttackSituationId(attackRegist.getAttackSituationId())
                 .orElseThrow(() -> new NullPointerException("AttackSituation을 찾아오지 못했습니다."));
+
         Member hitMember = memberRepository.findByMemberId(attackRegist.getHitMember())
                 .orElseThrow(() -> new NullPointerException("공격 멤버를 찾아오지 못했습니다."));
+
+        hitMember.hit();
+        memberRepository.save(hitMember);
+
         Member behitMember = memberRepository.findByMemberId(attackRegist.getBehitMember())
                 .orElseThrow(() -> new NullPointerException("공격 받은 멤버를 찾아오지 못했습니다."));
+
+        behitMember.behit();
+        memberRepository.save(behitMember);
 
         return attackRepository.save(
                 Attack.builder()
