@@ -70,4 +70,12 @@ public class Member {
     @Column(name="member_behit_number")
     @ColumnDefault("0")
     private Integer behitNumber;
+
+    public void hit(){
+        this.hitNumber += 1;
+    }
+
+    public void behit(){
+        this.behitNumber += 1;
+    }
 }
