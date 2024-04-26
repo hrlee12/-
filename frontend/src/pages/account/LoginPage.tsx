@@ -10,7 +10,7 @@ const LoginPage = () => {
   const loginClick = () => {
     const id: string = userid;
     const pw: string = password;
-    console.log('아이디는 입력은 -> ' + id);
+    console.log('아이디 입력은 -> ' + id);
     console.log('비밀번호 입력은 -> ' + pw);
   };
 
@@ -18,17 +18,18 @@ const LoginPage = () => {
     <div>
       <BasicFrame>
         <div className='flex justify-center items-center'>
-          <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2'>
+          <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px]'>
             모각냥
+            <div className='text-[18px] text'>모두 각자 냥이</div>
           </h2>
         </div>
-        <div>
+        <div className='pt-[160px]'>
           {/* 입력창 */}
           <div className='flex justify-center items-center'>
             <InputBox
               name={'user-id'}
               size={'small'}
-              addStyle='m-4'
+              addStyle='m-2 inputBox-font-medium'
               type={'text'}
               placeholder={'아이디'}
               onChange={(e) => setUserId(e.target.value)}
@@ -38,7 +39,7 @@ const LoginPage = () => {
             <InputBox
               name={'user-password'}
               size={'small'}
-              addStyle='m-4'
+              addStyle='m-2 inputBox-font-medium'
               type={'text'}
               placeholder={'비밀번호'}
               onChange={(e) => setPassword(e.target.value)}

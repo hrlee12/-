@@ -3,17 +3,24 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'NeoDunggeunmo';
-    src: url('public/fonts/neodgm.ttf') format('truetype'),
+  font-family: 'NeoDunggeunmo';
+  src:
+    url('public/fonts/neodgm.ttf') format('truetype'),
     url('public/fonts/neodgm.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: 'DNFBitBitv2';
-    src: url('public/fonts/DNFBitBitv2.ttf') format('truetype'),
+  font-family: 'DNFBitBitv2';
+  src:
+    url('public/fonts/DNFBitBitv2.ttf') format('truetype'),
     url('public/fonts/DNFBitBitv2.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.inputBox-font-medium::placeholder {
+  font-size: 20px;
+  color: #888;
 }
