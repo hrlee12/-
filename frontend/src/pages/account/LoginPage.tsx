@@ -43,7 +43,7 @@ const LoginPage = () => {
               name={'user-password'}
               size={'small'}
               addStyle='m-2 inputBox-font-medium'
-              type={'text'}
+              type={'password'}
               placeholder={'비밀번호'}
               onChange={(e) => setPassword(e.target.value)}
             />
