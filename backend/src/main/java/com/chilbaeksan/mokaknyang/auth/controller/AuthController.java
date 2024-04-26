@@ -28,7 +28,7 @@ public class AuthController {
     private final AuthService authService;
 
     // register
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> register(@RequestBody UserLoginDto dto) {
         authService.register(dto.getId(), dto.getPassword());
         return ResponseEntity.ok().build();
