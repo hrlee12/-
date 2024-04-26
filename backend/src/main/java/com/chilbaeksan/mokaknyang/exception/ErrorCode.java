@@ -23,9 +23,25 @@ public enum ErrorCode {
 
     //Auth 관련 에러
     AUTH_REGISTER_BAD_REQUEST(400, "회원가입 요청이 잘못된 요청 형식 입니다."),
-    AUTH_REGISTER_DUPLICATED_USER(409,"이미 있는 회원 입니다."),
+    AUTH_REGISTER_DUPLICATED_USER(409,"이미 있는 회원아이디 입니다."),
     AUTH_REGISTER_SECURITY_POLICY(400, "비밀번호 최소 조건을 맞추지 못해 가입에 실패했습니다."),
 
+    AUTH_LOGIN_BAD_REQUEST(400, "로그인 요청이 잘못된 요청 형식 입니다."),
+    AUTH_LOGIN_FAILED(403,  "로그인에 실패하였습니다"),
+    AUTH_LOGIN_DIFFERENT_IP_LOGINED(403,  "다른 IP에서 이미 로그인이 되어있습니다."),
+    AUTH_LOGIN_ALREADY_LOGINED(403, "이미 로그인이 되어있습니다."),
+
+    AUTH_LOGOUT_BAD_REQUEST(400, "로그아웃 요청이 잘못된 요청 형식 입니다."),
+    AUTH_LOGOUT_UNAUTHORIZED(401, "권한이 없습니다."),
+    AUTH_LOGOUT_NOT_FOUND_MEMBER(404, "사용자 정보를 찾을 수 없습니다."),
+
+    // 채팅 관련 에러
+
+    // 공격 관련 에러
+
+    // 뽀모도로 관련 에러
+
+    // 그룹 관련 에러
 
     //공통 에러
     BAD_REQUEST(400, "올바르지 않은 요청입니다."),
