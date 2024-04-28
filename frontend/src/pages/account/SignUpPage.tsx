@@ -2,6 +2,7 @@ import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from '@/components/button';
 
 const SignUpPage = () => {
   const [userid, setUserId] = useState('');
@@ -10,6 +11,17 @@ const SignUpPage = () => {
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   const navigate = useNavigate();
+
+  // 기타 조건 추가 등 수정 예정
+  const signUp = (userid: string, password: string) => {
+    if (isPasswordValid(password)) {
+      console.log(
+        'id = ' + userid + '  pw = ' + password + '\n 정상, API 연결 예정',
+      );
+    } else if (!isPasswordValid(password)) {
+      console.log('비밀번호 조건을 다시 확인해주세요');
+    }
+  };
 
   const isPasswordValid = (password: string): boolean => {
     const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{15,}$/;
@@ -34,7 +46,7 @@ const SignUpPage = () => {
           </h2>
         </div>
         {/* 입력창 */}
-        <div className='flex justify-center items-center'>
+        <div className='flex justify-center items-center pt-[60px]'>
           <InputBox
             name={'user-id'}
             size={'small'}
@@ -59,7 +71,7 @@ const SignUpPage = () => {
         </div>
         <div className='flex justify-center items-center'>
           <InputBox
-            name={'user-password'}
+            name={'check-user-password'}
             size={'small'}
             addStyle='m-2 inputBox-font-medium'
             type={'password'}
@@ -70,8 +82,13 @@ const SignUpPage = () => {
             }}
           />
         </div>
-        {/* 비밀번호 일치 여부 메시지 */}
+        {/* 비밀번호 일치 여부 및 안내메시지 */}
         <div className='flex justify-center items-center'>
+          {(!password || !password2) && (
+            <p className='font-neo' style={{ color: 'rgb(75 75 75)' }}>
+              비밀번호는 대/소문자와 특수문자 포함 15자 이상
+            </p>
+          )}
           {password && password2 && !passwordMatch && (
             <p className='font-neo' style={{ color: 'rgb(239 68 68)' }}>
               비밀번호가 일치하지 않습니다.
@@ -83,8 +100,20 @@ const SignUpPage = () => {
             </p>
           )}
         </div>
-        <div onClick={() => navigate('/login')} className=''>
-          back
+        {/* 버튼창 */}
+        <div className='flex justify-center items-center'>
+          <Button
+            text={'뒤로가기'}
+            size={'small'}
+            color={'gray'}
+            onClick={() => navigate('/login')}
+          />
+          <Button
+            text={'가입하기'}
+            size={'small'}
+            color={'green'}
+            onClick={() => signUp(userid, password)}
+          />
         </div>
       </BasicFrame>
     </div>
