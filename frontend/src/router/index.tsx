@@ -21,6 +21,7 @@ const RouterComponent = () => {
         <Route path={'/makeGroup'} element={<MakeGroupPage />} />
         <Route path={'/groupInfo'} element={<GroupInfoPage />} />
         <Route path={'/cat'} element={<MyCat />} />
+        <Route path={'/screeshare'} element={<>}
         {/*후에 여기 개인 id 바인딩을 고려해야함*/}
         <Route path={'/catInfo'} element={<MyCatInfo />} />
         <Route path={'/catSetting'} element={<MyCatSetting />} />

@@ -7,8 +7,8 @@ import {
   Subscriber,
 } from 'openvidu-browser';
 import axios, { AxiosError } from 'axios';
-import Form from './component/Form';
-import Session from './component/Session';
+import Form from '@/components/webrtc/Form.tsx';
+import Session from '@/components/webrtc/Session.tsx';
 
 const ScreenShare = () => {
   const [session, setSession] = useState<OVSession | ''>('');
