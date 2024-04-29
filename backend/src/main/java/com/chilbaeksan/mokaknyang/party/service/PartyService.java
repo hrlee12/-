@@ -9,10 +9,12 @@ import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
+import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
 import com.chilbaeksan.mokaknyang.party.dto.response.InviteParty;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -91,5 +93,32 @@ public class PartyService {
             throw new BaseException(ErrorCode.PARTY_ALREADY_REMOVE);
 
         partyRepository.delete(party);
+    }
+
+    public void inviteParty(HttpServletRequest httpServletRequest, Integer partyId, PartyInvite partyInvite){
+//        int memberId = jwtUtil.getUserId(httpServletRequest).get();
+//
+//        if(memberId == partyInvite.getMemberId())
+//            throw new BaseException(ErrorCode.PARTY_SELF_INVITATION_NOT_ALLOWED);
+
+        Member member = memberRepository.findByMemberId(partyInvite.getMemberId())
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        List<Invitation> invitationList = invitationRepository.findByParty(party);
+        if(invitationList.size() == party.getMaxNumber())
+            throw new BaseException(ErrorCode.PARTY_MAX_INVITATION);
+
+        for(Invitation invitation : invitationList){
+            if(invitation.getMember().getMemberId() == partyInvite.getMemberId())
+                throw new BaseException(ErrorCode.PARTY_INVITATION_ALREADY);
+        }
+
+        invitationRepository.save(Invitation.builder()
+                .member(member)
+                .party(party)
+                .build());
     }
 }
