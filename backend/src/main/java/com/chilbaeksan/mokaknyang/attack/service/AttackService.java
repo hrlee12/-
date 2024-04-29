@@ -4,7 +4,6 @@ import com.chilbaeksan.mokaknyang.attack.domain.Attack;
 import com.chilbaeksan.mokaknyang.attack.dto.request.AttackRegist;
 import com.chilbaeksan.mokaknyang.attack.repository.AttackRepository;
 import com.chilbaeksan.mokaknyang.attack_situation.domain.AttackSituation;
-import com.chilbaeksan.mokaknyang.attack_situation.dto.request.AttackSituationRegist;
 import com.chilbaeksan.mokaknyang.attack_situation.repository.AttackSituationRepository;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
