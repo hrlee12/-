@@ -22,10 +22,10 @@ public class Party {
     @Column(name="party_id")
     private Integer partyId;
 
-    @Column(name="party_name", nullable = false)
+    @Column(name="party_name")
     private String name;
 
-    @Column(name="party_purpose", nullable = false)
+    @Column(name="party_purpose")
     private String purpose;
 
     @Column(name="party_invite_message")
