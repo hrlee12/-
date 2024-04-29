@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @Builder
-public class InviteGroupList {
-    private List<InviteGroup> inviteList;
+public class InvitePartyList {
+    private List<InviteParty> inviteList;
 }

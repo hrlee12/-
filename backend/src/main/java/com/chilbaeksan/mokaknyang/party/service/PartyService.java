@@ -1,16 +1,25 @@
 package com.chilbaeksan.mokaknyang.party.service;
 
+import com.chilbaeksan.mokaknyang.Invitation.domain.Invitation;
+import com.chilbaeksan.mokaknyang.Invitation.repository.InvitationRepository;
+import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
+import com.chilbaeksan.mokaknyang.party.dto.response.InviteParty;
+import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -19,6 +28,8 @@ import org.springframework.stereotype.Service;
 public class PartyService {
     private final PartyRepository partyRepository;
     private final MemberRepository memberRepository;
+    private final InvitationRepository invitationRepository;
+    private final JwtUtil jwtUtil;
 
     public Party registParty(PartyRegist partyRegist){
         Member partyManager = memberRepository.findByMemberId(partyRegist.getPartyManagerId())
@@ -33,5 +44,33 @@ public class PartyService {
                 .build();
 
         return partyRepository.save(party);
+    }
+
+    public InvitePartyList getInviteGroupList(HttpServletRequest httpServletRequest){
+//        int memberId = jwtUtil.getUserId(httpServletRequest).get();
+        int memberId = 1;
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        List<Invitation> invitationList = invitationRepository.findByMember(member);
+
+        List<InviteParty> inviteParties = new ArrayList<>();
+        for(Invitation invitation : invitationList){
+            Party party = invitation.getParty();
+            Member manager = invitation.getParty().getMember();
+
+            inviteParties.add(
+                    InviteParty.builder()
+                    .memberId(manager.getMemberId())
+                    .memberName(manager.getCatName())
+                    .partyId(party.getPartyId())
+                    .partyName(party.getName())
+                    .build()
+            );
+        }
+
+        return InvitePartyList.builder()
+                .inviteList(inviteParties)
+                .build();
     }
 }

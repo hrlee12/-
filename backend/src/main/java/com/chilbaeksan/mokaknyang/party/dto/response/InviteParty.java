@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class InviteGroup {
+public class InviteParty {
     private Integer memberId;
     private String memberName;
-    private Integer groupId;
-    private String groupName;
+    private Integer partyId;
+    private String partyName;
     private LocalDateTime expireTime;
 }
