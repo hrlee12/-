@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -143,5 +144,23 @@ public class PartyService {
                 .member(member)
                 .party(party)
                 .build());
+    }
+
+    public void leaveParty(HttpServletRequest httpServletRequest, Integer partyId){
+//        int memberId = jwtUtil.getUserId(httpServletRequest).get();
+        int memberId = 1;
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        Optional<MemberParty> memberParty = memberPartyRepository.findByMemberAndParty(member, party);
+
+        if(memberParty.isEmpty())
+            throw new BaseException(ErrorCode.MEMBER_PARTY_NOT_FOUND);
+
+        if(memberParty.isPresent()){
+            memberPartyRepository.delete(memberParty.get());
+        }
     }
 }
