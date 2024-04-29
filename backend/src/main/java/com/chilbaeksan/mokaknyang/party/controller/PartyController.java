@@ -1,5 +1,6 @@
 package com.chilbaeksan.mokaknyang.party.controller;
 
+import com.chilbaeksan.mokaknyang.party.dto.request.PartyAccept;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
@@ -38,5 +39,10 @@ public class PartyController {
     @PostMapping("/{partyId}/invite")
     public void inviteParty(HttpServletRequest httpServletRequest, @PathVariable Integer partyId, @RequestBody PartyInvite partyInvite){
         partyService.inviteParty(httpServletRequest, partyId, partyInvite);
+    }
+
+    @PostMapping("/{partyId}/accept")
+    public void acceptParty(@PathVariable Integer partyId, @RequestBody PartyAccept partyAccept){
+        partyService.acceptParty(partyId, partyAccept);
     }
 }
