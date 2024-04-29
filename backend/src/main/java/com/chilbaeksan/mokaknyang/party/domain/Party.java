@@ -51,4 +51,8 @@ public class Party {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
+
+    public void modifyIsDeleted(Boolean isDeleted){
+        this.isDeleted = isDeleted;
+    }
 }
