@@ -16,12 +16,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Builder
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="member_id")
     private Integer memberId;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="level", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Level level;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="Title", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Title title;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="cat", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Cat cat;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="party_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
