@@ -1,11 +1,10 @@
 package com.chilbaeksan.mokaknyang.party.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.util.List;
+
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
