@@ -136,6 +136,9 @@ public class PartyService {
         if(invitationRepository.findByMemberAndParty(member, party).isEmpty())
             throw new BaseException(ErrorCode.PARTY_IS_NOT_VALID);
 
+        if(memberPartyRepository.findByMemberAndParty(member, party).isPresent())
+            throw new BaseException(ErrorCode.PARTY_ALREADY_ACCEPT);
+
         return memberPartyRepository.save(MemberParty.builder()
                 .member(member)
                 .party(party)
