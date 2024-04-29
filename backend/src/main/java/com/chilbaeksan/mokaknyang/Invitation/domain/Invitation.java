@@ -16,6 +16,10 @@ import java.time.LocalDateTime;
 @Builder
 public class Invitation {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="invitation_id")
+    private Integer invitationId;
+
     @ManyToOne
     @JoinColumn(name="member_id", nullable = false)
     private Member member;
