@@ -48,7 +48,8 @@ public enum ErrorCode {
     PARTY_MAX_INVITATION(403, "초대 가능한 사용자 수가 최대에 도달했습니다."),
     PARTY_SELF_INVITATION_NOT_ALLOWED(403, "자기 자신을 초대할 수 없습니다."),
     PARTY_ALREADY_REMOVE(410, "이미 삭제된 파티입니다."),
-    PARTY_IS_NOT_VALID(408, "초대 요청이 더 이상 유효하지 않습니다."),
+    PARTY_ALREADY_ACCEPT(408, "이미 초대를 수락하였습니다."),
+
 
     //공통 에러
     BAD_REQUEST(400, "올바르지 않은 요청입니다."),
