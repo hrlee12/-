@@ -51,6 +51,8 @@ public enum ErrorCode {
     PARTY_IS_NOT_VALID(408, "초대 요청이 더 이상 유효하지 않습니다."),
     PARTY_ALREADY_ACCEPT(408, "이미 초대를 수락하였습니다."),
 
+    //멤버 파티 관련 에러
+    MEMBER_PARTY_NOT_FOUND(404, "파티를 수락한 멤버를 찾을 수 없습니다."),
 
     //공통 에러
     BAD_REQUEST(400, "올바르지 않은 요청입니다."),
