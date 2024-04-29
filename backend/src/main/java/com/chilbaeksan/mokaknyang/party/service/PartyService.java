@@ -16,6 +16,8 @@ import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
 import com.chilbaeksan.mokaknyang.party.dto.response.InviteParty;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
+import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMember;
+import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
@@ -162,5 +164,36 @@ public class PartyService {
         if(memberParty.isPresent()){
             memberPartyRepository.delete(memberParty.get());
         }
+    }
+
+    public PartyJoinMemberList getPartyJoinMemberList(Integer partyId){
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        if(party.getIsDeleted())
+            throw new BaseException(ErrorCode.PARTY_ALREADY_REMOVE);
+
+        List<MemberParty> memberPartyList = memberPartyRepository.findByParty(party);
+
+        int managerId = party.getMember().getMemberId();
+        List<PartyJoinMember> members = new ArrayList<>();
+        for(MemberParty memberParty : memberPartyList){
+            int memberId = memberParty.getMember().getMemberId();
+            String name = memberParty.getMember().getCatName();
+            String skin = memberParty.getMember().getCat().getCatAssetUrl();
+
+            members.add(
+                    PartyJoinMember.builder()
+                    .memberId(memberId)
+                    .name(name)
+                    .skin(skin)
+                    .build()
+            );
+        }
+
+        return PartyJoinMemberList.builder()
+                .managerId(managerId)
+                .members(members)
+                .build();
     }
 }
