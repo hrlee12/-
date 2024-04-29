@@ -10,4 +10,5 @@ public class PartyRegist {
     private String partyInviteMessage;
     private Byte partyMaxNumber;
     private Byte partyParticipateNumber;
+    private Integer partyManagerId;
 }
