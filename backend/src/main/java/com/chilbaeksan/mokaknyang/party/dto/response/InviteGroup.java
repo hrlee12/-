@@ -11,5 +11,6 @@ public class InviteGroup {
     private Integer memberId;
     private String memberName;
     private Integer groupId;
+    private String groupName;
     private LocalDateTime expireTime;
 }
