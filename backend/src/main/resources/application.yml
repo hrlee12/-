@@ -15,6 +15,7 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+  # spring data jpa settings
   jpa:
     hibernate:
       ddl-auto: update
