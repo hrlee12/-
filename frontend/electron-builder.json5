@@ -1,11 +1,17 @@
 // @see - https://www.electron.build/configuration/configuration
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "Mokak-Nyang",
   "asar": true,
-  "productName": "YourAppName",
+  "productName": "Mokak-Nyang",
   "directories": {
     "output": "release/${version}"
+  },
+  "protocols": {
+    "name": "Mokak-Nyang",
+    "schemes": [
+      "Mokak-Nyang"
+    ]
   },
   "files": [
     "dist",
