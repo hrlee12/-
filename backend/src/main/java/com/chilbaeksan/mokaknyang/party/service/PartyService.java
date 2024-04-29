@@ -7,7 +7,10 @@ import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
+import com.chilbaeksan.mokaknyang.member_party.domain.MemberParty;
+import com.chilbaeksan.mokaknyang.member_party.repository.MemberPartyRepository;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
+import com.chilbaeksan.mokaknyang.party.dto.request.PartyAccept;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
@@ -34,6 +37,7 @@ public class PartyService {
     private final PartyRepository partyRepository;
     private final MemberRepository memberRepository;
     private final InvitationRepository invitationRepository;
+    private final MemberPartyRepository memberPartyRepository;
     private final JwtUtil jwtUtil;
 
     public Party registParty(PartyRegist partyRegist){
@@ -117,6 +121,22 @@ public class PartyService {
         }
 
         invitationRepository.save(Invitation.builder()
+                .member(member)
+                .party(party)
+                .build());
+    }
+
+    public MemberParty acceptParty(Integer partyId, PartyAccept partyAccept){
+        Member member = memberRepository.findByMemberId(partyAccept.getMemberId())
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        if(invitationRepository.findByMemberAndParty(member, party).isEmpty())
+            throw new BaseException(ErrorCode.PARTY_IS_NOT_VALID);
+
+        return memberPartyRepository.save(MemberParty.builder()
                 .member(member)
                 .party(party)
                 .build());
