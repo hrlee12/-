@@ -7,7 +7,7 @@ import com.chilbaeksan.mokaknyang.auth.vo.Token;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
-import com.chilbaeksan.mokaknyang.member.respository.MemberRepository;
+import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
