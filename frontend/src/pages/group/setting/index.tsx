@@ -32,7 +32,6 @@ const GroupSetting = () => {
         <InputBox
           name={'그룹 이름'}
           size={'setting'}
-          addStyle={'pb-4'}
           type={'text'}
           placeholder={''}
           onChange={() => {}}
@@ -50,7 +49,6 @@ const GroupSetting = () => {
         </div>
         <InputBox
           name={'그룹 목표'}
-          addStyle={'pb-4'}
           size={'setting'}
           type={'text'}
           placeholder={''}

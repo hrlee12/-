@@ -23,7 +23,7 @@ const GroupPage = () => {
               <FaPlus
                 size={'25'}
                 className='cursor-pointer'
-                onClick={() => navigate('/friend-search')}
+                onClick={() => navigate('/makeGroup')}
               />
             </div>
           </div>
