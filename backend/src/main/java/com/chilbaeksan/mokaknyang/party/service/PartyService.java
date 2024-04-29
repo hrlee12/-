@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +63,12 @@ public class PartyService {
 
             inviteParties.add(
                     InviteParty.builder()
-                    .memberId(manager.getMemberId())
-                    .memberName(manager.getCatName())
-                    .partyId(party.getPartyId())
-                    .partyName(party.getName())
-                    .build()
+                            .memberId(manager.getMemberId())
+                            .memberName(manager.getCatName())
+                            .partyId(party.getPartyId())
+                            .partyName(party.getName())
+                            .expireTime(invitation.getCreatedAt().plus(30, ChronoUnit.MINUTES))
+                            .build()
             );
         }
 
