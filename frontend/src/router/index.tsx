@@ -6,6 +6,7 @@ import Cat from '@/pages/cat';
 import GroupPage from '@/pages/group';
 import GroupSetting from '@/pages/group/setting';
 import MakeGroupPage from '@/pages/group/makeGroup';
+import GroupInfoPage from '@/pages/group/info';
 
 const RouterComponent = () => {
   return (
@@ -17,6 +18,7 @@ const RouterComponent = () => {
         <Route path={'/group'} element={<GroupPage />} />
         <Route path={'/groupSetting'} element={<GroupSetting />} />
         <Route path={'/makeGroup'} element={<MakeGroupPage />} />
+        <Route path={'/groupInfo'} element={<GroupInfoPage />} />
       </Routes>
     </HashRouter>
   );

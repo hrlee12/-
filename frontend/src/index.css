@@ -17,3 +17,12 @@
     font-weight: normal;
     font-style: normal;
 }
+
+{/*inputBox 숫자 토글 숨기기*/}
+@layer base {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}

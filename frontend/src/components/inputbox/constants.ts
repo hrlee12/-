@@ -1,4 +1,8 @@
 export const INPUT_TEXT_BOX_SIZE = {
+  pomodoro: {
+    width: '80px',
+    height: '50px',
+  },
   small: {
     width: '280px',
     height: '60px',

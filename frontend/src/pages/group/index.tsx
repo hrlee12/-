@@ -18,7 +18,9 @@ const GroupPage = () => {
       <div className='flex flex-col justify-between h-96'>
         <div>
           <div className='flex place-content-around gap-40 pt-8'>
-            <div className='font-dnf text-4xl pb-3'>{constants.GROUP}</div>
+            <div className='font-dnf text-4xl pb-3'>
+              {constants.GROUP_INFO.GROUP}
+            </div>
             <div className='pt-3'>
               <FaPlus
                 size={'25'}
