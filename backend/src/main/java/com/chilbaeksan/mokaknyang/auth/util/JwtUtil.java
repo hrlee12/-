@@ -27,6 +27,6 @@ public class JwtUtil {
             userId = Integer.valueOf(jwtToken);
         }
 
-        return Optional.of(userId);
+        return Optional.ofNullable(userId);
     }
 }
