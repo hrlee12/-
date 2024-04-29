@@ -87,8 +87,8 @@ public class PartyService {
         Party party = partyRepository.findByPartyId(partyDelete.getPartyId())
                 .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
 
-        party.modifyIsDeleted(true);
-        partyRepository.save(party);
+        if(party.getIsDeleted())
+            throw new BaseException(ErrorCode.PARTY_ALREADY_REMOVE);
 
         partyRepository.delete(party);
     }

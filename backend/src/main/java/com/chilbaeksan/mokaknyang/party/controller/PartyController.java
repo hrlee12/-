@@ -1,5 +1,6 @@
 package com.chilbaeksan.mokaknyang.party.controller;
 
+import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
 import com.chilbaeksan.mokaknyang.party.service.PartyService;
@@ -26,5 +27,10 @@ public class PartyController {
         InvitePartyList invitePartyList = partyService.getInviteGroupList(httpServletRequest);
 
         return ResponseEntity.ok(invitePartyList);
+    }
+
+    @DeleteMapping
+    public void deleteParty(@RequestBody PartyDelete partyDelete){
+        partyService.deleteParty(partyDelete);
     }
 }

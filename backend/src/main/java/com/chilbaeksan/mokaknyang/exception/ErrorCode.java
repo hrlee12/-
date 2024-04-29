@@ -43,10 +43,11 @@ public enum ErrorCode {
 
     // 그룹 관련 에러
     PARTY_NOT_FOUND(404, "파티를 찾을 수 없습니다."),
-    PARTY_INVITATION_REGISTER_BAD_REQUEST(400, "그룹 초대 요청이 잘못된 요청 형식 입니다." ),
+    PARTY_INVITATION_REGISTER_BAD_REQUEST(400, "파티 초대 요청이 잘못된 요청 형식 입니다." ),
     PARTY_INVITATION_ALREADY(409, "이미 초대한 사용자입니다."),
     PARTY_MAX_INVITATION(403, "초대 가능한 사용자 수가 최대에 도달했습니다."),
     PARTY_SELF_INVITATION_NOT_ALLOWED(403, "자기 자신을 초대할 수 없습니다."),
+    PARTY_ALREADY_REMOVE(410, "이미 삭제된 파티입니다."),
 
     //공통 에러
     BAD_REQUEST(400, "올바르지 않은 요청입니다."),
