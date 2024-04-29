@@ -5,6 +5,7 @@ export type inputSizeType =
   | 'medium'
   | 'large'
   | 'setting'
-  | 'makeGroupName';
+  | 'makeGroupName'
+  | 'pomodoro';
 
 export type inputType = (typeof constants.INPUT_TYPE)[number];

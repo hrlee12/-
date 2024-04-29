@@ -2,7 +2,6 @@ import Button from '@/components/button';
 import { useNavigate } from 'react-router-dom';
 import BasicFrame from '@/components/frame/basicFrame';
 import * as constants from '@/pages/group/constants';
-import { useState } from 'react';
 import Pomodoro from '@/components/timer/pomodoro';
 
 // interface GroupProps {
@@ -14,10 +13,6 @@ import Pomodoro from '@/components/timer/pomodoro';
 
 const GroupInfoPage = () => {
   const navigate = useNavigate();
-  const [groupName] = useState('예시');
-  const [maxMember] = useState(6);
-  const [member] = useState(3);
-  const [goal] = useState('페이지 완성');
 
   return (
     <BasicFrame>
@@ -27,14 +22,17 @@ const GroupInfoPage = () => {
             {constants.GROUP_INFO.INFO}
           </div>
           <div className='font-dnf text-2xl pt-10'>
-            {constants.GROUP_INFO.COUNT} : {member} / {maxMember}
+            {constants.GROUP_INFO.COUNT}
           </div>
         </div>
         <div className='font-dnf text-2xl pl-5 pt-3'>
-          {constants.GROUP_INFO.NAME} : {groupName}
+          {constants.GROUP_INFO.GOAL}
         </div>
         <div className='font-dnf text-2xl pl-5 pt-1'>
-          {constants.GROUP_INFO.GOAL} : {goal}
+          {constants.GROUP_INFO.COUNT}
+        </div>
+        <div className='flex flex-col font-dnf text-2xl pl-5 py-2'>
+          뽀모도로
         </div>
         <Pomodoro />
         <div className='flex justify-center pt-3'>

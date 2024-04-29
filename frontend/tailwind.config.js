@@ -28,6 +28,9 @@ export default {
       boxShadow: {
         inputBoxShadow: 'inset -4px -4px 3px rgba(0, 0, 0, 0.25)',
       },
+      backgroundImage: {
+        wordBox: "url('public/assets/wordBox.png')",
+      },
     },
   },
   plugins: [],

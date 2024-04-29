@@ -3,10 +3,7 @@ import Button from '@/components/button';
 
 const Pomodoro = () => {
   return (
-    <div className='border'>
-      <div className='flex flex-col font-dnf text-2xl pl-5 py-2'>
-        뽀모도로 타이머
-      </div>
+    <div>
       <div className='flex flex-row justify-center'>
         <InputBox
           name={'뽀모도로 분'}

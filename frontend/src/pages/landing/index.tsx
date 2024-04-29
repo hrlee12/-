@@ -16,7 +16,7 @@ const Landing = () => {
         text={'예시'}
         size={'admin'}
         color={'navy'}
-        onClick={() => navigate('/example')}
+        onClick={() => navigate('/catSetting')}
       />
     </div>
   );
