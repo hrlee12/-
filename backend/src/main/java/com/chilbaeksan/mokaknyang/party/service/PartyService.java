@@ -1,5 +1,7 @@
 package com.chilbaeksan.mokaknyang.party.service;
 
+import com.chilbaeksan.mokaknyang.exception.BaseException;
+import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
@@ -20,7 +22,7 @@ public class PartyService {
 
     public Party registParty(PartyRegist partyRegist){
         Member partyManager = memberRepository.findByMemberId(partyRegist.getPartyManagerId())
-                .orElseThrow(() -> new NullPointerException("찾으려는 member가 존재하지 않습니다."));
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
         Party party = Party.builder()
                 .name(partyRegist.getPartyName())
