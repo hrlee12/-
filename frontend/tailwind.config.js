@@ -4,8 +4,31 @@ export default {
   theme: {
     colors: {
       inputBoxColor: '#EAD8C6',
+      frameColor: '#CBA57F',
+      groupColor: '#DECEBE',
+      btnBlue: '#04B1D9',
+      btnGreen: '#4CA732',
+      btnNavy: '#201D35',
+      btnGray: '#7d7d7d',
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        neo: ['NeoDunggeunmo'],
+        dnf: ['DNFBitBitv2'],
+      },
+      width: {
+        boxWidth: '410px',
+      },
+      height: {
+        boxHeight: '510px',
+      },
+      borderRadius: {
+        boxRadius: '50px',
+      },
+      boxShadow: {
+        inputBoxShadow: 'inset -4px -4px 3px rgba(0, 0, 0, 0.25)',
+      },
+    },
   },
   plugins: [],
 };
