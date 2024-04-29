@@ -8,6 +8,7 @@ import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
+import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
 import com.chilbaeksan.mokaknyang.party.dto.response.InviteParty;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
@@ -59,6 +60,11 @@ public class PartyService {
         List<InviteParty> inviteParties = new ArrayList<>();
         for(Invitation invitation : invitationList){
             Party party = invitation.getParty();
+
+            //삭제 된 그룹이면 초대 그룹 리스트에 가져오지 않는다
+            if(party.getIsDeleted())
+                continue;
+
             Member manager = invitation.getParty().getMember();
 
             inviteParties.add(
@@ -75,5 +81,15 @@ public class PartyService {
         return InvitePartyList.builder()
                 .inviteList(inviteParties)
                 .build();
+    }
+
+    public void deleteParty(PartyDelete partyDelete){
+        Party party = partyRepository.findByPartyId(partyDelete.getPartyId())
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        party.modifyIsDeleted(true);
+        partyRepository.save(party);
+
+        partyRepository.delete(party);
     }
 }
