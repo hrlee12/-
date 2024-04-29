@@ -20,6 +20,7 @@ public enum ErrorCode {
     MEMBER_MODIFY_NOT_FOUND_RESOURCE_CAT(404, "수정하려는 고양이 스킨이 존재하지 않습니다."),
 
     MEMBER_SEARCH_BAD_REQUEST(400, "회원 검색 요청이 잘못된 요청 형식 입니다."),
+    CAT_NOT_FOUND(404, "고양이를 찾을 수 없습니다."),
 
     //Auth 관련 에러
     AUTH_REGISTER_BAD_REQUEST(400, "회원가입 요청이 잘못된 요청 형식 입니다."),

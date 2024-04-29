@@ -6,6 +6,7 @@ import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
+import com.chilbaeksan.mokaknyang.member.repository.CatRepository;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.member_party.domain.MemberParty;
 import com.chilbaeksan.mokaknyang.member_party.repository.MemberPartyRepository;
@@ -19,14 +20,12 @@ import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
 import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMember;
 import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,7 @@ public class PartyService {
     private final MemberRepository memberRepository;
     private final InvitationRepository invitationRepository;
     private final MemberPartyRepository memberPartyRepository;
+    private final CatRepository catRepository;
     private final JwtUtil jwtUtil;
 
     public Party registParty(PartyRegist partyRegist){
@@ -179,7 +179,15 @@ public class PartyService {
         List<PartyJoinMember> members = new ArrayList<>();
         for(MemberParty memberParty : memberPartyList){
             int memberId = memberParty.getMember().getMemberId();
+
+            if(memberRepository.findByMemberId(memberId).isEmpty())
+                throw new BaseException(ErrorCode.MEMBER_NOT_FOUND);
+
             String name = memberParty.getMember().getCatName();
+
+            if(catRepository.findByCatId(memberParty.getMember().getCat().getCatId()).isEmpty())
+                throw new BaseException(ErrorCode.CAT_NOT_FOUND);
+
             String skin = memberParty.getMember().getCat().getCatAssetUrl();
 
             members.add(

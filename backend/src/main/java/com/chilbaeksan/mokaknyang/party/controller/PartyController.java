@@ -5,6 +5,7 @@ import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
+import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
 import com.chilbaeksan.mokaknyang.party.service.PartyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +50,11 @@ public class PartyController {
     @DeleteMapping("/{partyId}")
     public void leaveParty(HttpServletRequest httpServletRequest, @PathVariable Integer partyId){
         partyService.leaveParty(httpServletRequest, partyId);
+    }
+
+    @GetMapping("/{partyId}")
+    public ResponseEntity<PartyJoinMemberList> getPartyJoinMemberList(@PathVariable Integer partyId){
+        PartyJoinMemberList partyJoinMemberList = partyService.getPartyJoinMemberList(partyId);
+        return ResponseEntity.ok(partyJoinMemberList);
     }
 }
