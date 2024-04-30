@@ -9,6 +9,8 @@ import com.chilbaeksan.mokaknyang.member.dto.MemberMyInfoResponseDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
 import com.chilbaeksan.mokaknyang.member.service.MemberService;
 import com.chilbaeksan.mokaknyang.timer.dto.TimerRegisterRequestDto;
+import com.chilbaeksan.mokaknyang.timer.dto.TimerTopProcessRequestDto;
+import com.chilbaeksan.mokaknyang.timer.service.TimerService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,22 +23,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/pomodoro")
 public class TimerController {
     private final JwtUtil jwtUtil;
-
+    private final TimerService timerService;
     @PostMapping
     public ResponseEntity<?> registerTimer(TimerRegisterRequestDto dto, HttpServletRequest request) {
         // 유저 아이디 추출
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
 
+        // 관리번호에 따라서 삽입하는 아이디 다름
+        if(dto.getType().equalsIgnoreCase("group")){
+            timerService.registerTimer(dto, dto.getGroupId());
+        }else{
+            timerService.registerTimer(dto, userId);
+        }
+
         return ResponseEntity.ok().build();
     }
 
     //최상단 프로세스 변경 서버 전송
     @PostMapping("/top-process")
-    public ResponseEntity<?> setTopProcess(@RequestBody ,HttpServletRequest request) {
+    public ResponseEntity<?> setTopProcess(@RequestBody TimerTopProcessRequestDto dto, HttpServletRequest request) {
         // 유저 아이디 추출
         Integer userId = jwtUtil.getUserId(request)
-                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거
 
         return ResponseEntity.ok().build();
     }

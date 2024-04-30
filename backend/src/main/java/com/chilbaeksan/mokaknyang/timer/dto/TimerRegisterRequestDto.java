@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class TimerRegisterRequestDto {
     private String type;
+    private Integer groupId;
     private String startTime;
     private Short endPeriod;
     private Short concentrateTime;
