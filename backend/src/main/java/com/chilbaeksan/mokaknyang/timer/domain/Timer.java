@@ -29,14 +29,17 @@ public class Timer {
     private Integer timerManageId;
 
     @Column(name = "timer_start_time")
-    @ColumnDefault("3")
     private Timestamp timerStartTime;
 
     @Column(name = "timer_end_period")
-    @ColumnDefault("25")
+    @ColumnDefault("3")
     private Short timerEndPeriod;
 
     @Column(name = "timer_concentrate_time")
+    @ColumnDefault("25")
+    private Short timerConcentrateTime;
+
+    @Column(name = "timer_relax_time")
     @ColumnDefault("5")
     private Short timerRelaxTime;
 
