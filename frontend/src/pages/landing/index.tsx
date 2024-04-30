@@ -18,6 +18,12 @@ const Landing = () => {
         color={'navy'}
         onClick={() => navigate('/catSetting')}
       />
+      <Button
+        text={'웹알티씨'}
+        size={'admin'}
+        color={'navy'}
+        onClick={() => navigate('/screenshare')}
+      />
     </div>
   );
 };
