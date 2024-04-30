@@ -25,12 +25,13 @@ const InputBox = ({
   const boxSize: React.CSSProperties = {
     width: INPUT_TEXT_BOX_SIZE[size].width,
     height: INPUT_TEXT_BOX_SIZE[size].height,
+    lineHeight: INPUT_TEXT_BOX_SIZE[size].height,
   };
 
   return (
     <input
       name={name}
-      className={`font-neo bg-inputBoxColor shadow-inputBoxShadow rounded-full p-1 pl-5 text-3xl  ${addStyle}`}
+      className={`font-neo bg-inputBoxColor shadow-inputBoxShadow rounded-full p-1 pl-5 text-3xl ${addStyle}`}
       style={boxSize}
       type={type}
       placeholder={placeholder}
