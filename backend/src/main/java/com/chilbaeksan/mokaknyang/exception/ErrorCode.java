@@ -40,6 +40,13 @@ public enum ErrorCode {
     // 공격 관련 에러
 
     // 뽀모도로 관련 에러
+    TIMER_REGISTER_BAD_REQUEST(400, "뽀모도로 타이머 생성요청이 잘못된 요청 형식 입니다."),
+    TIMER_REGISTER_UNAUTHORIZED(401, "해당 그룹에서 타이머 생성권한이 없습니다."),
+    TIMER_REGISTER_GROUP_ID_NOT_FOUND(404,"해당 그룹 아이디가 존재하지 않습니다."),
+    TIMER_TOP_PROCESS_BAD_REQUEST(400, "작업 변경 요청이 잘못된 요청 형식 입니다."),
+    TIMER_TOP_PROCESS_UNAUTHORIZED(401,"현재 프로세스 상태 변경 권한이 없습니다."),
+    TIMER_RESULT_BAD_REQUEST(400,  "뽀모도로 산정 요청이 잘못된 요청 형식 입니다."),
+    TIMER_RESULT_UNAUTHORIZED(401,"뽀모도로 산정에 대한 권한이 없습니다."),
 
     // 그룹 관련 에러
 
