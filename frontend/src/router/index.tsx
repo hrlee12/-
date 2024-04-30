@@ -1,6 +1,5 @@
 import { Routes, Route, HashRouter } from 'react-router-dom';
 
-import Landing from '@/pages/landing/index';
 import Example from '@/pages/expample';
 import Cat from '@/pages/cat';
 import LoginPage from '@/pages/account/LoginPage';
@@ -12,15 +11,16 @@ import GroupInfoPage from '@/pages/group/info';
 import MyCatSetting from '@/pages/cat/Setting';
 import MyCatInfo from '@/pages/cat/info';
 import MyCat from '@/pages/cat';
+import Landing from '@/pages/landing';
 
 const RouterComponent = () => {
   return (
     <HashRouter>
       <Routes>
         <Route path={'/'} element={<Landing />} />
+        <Route path={'/login'} element={<LoginPage />} />
         <Route path={'/example'} element={<Example />} />
         <Route path={'/cat'} element={<Cat />} />
-        <Route path={'/login'} element={<LoginPage />} />
         <Route path={'/signup'} element={<SignUpPage />} />
         <Route path={'/group'} element={<GroupPage />} />
         <Route path={'/groupSetting'} element={<GroupSetting />} />

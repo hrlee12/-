@@ -2,19 +2,19 @@ import BasicFrame from '@/components/frame/basicFrame';
 import * as constants from '@/pages/group/constants';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import SearchModal from '@/pages/group/makeGroup/SearchModal.tsx';
 
 const MakeGroupPage = () => {
   const [id, setId] = useState<string>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const handleSearchClick = () => {
-    setModalOpen(true);
-  };
-
   const handleChangeId = (event: React.ChangeEvent<HTMLInputElement>) => {
     setId(event.target.value);
+  };
+
+  const handleSearchClick = () => {
+    setModalOpen(true);
   };
 
   const handleCloseModal = () => {

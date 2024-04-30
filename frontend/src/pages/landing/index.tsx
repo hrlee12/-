@@ -10,7 +10,7 @@ const Landing = () => {
         text={'그룹 정보'}
         size={'admin'}
         color={'blue'}
-        onClick={() => navigate('/groupInfo')}
+        onClick={() => navigate('/group')}
       />
       <Button
         text={'예시'}
