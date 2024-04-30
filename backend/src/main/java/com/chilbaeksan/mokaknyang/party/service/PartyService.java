@@ -5,6 +5,7 @@ import com.chilbaeksan.mokaknyang.Invitation.repository.InvitationRepository;
 import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
+import com.chilbaeksan.mokaknyang.member.domain.Cat;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.CatRepository;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
@@ -15,10 +16,7 @@ import com.chilbaeksan.mokaknyang.party.dto.request.PartyAccept;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
-import com.chilbaeksan.mokaknyang.party.dto.response.InviteParty;
-import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
-import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMember;
-import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
+import com.chilbaeksan.mokaknyang.party.dto.response.*;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -202,6 +200,49 @@ public class PartyService {
         return PartyJoinMemberList.builder()
                 .managerId(managerId)
                 .members(members)
+                .build();
+    }
+
+    public PartySettingInfo getPartySettingInfo(Integer partyId){
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        if(party.getIsDeleted())
+            throw new BaseException(ErrorCode.PARTY_ALREADY_REMOVE);
+
+        List<MemberParty> memberPartyList = memberPartyRepository.findByParty(party);
+        List<PartySettingMember> partyMembers = new ArrayList<>();
+
+        for(MemberParty memberParty : memberPartyList){
+            Member member = memberParty.getMember();
+
+            if(member.getIsDeleted())
+                throw new BaseException(ErrorCode.MEMBER_ALREADY_REMOVE);
+
+            if(member.getCat() == null)
+                throw new BaseException(ErrorCode.CAT_IS_NULL);
+
+            Cat cat = catRepository.findByCatId(memberParty.getMember().getCat().getCatId())
+                    .orElseThrow(() -> new BaseException(ErrorCode.CAT_NOT_FOUND));
+
+            partyMembers.add(
+                    PartySettingMember.builder()
+                    .memberId(member.getMemberId())
+                    .memberCatName(member.getCatName())
+                    .memberCatColor(member.getCatColor())
+                    .catId(cat.getCatId())
+                    .partyCreatedAt(memberParty.getCreatedAt())
+                    .build()
+            );
+        }
+
+        return PartySettingInfo.builder()
+                .partyGoal(party.getPurpose())
+                .partyName(party.getName())
+                .partyMaxNumber(party.getMaxNumber())
+                .partyParticipateNumber(party.getParticipateNumber())
+                .partyManagerId(party.getMember().getMemberId())
+                .partyManagerName(party.getMember().getCatName())
                 .build();
     }
 }

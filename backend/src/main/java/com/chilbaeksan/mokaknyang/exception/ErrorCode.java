@@ -10,6 +10,7 @@ public enum ErrorCode {
     //맴버 관련 에러
     MEMBER_NOT_FOUND(404, "회원을 찾을 수 없습니다."),
     MEMBER_IS_NOT_LOGIN(404, "로그인 되어 있지 않습니다."),
+    MEMBER_ALREADY_REMOVE(410, "이미 삭제된 회원입니다."),
 
     MEMBER_INFO_REGISTER_BAD_REQUEST(400, "회원 정보 등록 요청이 잘못된 요청 형식 입니다." ),
     MEMBER_INFO_REGISTER_NOT_FOUND(404, "회원을 찾을 수 없습니다."),
@@ -21,6 +22,7 @@ public enum ErrorCode {
 
     MEMBER_SEARCH_BAD_REQUEST(400, "회원 검색 요청이 잘못된 요청 형식 입니다."),
     CAT_NOT_FOUND(404, "고양이를 찾을 수 없습니다."),
+    CAT_IS_NULL(404, "고양이에 null 값이 들어가있습니다."),
 
     //Auth 관련 에러
     AUTH_REGISTER_BAD_REQUEST(400, "회원가입 요청이 잘못된 요청 형식 입니다."),

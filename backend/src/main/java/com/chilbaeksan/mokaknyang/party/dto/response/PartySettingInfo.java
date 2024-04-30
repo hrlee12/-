@@ -14,8 +14,8 @@ import java.util.List;
 public class PartySettingInfo {
     private String partyGoal;
     private String partyName;
-    private Integer partyMaxNumber;
-    private Integer partyParticipateNumber;
+    private Byte partyMaxNumber;
+    private Byte partyParticipateNumber;
     private Integer partyManagerId;
     private String partyManagerName;
     private List<PartySettingMember> partyMembers;
