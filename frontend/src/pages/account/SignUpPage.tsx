@@ -1,6 +1,6 @@
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/button';
 
@@ -29,13 +29,13 @@ const SignUpPage = () => {
     return regex.test(password);
   };
 
-  useEffect(() => {
-    checkPasswordMatch();
+  const checkPasswordMatch = useCallback(() => {
+    setPasswordMatch(password === password2);
   }, [password, password2]);
 
-  const checkPasswordMatch = () => {
-    setPasswordMatch(password === password2);
-  };
+  useEffect(() => {
+    checkPasswordMatch();
+  }, [checkPasswordMatch]);
 
   return (
     <div>
