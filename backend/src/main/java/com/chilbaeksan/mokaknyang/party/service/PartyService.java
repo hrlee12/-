@@ -243,6 +243,7 @@ public class PartyService {
                 .partyParticipateNumber(party.getParticipateNumber())
                 .partyManagerId(party.getMember().getMemberId())
                 .partyManagerName(party.getMember().getCatName())
+                .partyMembers(partyMembers)
                 .build();
     }
 }

@@ -6,6 +6,7 @@ import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
 import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
 import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
+import com.chilbaeksan.mokaknyang.party.dto.response.PartySettingInfo;
 import com.chilbaeksan.mokaknyang.party.service.PartyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +57,11 @@ public class PartyController {
     public ResponseEntity<PartyJoinMemberList> getPartyJoinMemberList(@PathVariable Integer partyId){
         PartyJoinMemberList partyJoinMemberList = partyService.getPartyJoinMemberList(partyId);
         return ResponseEntity.ok(partyJoinMemberList);
+    }
+
+    @GetMapping("/{partyId}/setting")
+    public ResponseEntity<PartySettingInfo> getPartySettingInfo(@PathVariable Integer partyId){
+        PartySettingInfo partySettingInfo = partyService.getPartySettingInfo(partyId);
+        return ResponseEntity.ok(partySettingInfo);
     }
 }
