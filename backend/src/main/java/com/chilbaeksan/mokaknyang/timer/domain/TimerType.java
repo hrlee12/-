@@ -6,5 +6,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum TimerType {
-    Personal, Party;
+    personal, party;
 }
