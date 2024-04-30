@@ -12,10 +12,7 @@ import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.member_party.domain.MemberParty;
 import com.chilbaeksan.mokaknyang.member_party.repository.MemberPartyRepository;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyAccept;
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
+import com.chilbaeksan.mokaknyang.party.dto.request.*;
 import com.chilbaeksan.mokaknyang.party.dto.response.*;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -245,5 +242,22 @@ public class PartyService {
                 .partyManagerName(party.getMember().getCatName())
                 .partyMembers(partyMembers)
                 .build();
+    }
+
+    public void updateParty(Integer partyId, PartyUpdate partyUpdate){
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        if(party.getIsDeleted())
+            throw new BaseException(ErrorCode.PARTY_ALREADY_REMOVE);
+
+        Member manager = memberRepository.findByMemberId(partyUpdate.getPartyManagerId())
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        party.modifyMember(manager);
+        party.modifyName(partyUpdate.getPartyName());
+        party.modifyPurpose(partyUpdate.getPartyGoal());
+
+        partyRepository.save(party);
     }
 }
