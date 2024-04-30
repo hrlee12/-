@@ -51,4 +51,15 @@ public class Party {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
+
+    public void modifyMember(Member member){
+        this.member = member;
+    }
+    public void modifyPurpose(String purpose){
+        this.purpose = purpose;
+    }
+
+    public void modifyName(String name){
+        this.name = name;
+    }
 }
