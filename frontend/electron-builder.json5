@@ -3,15 +3,9 @@
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
   "appId": "Mokak-Nyang",
   "asar": true,
-  "productName": "Mokak-Nyang",
+  "productName": "모각냥",
   "directories": {
     "output": "release/${version}"
-  },
-  "protocols": {
-    "name": "Mokak-Nyang",
-    "schemes": [
-      "Mokak-Nyang"
-    ]
   },
   "files": [
     "dist",
