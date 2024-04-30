@@ -1,9 +1,6 @@
 package com.chilbaeksan.mokaknyang.party.controller;
 
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyAccept;
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyDelete;
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyInvite;
-import com.chilbaeksan.mokaknyang.party.dto.request.PartyRegist;
+import com.chilbaeksan.mokaknyang.party.dto.request.*;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
 import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
 import com.chilbaeksan.mokaknyang.party.dto.response.PartySettingInfo;
@@ -63,5 +60,10 @@ public class PartyController {
     public ResponseEntity<PartySettingInfo> getPartySettingInfo(@PathVariable Integer partyId){
         PartySettingInfo partySettingInfo = partyService.getPartySettingInfo(partyId);
         return ResponseEntity.ok(partySettingInfo);
+    }
+
+    @PatchMapping("/{partyId}/setting")
+    public void updateParty(@PathVariable Integer partyId, @RequestBody PartyUpdate partyUpdate){
+        partyService.updateParty(partyId, partyUpdate);
     }
 }
