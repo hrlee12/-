@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -14,5 +16,7 @@ public class PartySettingInfo {
     private String partyName;
     private Integer partyMaxNumber;
     private Integer partyParticipateNumber;
+    private Integer partyManagerId;
+    private String partyManagerName;
     private List<PartySettingMember> partyMembers;
 }
