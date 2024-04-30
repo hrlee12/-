@@ -6,6 +6,7 @@ import Button from '@/components/button';
 
 const SignUpPage = () => {
   const [userid, setUserId] = useState('');
+  const [usernickname, setUserNickname] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
@@ -24,7 +25,7 @@ const SignUpPage = () => {
   };
 
   const isPasswordValid = (password: string): boolean => {
-    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{15,}$/;
+    const regex = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{5,9}$/;
 
     return regex.test(password);
   };
@@ -58,6 +59,16 @@ const SignUpPage = () => {
         </div>
         <div className='flex justify-center items-center'>
           <InputBox
+            name={'user-nickname'}
+            size={'small'}
+            addStyle='m-2 inputBox-font-medium'
+            type={'text'}
+            placeholder={'닉네임'}
+            onChange={(e) => setUserNickname(e.target.value)}
+          />
+        </div>
+        <div className='flex justify-center items-center'>
+          <InputBox
             name={'user-password'}
             size={'small'}
             addStyle='m-2 inputBox-font-medium'
@@ -81,24 +92,6 @@ const SignUpPage = () => {
               checkPasswordMatch();
             }}
           />
-        </div>
-        {/* 비밀번호 일치 여부 및 안내메시지 */}
-        <div className='flex justify-center items-center'>
-          {(!password || !password2) && (
-            <p className='font-neo' style={{ color: 'rgb(75 75 75)' }}>
-              비밀번호는 대/소문자와 특수문자 포함 15자 이상
-            </p>
-          )}
-          {password && password2 && !passwordMatch && (
-            <p className='font-neo' style={{ color: 'rgb(239 68 68)' }}>
-              비밀번호가 일치하지 않습니다.
-            </p>
-          )}
-          {password && password2 && passwordMatch && (
-            <p className='font-neo' style={{ color: 'rgb(21 128 61)' }}>
-              비밀번호가 일치합니다.
-            </p>
-          )}
         </div>
         {/* 버튼창 */}
         <div className='flex justify-center items-center'>
