@@ -20,6 +20,16 @@
   font-style: normal;
 }
 
+/* inputBox 숫자 토글 숨기기 */
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* inputBox placeholder의 글자 크기 수정 */
 .inputBox-font-medium::placeholder {
   font-size: 20px;
   color: #888;

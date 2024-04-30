@@ -1,4 +1,8 @@
 export const INPUT_TEXT_BOX_SIZE = {
+  pomodoro: {
+    width: '80px',
+    height: '50px',
+  },
   small: {
     width: '280px',
     height: '60px',
@@ -10,6 +14,14 @@ export const INPUT_TEXT_BOX_SIZE = {
   large: {
     width: '350px',
     height: '40px',
+  },
+  setting: {
+    width: '240px',
+    height: '50px',
+  },
+  makeGroupName: {
+    width: '180px',
+    height: '30px',
   },
 } as const;
 

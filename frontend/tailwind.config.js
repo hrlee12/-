@@ -5,6 +5,7 @@ export default {
     colors: {
       inputBoxColor: '#EAD8C6',
       frameColor: '#CBA57F',
+      groupColor: '#DECEBE',
       btnBlue: '#04B1D9',
       btnGreen: '#4CA732',
       btnNavy: '#201D35',
@@ -16,7 +17,7 @@ export default {
         dnf: ['DNFBitBitv2'],
       },
       width: {
-        boxWidth: '390px',
+        boxWidth: '410px',
       },
       height: {
         boxHeight: '510px',
@@ -26,6 +27,9 @@ export default {
       },
       boxShadow: {
         inputBoxShadow: 'inset -4px -4px 3px rgba(0, 0, 0, 0.25)',
+      },
+      backgroundImage: {
+        wordBox: "url('public/assets/wordBox.png')",
       },
     },
   },
