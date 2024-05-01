@@ -1,13 +1,20 @@
 import Button from '@/components/button';
 
 import * as constants from '@/pages/group/constants';
+import { inviteMember } from '@/apis/group.ts';
 
 interface ModalProps {
-  memberId: string;
-  onClose: () => void;
+  memberId: number;
+  onClose: (nickName?: string) => void; // 그냥 닫기 버튼 누를 수도 있어서 ?로 지정
 }
 
 const SearchModal = ({ memberId, onClose }: ModalProps) => {
+  const inviteClick = async () => {
+    const response = await inviteMember(memberId);
+    const nickName = response.nickname; // 여기 확인
+    onClose(nickName);
+  };
+
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
       <div
@@ -29,7 +36,7 @@ const SearchModal = ({ memberId, onClose }: ModalProps) => {
             text={'초대'}
             size={'small'}
             color={'blue'}
-            onClick={() => {}}
+            onClick={inviteClick}
           />
         </div>
       </div>

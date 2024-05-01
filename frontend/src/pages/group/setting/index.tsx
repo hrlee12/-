@@ -2,8 +2,52 @@ import * as constants from '@/pages/group/constants.ts';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
+import { deleteGroup, groupDetail, updateGroup } from '@/apis/group.ts';
+import { useEffect, useState } from 'react';
 
-const GroupSetting = () => {
+interface GroupProps {
+  partyId: number;
+}
+
+const GroupSetting = ({ partyId }: GroupProps) => {
+  const [groupSettings, setGroupSettings] = useState<string[]>([]);
+  const [partyName, setPartyName] = useState<string>('');
+  const [partyGoal, setPartyGoal] = useState<string>('');
+  const [partyManagerId, setPartyManagerId] = useState<number>(0);
+  const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
+
+  useEffect(() => {
+    const getGroupSettings = async () => {
+      try {
+        const data = await groupDetail(partyId);
+        setGroupSettings(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    getGroupSettings();
+  }, [refreshFlag, partyId]);
+
+  const changeGroupSettings = async ({
+    partyName: partyName,
+    partyGoal: partyGoal,
+    partyManagerId: partyManagerId,
+  }: {
+    partyName: string;
+    partyGoal: string;
+    partyManagerId: number;
+  }) => {
+    try {
+      await updateGroup(partyId, partyName, partyGoal, partyManagerId);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  const clickDeleteGroup = async () => {
+    await deleteGroup();
+  };
+
   return (
     <BasicFrame>
       <div className='pt-8 pl-9'>
@@ -33,6 +77,7 @@ const GroupSetting = () => {
           name={'그룹 이름'}
           size={'setting'}
           type={'text'}
+          // value={groupSettings.partyName}
           placeholder={''}
           onChange={() => {}}
         />
@@ -51,6 +96,7 @@ const GroupSetting = () => {
           name={'그룹 목표'}
           size={'setting'}
           type={'text'}
+          // value={groupSettings.partyGoal}
           placeholder={''}
           onChange={() => {}}
         />
@@ -66,7 +112,7 @@ const GroupSetting = () => {
         addStyle={`fixed left-[275px] top-5`}
         size={'small'}
         color={'gray'}
-        onClick={() => {}}
+        onClick={clickDeleteGroup}
       />
     </BasicFrame>
   );

@@ -3,15 +3,30 @@
 import BasicFrame from '@/components/frame/basicFrame';
 
 import { useNavigate } from 'react-router-dom';
-import { FaPlus } from 'react-icons/fa6';
+import { FaMessage, FaPlus } from 'react-icons/fa6';
 
 import * as constants from '@/pages/group/constants';
 import Button from '@/components/button';
 import Group from '@/pages/group/Group.tsx';
+import { groupMessageList } from '@/apis/group.ts';
+import { useState } from 'react';
+import GroupMessage from '@/pages/group/GroupMessage.tsx';
 
 const GroupPage = () => {
   const navigate = useNavigate();
   // const [groups, setGroups] = useState([]);
+  const [messages, setMessages] = useState<string[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const checkMessage = async () => {
+    const response = await groupMessageList();
+    setMessages(response);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <BasicFrame>
@@ -21,7 +36,13 @@ const GroupPage = () => {
             <div className='font-dnf text-4xl pb-3'>
               {constants.GROUP_INFO.GROUP}
             </div>
-            <div className='pt-3'>
+            <div className='flex flex-row gap-3 pt-3'>
+              {/*하,, 나중에 몇개 왔는지 숫자??*/}
+              <FaMessage
+                size={'25'}
+                className='cursor-pointer'
+                onClick={checkMessage}
+              />
               <FaPlus
                 size={'25'}
                 className='cursor-pointer'
@@ -36,7 +57,9 @@ const GroupPage = () => {
               <Group key={index}/>
           ))}
         </div>*/}
-
+          {showModal && (
+            <GroupMessage messages={messages} onClose={closeModal} />
+          )}
           {/*Group을 확인하고 싶으면 여기서*/}
           <div className='flex-col grid grid-cols-2 p-1 place-items-start overflow-auto'>
             <Group />
