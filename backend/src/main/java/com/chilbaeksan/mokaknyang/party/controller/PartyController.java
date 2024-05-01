@@ -1,6 +1,7 @@
 package com.chilbaeksan.mokaknyang.party.controller;
 
 import com.chilbaeksan.mokaknyang.party.dto.request.*;
+import com.chilbaeksan.mokaknyang.party.dto.response.HoverMemberInfo;
 import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
 import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
 import com.chilbaeksan.mokaknyang.party.dto.response.PartySettingInfo;
@@ -65,5 +66,11 @@ public class PartyController {
     @PatchMapping("/{partyId}/setting")
     public void updateParty(@PathVariable Integer partyId, @RequestBody PartyUpdate partyUpdate){
         partyService.updateParty(partyId, partyUpdate);
+    }
+
+    @GetMapping("/{partyId}/{memberId}")
+    public ResponseEntity<HoverMemberInfo> getHoverMemberInfo(@PathVariable Integer partyId, @PathVariable Integer memberId){
+        HoverMemberInfo hoverMemberInfo = partyService.getHoverMemberInfo(partyId, memberId);
+        return ResponseEntity.ok(hoverMemberInfo);
     }
 }

@@ -6,7 +6,9 @@ import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Cat;
+import com.chilbaeksan.mokaknyang.member.domain.Level;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
+import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.repository.CatRepository;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.member_party.domain.MemberParty;
@@ -275,10 +277,20 @@ public class PartyService {
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_PARTY_NOT_FOUND));
 
         Member partyJoinMember = memberParty.getMember();
+        Title title = partyJoinMember.getTitle();
+        String titleContent = "";
+        if(title!=null)
+            titleContent = title.getTitleContent();
+
+        Level level = partyJoinMember.getLevel();
+        Short levelNum = 0;
+        if(level != null)
+            levelNum = level.getLevel();
+
         return HoverMemberInfo.builder()
                 .name(partyJoinMember.getCatName())
-                .title(partyJoinMember.getTitle().getTitleContent())
-                .level(partyJoinMember.getLevel().getLevel())
+                .title(titleContent)
+                .level(levelNum)
                 .exp(partyJoinMember.getExp())
                 .hitNumber(partyJoinMember.getHitNumber())
                 .behitNumber(partyJoinMember.getBehitNumber())
