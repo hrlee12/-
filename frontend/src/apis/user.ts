@@ -15,3 +15,14 @@ export const signUp = async (
     console.log(error);
   }
 };
+
+export const logIn = async (userId: string, password: string) => {
+  try {
+    return await axiosInstance.post('/auth/login', {
+      id: userId,
+      password: password,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
