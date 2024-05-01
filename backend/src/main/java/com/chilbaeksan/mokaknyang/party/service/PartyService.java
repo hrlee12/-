@@ -260,4 +260,28 @@ public class PartyService {
 
         partyRepository.save(party);
     }
+
+    public HoverMemberInfo getHoverMemberInfo(Integer partyId, Integer memberId){
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        if(party.getIsDeleted())
+            throw new BaseException(ErrorCode.PARTY_ALREADY_REMOVE);
+
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        MemberParty memberParty = memberPartyRepository.findByMemberAndParty(member, party)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_PARTY_NOT_FOUND));
+
+        Member partyJoinMember = memberParty.getMember();
+        return HoverMemberInfo.builder()
+                .name(partyJoinMember.getCatName())
+                .title(partyJoinMember.getTitle().getTitleContent())
+                .level(partyJoinMember.getLevel().getLevel())
+                .exp(partyJoinMember.getExp())
+                .hitNumber(partyJoinMember.getHitNumber())
+                .behitNumber(partyJoinMember.getBehitNumber())
+                .build();
+    }
 }
