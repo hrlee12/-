@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -35,6 +36,7 @@ public class Exp {
     @Column(name = "exp_contents", length = 100)
     String expContents;
 
+    @CreationTimestamp
     @Column(name = "exp_created_at")
     Timestamp expCreatedAt;
 }

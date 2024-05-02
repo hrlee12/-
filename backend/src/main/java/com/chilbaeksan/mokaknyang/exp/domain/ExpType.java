@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum ExpType {
-    timer, attack
+    TIMER, ATTACK
 }
