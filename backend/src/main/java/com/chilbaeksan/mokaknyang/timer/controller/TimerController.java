@@ -9,6 +9,7 @@ import com.chilbaeksan.mokaknyang.member.dto.MemberMyInfoResponseDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
 import com.chilbaeksan.mokaknyang.member.service.MemberService;
 import com.chilbaeksan.mokaknyang.timer.domain.Timer;
+import com.chilbaeksan.mokaknyang.timer.domain.TimerType;
 import com.chilbaeksan.mokaknyang.timer.dto.TimerRegisterRequestDto;
 import com.chilbaeksan.mokaknyang.timer.dto.TimerRegisterResponseDto;
 import com.chilbaeksan.mokaknyang.timer.dto.TimerResultRequestDto;
@@ -28,14 +29,14 @@ public class TimerController {
     private final JwtUtil jwtUtil;
     private final TimerService timerService;
     @PostMapping
-    public ResponseEntity<?> registerTimer(TimerRegisterRequestDto dto, HttpServletRequest request) {
+    public ResponseEntity<?> registerTimer(@RequestBody TimerRegisterRequestDto dto, HttpServletRequest request) {
         // 유저 아이디 추출
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
 
         Timer timer = null;
         // 관리번호에 따라서 삽입하는 아이디 다름
-        if(dto.getType().equalsIgnoreCase("group")){
+        if(TimerType.valueOf(dto.getType().toUpperCase()) == TimerType.PARTY){
             timer = timerService.registerTimer(dto, dto.getGroupId());
         }else{
             timer = timerService.registerTimer(dto, userId);
