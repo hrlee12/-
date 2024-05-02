@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConnectTestController {
     @GetMapping("/test")
     public ResponseEntity ConnectTest(){
-//        log.info("연결 확인");
+       log.info("연결 확인");
         return null;
     }
 }
