@@ -6,11 +6,12 @@ export const signUp = async (
   password: string,
 ) => {
   try {
-    return await axiosInstance.post('/auth', {
+    const response = await axiosInstance.post('/auth', {
       id: userId,
       nickname: userNickname,
       password: password,
     });
+    return response.data;
   } catch (error) {
     console.log(error);
   }
@@ -18,10 +19,11 @@ export const signUp = async (
 
 export const logIn = async (userId: string, password: string) => {
   try {
-    return await axiosInstance.post('/auth/login', {
+    const response = await axiosInstance.post('/auth/login', {
       id: userId,
       password: password,
     });
+    return response.data;
   } catch (error) {
     console.log(error);
   }
