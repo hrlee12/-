@@ -4,6 +4,7 @@ import { fabric } from 'fabric';
 const Drawing = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>();
   const [nowPanel, setNowPanel] = useState(null);
+  const [activeTool, setActiveTool] = useState('select');
 
   useEffect(() => {
     const newCanvas = new fabric.Canvas('canvas', {
@@ -27,7 +28,21 @@ const Drawing = () => {
 
   return (
     <>
-      <canvas id='canvas' />
+      <canvas id='canvas' style={{ border: '1px solid red' }} />
+      <button
+        style={{ width: '48px', height: '48px', border: '1px solid black' }}
+        onClick={() => setActiveTool('select')}
+        disabled={activeTool === 'select'}
+      >
+        선택
+      </button>
+      <button
+        style={{ width: '48px', height: '48px', border: '1px solid black' }}
+        onClick={() => setActiveTool('pen')}
+        disabled={activeTool === 'pen'}
+      >
+        펜
+      </button>
     </>
   );
 };
