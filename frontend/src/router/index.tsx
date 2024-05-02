@@ -27,7 +27,7 @@ const RouterComponent = () => {
         {/*후에 여기 개인 id 바인딩을 고려해야함*/}
         <Route path={'/catInfo'} element={<MyCatInfo />} />
         <Route path={'/catSetting'} element={<MyCatSetting />} />
-        <Route path={'/drawing'} element={<Drawing /> /}
+        <Route path={'/drawing'} element={<Drawing />} />
       </Routes>
     </HashRouter>
   );
