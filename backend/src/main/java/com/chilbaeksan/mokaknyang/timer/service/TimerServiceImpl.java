@@ -94,7 +94,7 @@ public class TimerServiceImpl implements TimerService {
 
         Member member = memberRepository.findByMemberId(userId)
                 .orElseThrow( () -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
-
+        member.setExp(member.getExp() + 10);
 
         return timerLogRepository.save(log);
     }
