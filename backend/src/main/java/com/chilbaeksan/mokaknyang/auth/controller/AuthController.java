@@ -3,6 +3,7 @@ package com.chilbaeksan.mokaknyang.auth.controller;
 import com.chilbaeksan.mokaknyang.auth.dto.SignInResponse;
 import com.chilbaeksan.mokaknyang.auth.dto.UserLoginDto;
 import com.chilbaeksan.mokaknyang.auth.service.AuthService;
+import com.chilbaeksan.mokaknyang.auth.util.ClientUtils;
 import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.auth.vo.Token;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
@@ -22,6 +23,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     private final JwtUtil jwtUtil;
+    private final ClientUtils clientUtils;
     private final AuthService authService;
 
     // register
@@ -43,7 +45,7 @@ public class AuthController {
         }
 
         //아니라면 로그인 수행
-        SignInResponse response = authService.login(dto.getId(), dto.getPassword(), request.getRemoteAddr());
+        SignInResponse response = authService.login(dto.getId(), dto.getPassword(),clientUtils.getRemoteIP(request));
 
         // 쿠키 생성
         String cookie = authService.createHttpOnlyCookie("refreshToken", response.refreshToken());

@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
@@ -19,6 +20,11 @@ public class Login {
 
     private String refreshToken;
 
+    private String currentProcess;
+
+    private String currentUrl;
+
+
     @TimeToLive
     private Long expiration;
 
@@ -26,6 +32,8 @@ public class Login {
         this.memberId = dto.getMemberId();
         this.connectedIP = dto.getConnectedIP();
         this.refreshToken = dto.getRefreshToken();
+        this.currentProcess = dto.getCurrentProcess();
+        this.currentUrl = dto.getCurrentUrl();
         return this;
     }
 }
