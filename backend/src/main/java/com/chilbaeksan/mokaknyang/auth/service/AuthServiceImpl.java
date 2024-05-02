@@ -1,13 +1,16 @@
 package com.chilbaeksan.mokaknyang.auth.service;
 
 import com.chilbaeksan.mokaknyang.auth.domain.Login;
+import com.chilbaeksan.mokaknyang.auth.dto.LoginInfoDto;
 import com.chilbaeksan.mokaknyang.auth.dto.SignInResponse;
+import com.chilbaeksan.mokaknyang.auth.dto.UserLoginDto;
 import com.chilbaeksan.mokaknyang.auth.repository.LoginRepository;
 import com.chilbaeksan.mokaknyang.auth.vo.Token;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -21,9 +24,9 @@ public class AuthServiceImpl implements AuthService {
     private final LoginRepository loginRepository;
 
     @Override
-    public void register(String id, String password) {
+    public void register(UserLoginDto dto) {
         // 중복 확인
-        Optional<Member> user = memberRepository.findByLoginId(id);
+        Optional<Member> user = memberRepository.findByLoginId(dto.getId());
         if(user.isPresent()){
             throw new BaseException(ErrorCode.AUTH_REGISTER_DUPLICATED_USER); // 중복 에러
         }
@@ -32,8 +35,9 @@ public class AuthServiceImpl implements AuthService {
 
         // 가입 수행
         Member member = Member.builder()
-                .loginId(id)
-                .loginPwd(password)
+                .loginId(dto.getId())
+                .loginPwd(dto.getPassword())
+                .nickname(dto.getNickname())
                 .build();
         memberRepository.save(member);
     }
@@ -70,6 +74,14 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public void logout(Integer userId) {
+       Login login = loginRepository.findByMemberId(userId)
+               .orElseThrow(()-> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
+       loginRepository.delete(login);
+    }
+
+    @Override
     public String createHttpOnlyCookie(String cookieName, String cookieValue) {
         int maxAge = 60 * 60 * 24;
 
@@ -99,11 +111,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
+    @Transactional
     @Override
     public Token refresh(String refreshToken) {
         //TODO: JWT access, refresh 토큰 생성
         String userId = refreshToken;
         Token token = new Token(userId, userId); // 임시로 현재 맴버 아이디와 현재 시간으로 대체한다.
+        Login login = loginRepository.findByMemberId(Integer.valueOf(userId))
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+        login.setRefreshToken(token.getRefreshToken());
         return token;
     }
 }
