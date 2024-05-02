@@ -2,11 +2,11 @@ spring:
   application:
     name: mokaknyang
 
-# h2 Setting
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/mokaknyang
-    username: sa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
 
   # Redis 설정
   data:
@@ -15,7 +15,17 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+
   # spring data jpa settings
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+#logging
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bint: trace
