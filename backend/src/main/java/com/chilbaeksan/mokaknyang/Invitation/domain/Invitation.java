@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.time.LocalDateTime;
 
@@ -29,21 +30,16 @@ public class Invitation {
     @JoinColumn(name="party_id", nullable = false)
     private Party party;
 
-    @CreationTimestamp
     @Column(name="invitation_created_at")
     private LocalDateTime createdAt;
 
     @Column(name="invitation_is_accepted")
-    @ColumnDefault("WAIT")
     private ApprovalStatus isAccepted;
 
     @Column(name="invitation_expire_time")
     private LocalDateTime expireTime;
 
-    @PrePersist
-    public void setExpireTime(){
-        if(this.createdAt != null){
-            this.expireTime = this.createdAt.plusMinutes(30);
-        }
+    public void modifyIsAccepted(ApprovalStatus isAccepted){
+        this.isAccepted = isAccepted;
     }
 }

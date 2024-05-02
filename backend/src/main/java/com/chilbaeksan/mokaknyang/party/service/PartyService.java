@@ -1,5 +1,6 @@
 package com.chilbaeksan.mokaknyang.party.service;
 
+import com.chilbaeksan.mokaknyang.Invitation.domain.ApprovalStatus;
 import com.chilbaeksan.mokaknyang.Invitation.domain.Invitation;
 import com.chilbaeksan.mokaknyang.Invitation.repository.InvitationRepository;
 import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,9 +122,13 @@ public class PartyService {
                 throw new BaseException(ErrorCode.PARTY_INVITATION_ALREADY);
         }
 
+        LocalDateTime now = LocalDateTime.now();
         invitationRepository.save(Invitation.builder()
                 .member(member)
                 .party(party)
+                .createdAt(now)
+                .expireTime(now.plusMinutes(30))
+                .isAccepted(ApprovalStatus.WAIT)
                 .build());
     }
 
@@ -133,8 +139,15 @@ public class PartyService {
         Party party = partyRepository.findByPartyId(partyId)
                 .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
 
-        if(invitationRepository.findByMemberAndParty(member, party).isEmpty())
-            throw new BaseException(ErrorCode.PARTY_IS_NOT_VALID);
+        Invitation invitation = invitationRepository.findByMemberAndParty(member, party)
+                .orElseThrow(() -> new BaseException(ErrorCode.INVITATION_NOT_FOUND));
+
+        if(LocalDateTime.now().isAfter(invitation.getExpireTime())){
+            throw new BaseException(ErrorCode.INVIATION_IS_NOT_VALID);
+        }
+
+        invitation.modifyIsAccepted(ApprovalStatus.ACCEPT);
+        invitationRepository.save(invitation);
 
         if(memberPartyRepository.findByMemberAndParty(member, party).isPresent())
             throw new BaseException(ErrorCode.PARTY_ALREADY_ACCEPT);
@@ -143,6 +156,24 @@ public class PartyService {
                 .member(member)
                 .party(party)
                 .build());
+    }
+
+    public void rejectParty(Integer partyId, PartyReject partyReject){
+        Member member = memberRepository.findByMemberId(partyReject.getMemberId())
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Party party = partyRepository.findByPartyId(partyId)
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        Invitation invitation = invitationRepository.findByMemberAndParty(member, party)
+                .orElseThrow(() -> new BaseException(ErrorCode.INVITATION_NOT_FOUND));
+
+        if(LocalDateTime.now().isAfter(invitation.getExpireTime())){
+            throw new BaseException(ErrorCode.INVIATION_IS_NOT_VALID);
+        }
+
+        invitation.modifyIsAccepted(ApprovalStatus.REJECT);
+        invitationRepository.save(invitation);
     }
 
     public void leaveParty(HttpServletRequest httpServletRequest, Integer partyId){

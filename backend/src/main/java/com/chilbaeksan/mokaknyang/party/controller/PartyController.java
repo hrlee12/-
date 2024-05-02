@@ -46,6 +46,11 @@ public class PartyController {
         partyService.acceptParty(partyId, partyAccept);
     }
 
+    @PostMapping("/{partyId}/reject")
+    public void rejectParty(@PathVariable Integer partyId, @RequestBody PartyReject partyReject){
+        partyService.rejectParty(partyId, partyReject);
+    }
+
     @DeleteMapping("/{partyId}")
     public void leaveParty(HttpServletRequest httpServletRequest, @PathVariable Integer partyId){
         partyService.leaveParty(httpServletRequest, partyId);
