@@ -7,14 +7,14 @@ interface Props {
 
 const BasicFrame = ({ children }: Props) => {
   return (
-    <div>
+    <>
       <main>
         <div className='m-4 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius'>
           {children}
         </div>
       </main>
       <div className='character-idle fixed right-[0px] bottom-[0px]' />
-    </div>
+    </>
   );
 };
 
