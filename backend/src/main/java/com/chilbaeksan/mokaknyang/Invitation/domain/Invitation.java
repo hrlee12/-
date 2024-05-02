@@ -4,6 +4,7 @@ import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -33,8 +34,16 @@ public class Invitation {
     private LocalDateTime createdAt;
 
     @Column(name="invitation_is_accepted")
+    @ColumnDefault("WAIT")
     private ApprovalStatus isAccepted;
 
     @Column(name="invitation_expire_time")
     private LocalDateTime expireTime;
+
+    @PrePersist
+    public void setExpireTime(){
+        if(this.createdAt != null){
+            this.expireTime = this.createdAt.plusMinutes(30);
+        }
+    }
 }
