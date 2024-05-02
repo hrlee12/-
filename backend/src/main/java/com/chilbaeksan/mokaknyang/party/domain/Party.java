@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="party")
-@SQLDelete(sql = "UPDATE party SET party_deleted_at = NOW() WHERE party_id = ?")
+@SQLDelete(sql = "UPDATE party SET party_deleted_at = NOW(), party_is_deleted = true WHERE party_id = ?")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -22,10 +22,10 @@ public class Party {
     @Column(name="party_id")
     private Integer partyId;
 
-    @Column(name="party_name", nullable = false)
+    @Column(name="party_name")
     private String name;
 
-    @Column(name="party_purpose", nullable = false)
+    @Column(name="party_purpose")
     private String purpose;
 
     @Column(name="party_invite_message")
@@ -51,4 +51,15 @@ public class Party {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Member member;
+
+    public void modifyMember(Member member){
+        this.member = member;
+    }
+    public void modifyPurpose(String purpose){
+        this.purpose = purpose;
+    }
+
+    public void modifyName(String name){
+        this.name = name;
+    }
 }

@@ -24,17 +24,16 @@ public class Member {
     @Column(name="member_id")
     private Integer memberId;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="level", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Level level;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="Title", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name="title_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Title title;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="cat", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name="cat_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Cat cat;
 
     @ManyToOne(fetch = FetchType.LAZY)
