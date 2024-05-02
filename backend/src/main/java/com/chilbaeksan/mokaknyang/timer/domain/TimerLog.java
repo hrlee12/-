@@ -3,6 +3,7 @@ package com.chilbaeksan.mokaknyang.timer.domain;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -33,7 +34,7 @@ public class TimerLog {
     @Column(name ="timer_log_contents", length = 100)
     String timerLogContents;
 
+    @CreationTimestamp
     @Column(name ="timer_log_created_at")
     Timestamp timerLogCreatedAt;
-
 }
