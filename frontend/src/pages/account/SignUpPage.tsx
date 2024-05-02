@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/button';
 import InfoHover from './info/InfoHover';
+import { signUp } from '@/apis/user.ts';
 
 const SignUpPage = () => {
   const [userid, setUserId] = useState('');
@@ -15,7 +16,11 @@ const SignUpPage = () => {
   const navigate = useNavigate();
 
   // 기타 조건 추가 등 수정 예정
-  const signUp = (userid: string, usernickname: string, password: string) => {
+  const doSignUp = async (
+    userid: string,
+    usernickname: string,
+    password: string,
+  ) => {
     if (
       userid &&
       usernickname &&
@@ -23,16 +28,10 @@ const SignUpPage = () => {
       isPasswordValid(password) &&
       passwordMatch
     ) {
-      console.log(
-        'id = ' +
-          userid +
-          'nickname = ' +
-          usernickname +
-          '  pw = ' +
-          password +
-          '\n 정상, API 연결 예정',
-      );
-    } else if (!isPasswordValid(password)) {
+      await signUp(userid, usernickname, password);
+    }
+    // 수정예정
+    else if (!isPasswordValid(password)) {
       console.log('비밀번호 조건을 다시 확인해주세요');
     }
   };
@@ -119,7 +118,7 @@ const SignUpPage = () => {
             text={'가입하기'}
             size={'small'}
             color={'green'}
-            onClick={() => signUp(userid, usernickname, password)}
+            onClick={() => doSignUp(userid, usernickname, password)}
           />
         </div>
       </BasicFrame>
