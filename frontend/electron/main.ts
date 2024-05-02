@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 // import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -45,18 +45,21 @@ function createWindow() {
     },
 
     // 배경 투명
-    // transparent: true,
+    transparent: true,
 
     //프레임
-    // frame: false,
+    frame: false,
   });
 
   // 항상 상위에 위치
-  // win.setAlwaysOnTop(true, 'screen-saver');
-  // win.setVisibleOnAllWorkspaces(true);
+  win.setAlwaysOnTop(true, 'screen-saver');
+  win.setVisibleOnAllWorkspaces(true);
 
   // 마우스 클릭 무시
-  // win.setIgnoreMouseEvents(true, { forward: true });
+  // win.setIgnoreMouseEvents(true);
+
+  // 실행시 개발자 도구를 같이 실행(마우스 클릭 무시를 적용한 개발용)
+  win.webContents.openDevTools();
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -71,22 +74,27 @@ function createWindow() {
   }
 }
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-    win = null;
-  }
+app.whenReady().then(() => {
+  createWindow();
+  app.on('activate', () => {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+  // Quit when all windows are closed, except on macOS. There, it's common
+  // for applications and their menu bar to stay active until the user quits
+  // explicitly with Cmd + Q.
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+      win = null;
+    }
+  });
 });
 
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
+ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
+  const win = BrowserWindow.fromWebContents(event.sender);
+  win.setIgnoreMouseEvents(ignore, options);
 });
-
-app.whenReady().then(createWindow);
