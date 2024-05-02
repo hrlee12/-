@@ -18,6 +18,12 @@ const Landing = () => {
         color={'navy'}
         onClick={() => navigate('/catSetting')}
       />
+      <Button
+        text={'drawing'}
+        size={'admin'}
+        color={'navy'}
+        onClick={() => navigate('/drawing')}
+      />
     </div>
   );
 };
