@@ -19,8 +19,8 @@ const GroupPage = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
   const checkMessage = async () => {
-    // const response = await groupMessageList();
-    // setMessages(response);
+    const response = await groupMessageList();
+    setMessages(response);
     setShowModal(true);
   };
 
