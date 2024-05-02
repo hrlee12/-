@@ -5,12 +5,14 @@ const Drawing = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>();
   // const [nowPanel, setNowPanel] = useState(null);
   const [activeTool, setActiveTool] = useState('select');
+  const [color, setColor] = useState<string>('black');
 
   useEffect(() => {
     const newCanvas = new fabric.Canvas('canvas', {
       width: 500,
       height: 500,
       isDrawingMode: true, //드로잉모드 true로 안해주면 기본값 false
+      backgroundColor: 'white',
     });
     setCanvas(newCanvas);
     //언마운트 시 캔버스 정리, 이벤트 제거
@@ -19,19 +21,23 @@ const Drawing = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!canvas) return;
-
-    switch (activeTool) {
-      case 'select':
-        handleSelectTool();
-        break;
-
-      case 'pen':
-        handlePenTool();
-        break;
+  const handleColorChange = (newColor: string) => {
+    if (canvas) {
+      canvas.freeDrawingBrush.color = newColor;
+      canvas.freeDrawingBrush.width = 7;
+      canvas.isDrawingMode = true;
+      setColor(newColor);
+      setActiveTool('pen');
     }
-  }, [activeTool]);
+  };
+
+  const setEraser = () => {
+    if (canvas) {
+      canvas.freeDrawingBrush.color = canvas.backgroundColor as string;
+      canvas.freeDrawingBrush.width = 15;
+      setActiveTool('eraser');
+    }
+  };
 
   const handleSelectTool = () => {
     if (canvas) {
@@ -41,7 +47,8 @@ const Drawing = () => {
 
   const handlePenTool = () => {
     if (canvas) {
-      canvas.freeDrawingBrush.width = 10;
+      setActiveTool('pen');
+      canvas.freeDrawingBrush.width = 7;
       canvas.isDrawingMode = true;
     }
   };
@@ -65,10 +72,37 @@ const Drawing = () => {
       </button>
       <button
         style={{ width: '48px', height: '48px', border: '1px solid black' }}
-        onClick={() => setActiveTool('pen')}
-        disabled={activeTool === 'pen'}
+        onClick={() => handleColorChange('black')}
+        disabled={activeTool === 'pen' && color === 'black'}
       >
-        펜
+        검정
+      </button>
+      <button
+        style={{ width: '48px', height: '48px', border: '1px solid black' }}
+        onClick={() => handleColorChange('blue')}
+        disabled={activeTool === 'pen' && color === 'blue'}
+      >
+        파랑
+      </button>
+      <button
+        style={{ width: '48px', height: '48px', border: '1px solid black' }}
+        onClick={() => handleColorChange('green')}
+        disabled={activeTool === 'pen' && color === 'green'}
+      >
+        초록
+      </button>
+      <button
+        style={{ width: '48px', height: '48px', border: '1px solid black' }}
+        onClick={() => handleColorChange('red')}
+        disabled={activeTool === 'pen' && color === 'red'}
+      >
+        빨강
+      </button>
+      <button
+        style={{ width: '48px', height: '48px', border: '1px solid black' }}
+        onClick={() => setEraser()}
+      >
+        지우개
       </button>
     </>
   );
