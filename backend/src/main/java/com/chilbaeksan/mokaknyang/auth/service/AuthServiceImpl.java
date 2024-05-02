@@ -23,6 +23,8 @@ public class AuthServiceImpl implements AuthService {
     private final MemberRepository memberRepository;
     private final LoginRepository loginRepository;
 
+
+    @Transactional
     @Override
     public void register(UserLoginDto dto) {
         // 중복 확인
