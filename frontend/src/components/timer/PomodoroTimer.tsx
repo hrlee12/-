@@ -19,8 +19,9 @@ const PomodoroTimer: React.FC<TimerProps> = ({
 
   // 타이머가 완료될 때 호출될 함수
   const handleComplete = () => {
+    console.log(currentRepeat);
     // 모든 반복이 완료되었는지 확인
-    if (currentRepeat === repeatCount * 2) {
+    if (currentRepeat === repeatCount * 2 - 1) {
       // 모든 작업이 완료되면 추가 작업을 수행할 수 있습니다.
       console.log('뽀모도로 타이머 완료!');
       return { shouldRepeat: false };
@@ -30,9 +31,7 @@ const PomodoroTimer: React.FC<TimerProps> = ({
     setIsFocusing(!isFocusing);
 
     // 현재 반복 횟수 증가
-    if (isFocusing) {
-      setCurrentRepeat(currentRepeat + 1);
-    }
+    setCurrentRepeat(currentRepeat + 1);
 
     // 타이머를 재시작하기 위한 키 업데이트
     setKey((prevKey) => prevKey + 1);
@@ -41,7 +40,7 @@ const PomodoroTimer: React.FC<TimerProps> = ({
   };
 
   // 현재 타이머의 시간을 결정
-  const timerDuration = isFocusing ? focusTime * 60 : breakTime * 60;
+  const timerDuration: number = isFocusing ? focusTime * 60 : breakTime * 60;
 
   return (
     <CountdownCircleTimer
@@ -54,8 +53,14 @@ const PomodoroTimer: React.FC<TimerProps> = ({
     >
       {({ remainingTime }) => (
         <div>
-          <div>남은 시간: {remainingTime}</div>
-          <div>{isFocusing ? '집중' : '휴식'} 시간</div>
+          {remainingTime === 0 ? (
+            <div>끝</div>
+          ) : (
+            <>
+              <div>남은 시간: {remainingTime}</div>
+              <div>{isFocusing ? '집중' : '휴식'} 시간</div>
+            </>
+          )}
         </div>
       )}
     </CountdownCircleTimer>
