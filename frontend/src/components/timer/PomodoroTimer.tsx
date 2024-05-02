@@ -42,6 +42,13 @@ const PomodoroTimer: React.FC<TimerProps> = ({
   // 현재 타이머의 시간을 결정
   const timerDuration: number = isFocusing ? focusTime * 60 : breakTime * 60;
 
+  // 시간 형식 기능
+  function formatTime(time: number) {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
   return (
     <CountdownCircleTimer
       key={key} // key 변경으로 컴포넌트 리셋
@@ -57,7 +64,7 @@ const PomodoroTimer: React.FC<TimerProps> = ({
             <div>끝</div>
           ) : (
             <>
-              <div>남은 시간: {remainingTime}</div>
+              <div>남은 시간: {formatTime(remainingTime)}</div>
               <div>{isFocusing ? '집중' : '휴식'} 시간</div>
             </>
           )}
