@@ -9,4 +9,5 @@ import lombok.*;
 @Builder
 public class TimerTopProcessRequestDto {
     private String top;
+    private String url;
 }
