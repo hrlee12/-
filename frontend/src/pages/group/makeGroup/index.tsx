@@ -6,6 +6,13 @@ import React, { useState } from 'react';
 import SearchModal from '@/pages/group/makeGroup/SearchModal.tsx';
 import { makeGroup } from '@/apis/group.ts';
 
+interface MakeGroupProps {
+  partyName: string;
+  partyMessage: string;
+  memberCount: number;
+  partyManagerId: number;
+}
+
 const MakeGroupPage = () => {
   const [id] = useState<number>(0);
   const [loginId, setLoginId] = useState<string>('');
@@ -43,12 +50,7 @@ const MakeGroupPage = () => {
     partyMessage,
     memberCount,
     partyManagerId,
-  }: {
-    partyName: string;
-    partyMessage: string;
-    memberCount: number;
-    partyManagerId: number;
-  }) => {
+  }: MakeGroupProps) => {
     await makeGroup(partyName, partyMessage, memberCount, partyManagerId);
   };
 

@@ -6,6 +6,7 @@ export default {
       inputBoxColor: '#EAD8C6',
       frameColor: '#CBA57F',
       groupColor: '#DECEBE',
+      btnRed: '#F21F0C',
       btnBlue: '#04B1D9',
       btnGreen: '#4CA732',
       btnNavy: '#201D35',

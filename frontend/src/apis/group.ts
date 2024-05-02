@@ -32,6 +32,26 @@ export const inviteMember = async (memberId: number) => {
   }
 };
 
+// 그룹 초대 수락
+export const acceptInvite = async (partyId: number) => {
+  try {
+    const response = await axiosInstance.post(`/party/${partyId}/accept`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+// 그룹 초대 거절
+export const rejectInvite = async (partyId: number) => {
+  try {
+    const response = await axiosInstance.post(`/party/${partyId}/reject`);
+    return response.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // 그룹 초대 목록 리스트
 export const groupMessageList = async () => {
   try {
@@ -42,7 +62,7 @@ export const groupMessageList = async () => {
   }
 };
 
-// 그룹 조회
+// 가입 그룹 조회
 
 // 그룹 삭제 (partyId 필요없나?)
 export const deleteGroup = async () => {
@@ -86,6 +106,16 @@ export const updateGroup = async (
 export const leaveGroup = async (partyId: number) => {
   try {
     await axiosInstance.delete(`/party/${partyId}`);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// 그룹 멤버 조회
+export const getMembers = async (partyId: number) => {
+  try {
+    const response = await axiosInstance.get(`/party/${partyId}`);
+    return response.data;
   } catch (err) {
     console.log(err);
   }

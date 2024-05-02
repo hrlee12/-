@@ -24,6 +24,7 @@ const Button = ({ text, size, color, addStyle, onClick }: buttonProps) => {
     green: constants.BUTTON_COLOR.green,
     navy: constants.BUTTON_COLOR.navy,
     gray: constants.BUTTON_COLOR.gray,
+    red: constants.BUTTON_COLOR.red,
   };
 
   return (

@@ -1,51 +1,81 @@
+import React, { useEffect, useState } from 'react';
+
 import * as constants from '@/pages/group/constants.ts';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
-import { deleteGroup, groupDetail, updateGroup } from '@/apis/group.ts';
-import { useEffect, useState } from 'react';
+import {
+  deleteGroup,
+  getMembers,
+  groupDetail,
+  updateGroup,
+} from '@/apis/group.ts';
+import { useNavigate } from 'react-router-dom';
 
 interface GroupProps {
   partyId: number;
+  partyName: string;
+  partyGoal: string;
+  partyManagerId: number;
 }
 
-const GroupSetting = ({ partyId }: GroupProps) => {
-  const [groupSettings, setGroupSettings] = useState<string[]>([]);
-  const [partyName, setPartyName] = useState<string>('');
-  const [partyGoal, setPartyGoal] = useState<string>('');
-  const [partyManagerId, setPartyManagerId] = useState<number>(0);
+const GroupSetting = () => {
+  const navigate = useNavigate();
+  const [groupDetails, setGroupDetails] = useState<GroupProps>({
+    partyId: 0,
+    partyName: '',
+    partyGoal: '',
+    partyManagerId: 0,
+  });
+  const [members, setMembers] = useState<string[]>([]);
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
 
   useEffect(() => {
-    const getGroupSettings = async () => {
+    const fetchDetails = async () => {
       try {
-        const data = await groupDetail(partyId);
-        setGroupSettings(data);
+        const detailData = await groupDetail(groupDetails.partyId);
+        const memberData = await getMembers(groupDetails.partyId);
+        setGroupDetails((prev) => ({ ...prev, ...detailData }));
+        setMembers(memberData);
       } catch (err) {
         console.error(err);
       }
     };
 
-    getGroupSettings();
-  }, [refreshFlag, partyId]);
+    fetchDetails();
+  }, [refreshFlag, groupDetails.partyId]);
 
-  const changeGroupSettings = async ({
-    partyName: partyName,
-    partyGoal: partyGoal,
-    partyManagerId: partyManagerId,
-  }: {
-    partyName: string;
-    partyGoal: string;
-    partyManagerId: number;
-  }) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = event.target;
+    setGroupDetails((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const changeGroupDetails = async () => {
     try {
-      await updateGroup(partyId, partyName, partyGoal, partyManagerId);
+      await updateGroup(
+        groupDetails.partyId,
+        groupDetails.partyName,
+        groupDetails.partyGoal,
+        groupDetails.partyManagerId,
+      );
+      setRefreshFlag(!refreshFlag);
     } catch (err) {
       console.error(err);
     }
   };
-  const clickDeleteGroup = async () => {
-    await deleteGroup();
+
+  const handleDeleteGroup = async () => {
+    try {
+      await deleteGroup();
+      navigate('/group');
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -60,12 +90,23 @@ const GroupSetting = ({ partyId }: GroupProps) => {
           {constants.GROUP_SETTING.CHANGE_MASTER}
         </div>
         <div className={'pl-9'}>
-          <select className={'w-60 h-10 rounded bg-groupColor'}></select>
+          <select
+            className={'w-60 h-10 rounded bg-groupColor'}
+            name='partyManagerId'
+            value={groupDetails.partyManagerId}
+            onChange={handleChange}
+          >
+            {members.map((member) => (
+              <option key={member.id} value={member.id}>
+                {member.name}
+              </option>
+            ))}
+          </select>
           <Button
             text={'저장'}
             size={'small'}
             color={'blue'}
-            onClick={() => {}}
+            onClick={changeGroupDetails}
           />
         </div>
       </div>
@@ -74,18 +115,18 @@ const GroupSetting = ({ partyId }: GroupProps) => {
       </div>
       <div className={'pl-9'}>
         <InputBox
-          name={'그룹 이름'}
+          name='partyName'
           size={'setting'}
           type={'text'}
-          // value={groupSettings.partyName}
+          value={groupDetails.partyName}
           placeholder={''}
-          onChange={() => {}}
+          onChange={handleChange}
         />
         <Button
           text={'저장'}
           size={'small'}
           color={'blue'}
-          onClick={() => {}}
+          onClick={changeGroupDetails}
         />
       </div>
       <div className={'pl-9 pt-3'}>
@@ -93,18 +134,18 @@ const GroupSetting = ({ partyId }: GroupProps) => {
           {constants.GROUP_SETTING.GROUP_GOAL}
         </div>
         <InputBox
-          name={'그룹 목표'}
+          name='partyGoal'
           size={'setting'}
           type={'text'}
-          // value={groupSettings.partyGoal}
+          value={groupDetails.partyGoal}
           placeholder={''}
-          onChange={() => {}}
+          onChange={handleChange}
         />
         <Button
           text={'저장'}
           size={'small'}
           color={'blue'}
-          onClick={() => {}}
+          onClick={changeGroupDetails}
         />
       </div>
       <Button
@@ -112,7 +153,7 @@ const GroupSetting = ({ partyId }: GroupProps) => {
         addStyle={`fixed left-[275px] top-5`}
         size={'small'}
         color={'gray'}
-        onClick={clickDeleteGroup}
+        onClick={handleDeleteGroup}
       />
     </BasicFrame>
   );
