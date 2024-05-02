@@ -31,4 +31,10 @@ public class Invitation {
     @CreationTimestamp
     @Column(name="invitation_created_at")
     private LocalDateTime createdAt;
+
+    @Column(name="invitation_is_accepted")
+    private ApprovalStatus isAccepted;
+
+    @Column(name="invitation_expire_time")
+    private LocalDateTime expireTime;
 }
