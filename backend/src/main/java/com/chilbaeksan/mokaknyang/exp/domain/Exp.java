@@ -17,7 +17,7 @@ public class Exp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exp_id")
-    String expId;
+    Integer expId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false, foreignKey =  @ForeignKey(ConstraintMode.NO_CONSTRAINT))
