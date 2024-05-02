@@ -17,9 +17,14 @@ const ScreenShare = () => {
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [OV, setOV] = useState<OpenVidu | null>(null);
 
+  //배포서버에 연동한 openvidu url
   const OPENVIDU_SERVER_URL = import.meta.env.VITE_OPENVIDU_SERVER_URL;
+  // const OPENVIDU_SERVER_URL = 'https://34.152.10.124:443';
+  console.log(OPENVIDU_SERVER_URL);
   const OPENVIDU_SERVER_SECRET = import.meta.env.VITE_OPENVIDU_SERVER_SECRET;
+  // const OPENVIDU_SERVER_SECRET = 'Ssafy703';
 
+  //session(가상의 방) 연결 해제
   const leaveSession = useCallback(() => {
     if (session) session.disconnect();
 
@@ -30,8 +35,16 @@ const ScreenShare = () => {
     setPublisher(null);
   }, [session]);
 
+  //session 연결
   const joinSession = () => {
+    //1. openvidu 객체 생성
     const OVs = new OpenVidu();
+
+    //소켓 통신 과정에서 많은 log를 남기게 되는데 필요하지 않은 log 띄우지 않게 하는 모드
+    OVs.enableProdMode();
+
+    //2. initSession 생성
+    //3. 미팅 종료하거나 뒤로가기 등 이벤트 통해 세션 disconnect 해주기 위해 state에 저장
     setOV(OVs);
     setSession(OVs.initSession());
   };
@@ -156,6 +169,7 @@ const ScreenShare = () => {
       .catch(() => {});
   }, [session, OV, sessionId, OPENVIDU_SERVER_URL]);
 
+  //session에 값을 사용자에게 입력 받는 형태로 구성
   return (
     <div>
       <h1>진행화면</h1>
