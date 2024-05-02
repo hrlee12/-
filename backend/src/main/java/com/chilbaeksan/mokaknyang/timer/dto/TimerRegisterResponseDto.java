@@ -1,5 +1,6 @@
 package com.chilbaeksan.mokaknyang.timer.dto;
 
+
 import lombok.*;
 
 @Getter
@@ -7,6 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TimerTopProcessRequestDto {
-    private String top;
+public class TimerRegisterResponseDto {
+    private Integer timerId;
 }

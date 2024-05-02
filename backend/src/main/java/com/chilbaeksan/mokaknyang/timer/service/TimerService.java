@@ -1,9 +1,15 @@
 package com.chilbaeksan.mokaknyang.timer.service;
 
+import com.chilbaeksan.mokaknyang.timer.domain.Timer;
+import com.chilbaeksan.mokaknyang.timer.domain.TimerLog;
 import com.chilbaeksan.mokaknyang.timer.dto.TimerRegisterRequestDto;
+import com.chilbaeksan.mokaknyang.timer.dto.TimerResultRequestDto;
+import com.chilbaeksan.mokaknyang.timer.dto.TimerTopProcessRequestDto;
 
 public interface TimerService {
-    void registerTimer(TimerRegisterRequestDto dto, Integer manageId);
+    Timer registerTimer(TimerRegisterRequestDto dto, Integer manageId);
 
-    void setTopProcess();
+    void setTopProcess(TimerTopProcessRequestDto dto, Integer userId);
+
+    TimerLog setResult(TimerResultRequestDto dto, Integer userId);
 }

@@ -8,7 +8,10 @@ import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberMyInfoResponseDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
 import com.chilbaeksan.mokaknyang.member.service.MemberService;
+import com.chilbaeksan.mokaknyang.timer.domain.Timer;
 import com.chilbaeksan.mokaknyang.timer.dto.TimerRegisterRequestDto;
+import com.chilbaeksan.mokaknyang.timer.dto.TimerRegisterResponseDto;
+import com.chilbaeksan.mokaknyang.timer.dto.TimerResultRequestDto;
 import com.chilbaeksan.mokaknyang.timer.dto.TimerTopProcessRequestDto;
 import com.chilbaeksan.mokaknyang.timer.service.TimerService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,14 +33,19 @@ public class TimerController {
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
 
+        Timer timer = null;
         // 관리번호에 따라서 삽입하는 아이디 다름
         if(dto.getType().equalsIgnoreCase("group")){
-            timerService.registerTimer(dto, dto.getGroupId());
+            timer = timerService.registerTimer(dto, dto.getGroupId());
         }else{
-            timerService.registerTimer(dto, userId);
+            timer = timerService.registerTimer(dto, userId);
         }
 
-        return ResponseEntity.ok().build();
+        TimerRegisterResponseDto responseDto = TimerRegisterResponseDto.builder()
+                .timerId(timer.getTimerId())
+                .build();
+
+        return ResponseEntity.ok(responseDto);
     }
 
     //최상단 프로세스 변경 서버 전송
@@ -46,17 +54,18 @@ public class TimerController {
         // 유저 아이디 추출
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거
-
+        timerService.setTopProcess(dto, userId);
         return ResponseEntity.ok().build();
     }
 
     //뽀모도로 결과 산정
-    @PatchMapping
-    public ResponseEntity<?> modifyUserInfo(@RequestBody MemberModifyRequestDto dto, HttpServletRequest request) {
+    @PostMapping("/result")
+    public ResponseEntity<?> getResult(@RequestBody TimerResultRequestDto dto, HttpServletRequest request) {
         // 유저 아이디 추출
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
 
+        timerService.setResult(dto,userId);
         return ResponseEntity.ok().build();
     }
 }

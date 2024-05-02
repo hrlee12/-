@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TimerTopProcessRequestDto {
-    private String top;
+public class TimerResultRequestDto {
+    private Integer timerId;
+    private Short period;
 }
