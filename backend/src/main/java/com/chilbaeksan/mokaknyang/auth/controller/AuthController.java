@@ -29,7 +29,7 @@ public class AuthController {
     // register
     @PostMapping
     public ResponseEntity<?> register(@RequestBody UserLoginDto dto) {
-        authService.register(dto.getId(), dto.getPassword());
+        authService.register(dto);
         return ResponseEntity.ok().build();
     }
 

@@ -1,7 +1,9 @@
 package com.chilbaeksan.mokaknyang.auth.service;
 
 import com.chilbaeksan.mokaknyang.auth.domain.Login;
+import com.chilbaeksan.mokaknyang.auth.dto.LoginInfoDto;
 import com.chilbaeksan.mokaknyang.auth.dto.SignInResponse;
+import com.chilbaeksan.mokaknyang.auth.dto.UserLoginDto;
 import com.chilbaeksan.mokaknyang.auth.repository.LoginRepository;
 import com.chilbaeksan.mokaknyang.auth.vo.Token;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
@@ -21,9 +23,9 @@ public class AuthServiceImpl implements AuthService {
     private final LoginRepository loginRepository;
 
     @Override
-    public void register(String id, String password) {
+    public void register(UserLoginDto dto) {
         // 중복 확인
-        Optional<Member> user = memberRepository.findByLoginId(id);
+        Optional<Member> user = memberRepository.findByLoginId(dto.getId());
         if(user.isPresent()){
             throw new BaseException(ErrorCode.AUTH_REGISTER_DUPLICATED_USER); // 중복 에러
         }
@@ -32,8 +34,9 @@ public class AuthServiceImpl implements AuthService {
 
         // 가입 수행
         Member member = Member.builder()
-                .loginId(id)
-                .loginPwd(password)
+                .loginId(dto.getId())
+                .loginPwd(dto.getPassword())
+                .nickname(dto.getNickname())
                 .build();
         memberRepository.save(member);
     }
