@@ -3,7 +3,7 @@ import { fabric } from 'fabric';
 
 const Drawing = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>();
-  const [nowPanel, setNowPanel] = useState(null);
+  // const [nowPanel, setNowPanel] = useState(null);
   const [activeTool, setActiveTool] = useState('select');
 
   useEffect(() => {
@@ -20,11 +20,38 @@ const Drawing = () => {
   }, []);
 
   useEffect(() => {
-    if (canvas) {
-      canvas.isDrawingMode = nowPanel === 'brush';
-      canvas.renderAll();
+    if (!canvas) return;
+
+    switch (activeTool) {
+      case 'select':
+        handleSelectTool();
+        break;
+
+      case 'pen':
+        handlePenTool();
+        break;
     }
-  }, [canvas, nowPanel]);
+  }, [activeTool]);
+
+  const handleSelectTool = () => {
+    if (canvas) {
+      canvas.isDrawingMode = false;
+    }
+  };
+
+  const handlePenTool = () => {
+    if (canvas) {
+      canvas.freeDrawingBrush.width = 10;
+      canvas.isDrawingMode = true;
+    }
+  };
+
+  // useEffect(() => {
+  //   if (canvas) {
+  //     canvas.isDrawingMode = nowPanel === 'brush';
+  //     canvas.renderAll();
+  //   }
+  // }, [canvas, nowPanel]);
 
   return (
     <>
