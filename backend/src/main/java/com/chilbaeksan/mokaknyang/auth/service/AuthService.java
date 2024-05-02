@@ -11,6 +11,8 @@ public interface AuthService {
 
     SignInResponse login(String id, String password, String ip);
 
+    void logout(Integer userId);
+
     String createHttpOnlyCookie(String cookieName, String cookieValue);
 
     //리프레시 토큰 담긴 쿠키 만료 시키기

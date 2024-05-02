@@ -63,6 +63,7 @@ public class AuthController {
 
         // 쿠키 invalidate 하기
         String cookie = authService.setHttpOnlyCookieInvalidate("refreshToken");
+        authService.logout(userId);
 
         return ResponseEntity.ok()
                 .header("Set-Cookie", cookie)
