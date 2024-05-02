@@ -19,10 +19,10 @@ const Landing = () => {
         onClick={() => navigate('/catSetting')}
       />
       <Button
-        text={'웹알티씨'}
+        text={'drawing'}
         size={'admin'}
         color={'navy'}
-        onClick={() => navigate('/screenshare')}
+        onClick={() => navigate('/drawing')}
       />
     </div>
   );

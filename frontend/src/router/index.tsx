@@ -9,6 +9,7 @@ import GroupInfoPage from '@/pages/group/info';
 import MyCatSetting from '@/pages/cat/Setting';
 import MyCatInfo from '@/pages/cat/info';
 import MyCat from '@/pages/cat';
+import Drawing from '@/pages/drawing';
 // import ScreenShare from '@/pages/screenshare';
 
 const RouterComponent = () => {
@@ -26,6 +27,7 @@ const RouterComponent = () => {
         {/*후에 여기 개인 id 바인딩을 고려해야함*/}
         <Route path={'/catInfo'} element={<MyCatInfo />} />
         <Route path={'/catSetting'} element={<MyCatSetting />} />
+        <Route path={'/drawing'} element={<Drawing /> /}
       </Routes>
     </HashRouter>
   );
