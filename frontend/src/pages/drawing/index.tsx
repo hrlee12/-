@@ -33,39 +33,26 @@ const Drawing = () => {
 
   const setEraser = () => {
     if (canvas) {
+      setActiveTool('pen');
+      canvas.isDrawingMode = true;
       canvas.freeDrawingBrush.color = canvas.backgroundColor as string;
       canvas.freeDrawingBrush.width = 15;
-      setActiveTool('eraser');
     }
   };
 
   const handleSelectTool = () => {
     if (canvas) {
+      setActiveTool('select');
       canvas.isDrawingMode = false;
     }
   };
-
-  const handlePenTool = () => {
-    if (canvas) {
-      setActiveTool('pen');
-      canvas.freeDrawingBrush.width = 7;
-      canvas.isDrawingMode = true;
-    }
-  };
-
-  // useEffect(() => {
-  //   if (canvas) {
-  //     canvas.isDrawingMode = nowPanel === 'brush';
-  //     canvas.renderAll();
-  //   }
-  // }, [canvas, nowPanel]);
 
   return (
     <>
       <canvas id='canvas' style={{ border: '1px solid red' }} />
       <button
         style={{ width: '48px', height: '48px', border: '1px solid black' }}
-        onClick={() => setActiveTool('select')}
+        onClick={() => handleSelectTool()}
         disabled={activeTool === 'select'}
       >
         선택
