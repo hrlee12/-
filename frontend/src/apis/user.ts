@@ -12,7 +12,7 @@ export const signUp = async (
       nickname: userNickname,
       password: password,
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -28,7 +28,7 @@ export const logIn = async (userId: string, password: string) => {
     const { setAccessToken } = useAuthStore.getState();
     setAccessToken(response.data);
 
-    return response.data;
+    return response;
   } catch (error) {
     console.log(error);
   }

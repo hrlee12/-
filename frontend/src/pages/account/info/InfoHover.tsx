@@ -13,14 +13,16 @@ function InfoHover() {
     >
       <FaInfoCircle size={24}></FaInfoCircle>
       {isHovered && (
-        <div className='popup'>
-          1. 아이디는
+        <div className='font-neo popup text-center'>
+          아이디는
           <br />
           3자 이상, 10자 미만
           <br />
-          2. 비밀번호는
+          비밀번호는
           <br />
-          대소문자, 특수문자 포함 5자 이상, 9자 이하
+          대소문자, 특수문자 포함
+          <br />
+          5자 이상, 9자 이하
         </div>
       )}
     </div>

@@ -8,13 +8,19 @@ import { logIn } from '@/apis/user.ts';
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
   const [password, setPassword] = useState('');
+  const [isPassed, setIsPassed] = useState(true);
 
   const navigate = useNavigate();
 
-  const loginClick = () => {
+  const loginClick = async () => {
     const id: string = userid;
     const pw: string = password;
-    logIn(id, pw).then(() => navigate('/catInfo'));
+    const response = await logIn(id, pw);
+    // console.log(response);
+    if (response?.status == 200) {
+      navigate('/group');
+    }
+    setIsPassed(false);
   };
 
   return (
@@ -48,7 +54,6 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-
           {/* 버튼창 */}
           <div className='flex justify-center items-center'>
             <Button
@@ -64,6 +69,11 @@ const LoginPage = () => {
               onClick={() => navigate('/signup')}
             />
           </div>
+          {!isPassed && (
+            <div className='font-dnf flex justify-center items-center pt-[20px]'>
+              아이디 혹은 비밀번호를 다시 확인해주세요
+            </div>
+          )}
         </div>
       </BasicFrame>
     </div>
