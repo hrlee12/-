@@ -11,7 +11,7 @@ export const signUp = async (
       nickname: userNickname,
       password: password,
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.log(error);
   }
@@ -23,7 +23,7 @@ export const logIn = async (userId: string, password: string) => {
       id: userId,
       password: password,
     });
-    return response.data;
+    return response;
   } catch (error) {
     console.log(error);
   }
