@@ -29,7 +29,7 @@ const Pomodoro = () => {
           placeholder={'회'}
           onChange={() => {}}
         />
-        <div className='font-dnf text-3xl p-1'>{constants.POMODORO.REST}</div>
+        <div className='font-dnf text-3xl p-1'>{constants.POMODORO.COUNT}</div>
       </div>
       <div className='flex justify-center'>
         <Button
