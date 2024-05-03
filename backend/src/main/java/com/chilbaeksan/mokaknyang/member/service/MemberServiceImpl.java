@@ -7,11 +7,16 @@ import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
+import com.chilbaeksan.mokaknyang.member.dto.MemberTitleResponseDto;
+import com.chilbaeksan.mokaknyang.member.repository.CatRepository;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
+import com.chilbaeksan.mokaknyang.member.repository.TitleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +24,8 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final TitleRepository titleRepository;
+    private final CatRepository catRepository;
 
     @Override
     public Optional<Member> getMyInfo(Integer userId) {
@@ -33,7 +40,6 @@ public class MemberServiceImpl implements MemberService {
 
         member.setCatName(dto.getMemberCatName());
         member.setGoal(dto.getMemberGoal());
-        member.setCatColor(dto.getMemberCatColor());
     }
 
     @Transactional
@@ -44,9 +50,41 @@ public class MemberServiceImpl implements MemberService {
 
         member.setCatName(dto.getMemberCatName());
         member.setGoal(dto.getMemberGoal());
-        member.setCatColor(dto.getMemberCatColor());
         member.setTitle(Title.builder().titleId(dto.getTitleId()).build());
-        member.setCat(Cat.builder().catId(dto.getCatId()).build());
+    }
+
+    @Override
+    public Member findMemberByUserId(String userId) {
+        return memberRepository.findByLoginId(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_SEARCH_NOT_FOUND_USER_ID));
+    }
+
+    @Override
+    public List<Title> getTitles(Pageable pageable) {
+        return titleRepository.findAll(pageable).getContent();
+    }
+
+    @Override
+    public List<Cat> getCat(Pageable pageable) {
+        return catRepository.findAll(pageable).getContent();
+    }
+
+    @Transactional
+    @Override
+    public Cat setSkin(Integer memberId,Integer catId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Cat cat = catRepository.findByCatId(catId)
+                .orElseThrow(() -> new BaseException(ErrorCode.CAT_NOT_FOUND));
+
+        // 만약 레벨 달성을 하지 못했다면
+        if(cat.getCatAchieveLevel().getLevel() > member.getLevel().getLevel()){
+            throw new BaseException(ErrorCode.LEVEL_NOT_ENOUGH_LEVEL);
+        }
+
+        member.setCat(cat);
+        return cat;
     }
 
 }

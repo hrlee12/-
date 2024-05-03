@@ -10,5 +10,4 @@ import lombok.*;
 public class MemberRegisterRequestDto {
     private String memberCatName;
     private String memberGoal;
-    private String memberCatColor;
 }
