@@ -1,11 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/button';
+import SmallFrame from '@/components/frame/smallFrame';
+import NyanPunch from '@/components/cat/nyanPunch';
 
 const Landing = () => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하여 라우팅 함수를 가져옵니다.
 
   return (
-    <div>
+    <SmallFrame>
       <Button
         text={'그룹 정보'}
         size={'admin'}
@@ -18,7 +20,8 @@ const Landing = () => {
         color={'navy'}
         onClick={() => navigate('/catSetting')}
       />
-    </div>
+      <NyanPunch />
+    </SmallFrame>
   );
 };
 
