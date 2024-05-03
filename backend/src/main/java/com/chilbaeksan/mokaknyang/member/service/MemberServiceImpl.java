@@ -7,11 +7,15 @@ import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
+import com.chilbaeksan.mokaknyang.member.dto.MemberTitleResponseDto;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
+import com.chilbaeksan.mokaknyang.member.repository.TitleRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +23,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final TitleRepository titleRepository;
 
     @Override
     public Optional<Member> getMyInfo(Integer userId) {
@@ -50,6 +55,11 @@ public class MemberServiceImpl implements MemberService {
     public Member findMemberByUserId(String userId) {
         return memberRepository.findByLoginId(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_SEARCH_NOT_FOUND_USER_ID));
+    }
+
+    @Override
+    public List<Title> getTitles(Pageable pageable) {
+        return titleRepository.findAll(pageable).getContent();
     }
 
 }

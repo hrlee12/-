@@ -4,13 +4,18 @@ import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
+import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.dto.*;
 import com.chilbaeksan.mokaknyang.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -74,6 +79,27 @@ public class MemberController {
 
         MemberSearchResponseDto result = MemberSearchResponseDto.builder()
                 .memberId(member.getMemberId())
+                .build();
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/title")
+    public ResponseEntity<?> getTitles(MemberTitleRequestDto dto, HttpServletRequest request){
+        // 유저 아이디 추출
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
+
+        Pageable pageable = PageRequest.of(dto.getPageNum(), dto.getPageSize());
+
+        List<Title> titles = memberService.getTitles(pageable);
+
+        MemberTitleResponseDto result = MemberTitleResponseDto.builder()
+                .titles( titles.stream().map((m) -> MemberTitleResponseDto.TitleDto.builder()
+                                .titleId(m.getTitleId())
+                                .titleContent(m.getTitleContent())
+                                .titleAchieveLevel(m.getTitleAchieveLevel().getLevel())
+                                .build()).toList())
                 .build();
 
         return ResponseEntity.ok(result);
