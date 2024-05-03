@@ -35,8 +35,8 @@ public class Party {
     private Byte participateNumber;
 
     @Column(name="party_max_number", nullable = false)
-    @ColumnDefault("6")
-    private Byte maxNumber;
+    @Builder.Default
+    private Byte maxNumber = 6;
 
     @CreationTimestamp
     @Column(name="party_created_at")
@@ -46,8 +46,8 @@ public class Party {
     private LocalDateTime deletedAt;
 
     @Column(name="party_is_deleted")
-    @ColumnDefault("false")
-    private Boolean isDeleted;
+    @Builder.Default
+    private Boolean isDeleted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id", nullable = false, foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
