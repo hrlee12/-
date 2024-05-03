@@ -5,6 +5,8 @@ import com.chilbaeksan.mokaknyang.attack.dto.request.AttackRegist;
 import com.chilbaeksan.mokaknyang.attack.repository.AttackRepository;
 import com.chilbaeksan.mokaknyang.attack_situation.domain.AttackSituation;
 import com.chilbaeksan.mokaknyang.attack_situation.repository.AttackSituationRepository;
+import com.chilbaeksan.mokaknyang.exception.BaseException;
+import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
@@ -22,16 +24,16 @@ public class AttackService {
 
     public Attack registAttack(AttackRegist attackRegist){
         AttackSituation attackSituation = attackSituationRepository.findByAttackSituationId(attackRegist.getAttackSituationId())
-                .orElseThrow(() -> new NullPointerException("AttackSituation을 찾아오지 못했습니다."));
+                .orElseThrow(() -> new BaseException(ErrorCode.ATTACK_SITUATION_NOT_FOUND));
 
         Member hitMember = memberRepository.findByMemberId(attackRegist.getHitMember())
-                .orElseThrow(() -> new NullPointerException("공격 멤버를 찾아오지 못했습니다."));
+                .orElseThrow(() -> new BaseException(ErrorCode.ATTACK_HIT_MEMBER_NOT_FOUND));
 
         hitMember.hit();
         memberRepository.save(hitMember);
 
         Member behitMember = memberRepository.findByMemberId(attackRegist.getBehitMember())
-                .orElseThrow(() -> new NullPointerException("공격 받은 멤버를 찾아오지 못했습니다."));
+                .orElseThrow(() -> new BaseException(ErrorCode.ATTACK_BEHIT_MEMBER_NOT_FOUND));
 
         behitMember.behit();
         memberRepository.save(behitMember);

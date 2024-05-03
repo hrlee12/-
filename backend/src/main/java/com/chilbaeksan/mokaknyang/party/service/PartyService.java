@@ -44,8 +44,9 @@ public class PartyService {
 
     public void registParty(HttpServletRequest httpServletRequest, PartyRegist partyRegist){
         //파티 생성
-        // int managerMemberId = jwtUtil.getUserId(httpServletRequest).get();
-        int managerMemberId = 1;
+        int managerMemberId = jwtUtil.getUserId(httpServletRequest)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
         Member managerMember = memberRepository.findByMemberId(managerMemberId)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -85,8 +86,9 @@ public class PartyService {
     }
 
     public InvitePartyList getInviteGroupList(HttpServletRequest httpServletRequest){
-//        int memberId = jwtUtil.getUserId(httpServletRequest).get();
-        int memberId = 1;
+        int memberId = jwtUtil.getUserId(httpServletRequest)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
         Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -129,10 +131,11 @@ public class PartyService {
     }
 
     public void inviteParty(HttpServletRequest httpServletRequest, Integer partyId, PartyInvite partyInvite){
-//        int memberId = jwtUtil.getUserId(httpServletRequest).get();
-//
-//        if(memberId == partyInvite.getMemberId())
-//            throw new BaseException(ErrorCode.PARTY_SELF_INVITATION_NOT_ALLOWED);
+        int memberId = jwtUtil.getUserId(httpServletRequest)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
+        if(memberId == partyInvite.getMemberId())
+            throw new BaseException(ErrorCode.PARTY_SELF_INVITATION_NOT_ALLOWED);
 
         Member member = memberRepository.findByMemberId(partyInvite.getMemberId())
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
@@ -207,8 +210,9 @@ public class PartyService {
     }
 
     public void leaveParty(HttpServletRequest httpServletRequest, Integer partyId){
-//        int memberId = jwtUtil.getUserId(httpServletRequest).get();
-        int memberId = 1;
+        int memberId = jwtUtil.getUserId(httpServletRequest)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
         Member member = memberRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
         Party party = partyRepository.findByPartyId(partyId)
