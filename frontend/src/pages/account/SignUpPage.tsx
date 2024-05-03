@@ -3,7 +3,8 @@ import InputBox from '@/components/inputbox';
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '@/components/button';
-import InfoHover from './info/InfoHover';
+import InfoHover from '@/pages/account/info/InfoHover.tsx';
+import SignupSuccess from '@/pages/account/SuccessPage.tsx';
 import { signUp } from '@/apis/user.ts';
 
 const SignUpPage = () => {
@@ -12,10 +13,12 @@ const SignUpPage = () => {
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [isPassed1, setIsPassed1] = useState(true);
+  const [isPassed2, setIsPassed2] = useState(true);
+  const [isDone, setIsDone] = useState(false);
 
   const navigate = useNavigate();
 
-  // 기타 조건 추가 등 수정 예정
   const doSignUp = async (
     userid: string,
     usernickname: string,
@@ -28,11 +31,15 @@ const SignUpPage = () => {
       isPasswordValid(password) &&
       passwordMatch
     ) {
-      await signUp(userid, usernickname, password);
-    }
-    // 수정예정
-    else if (!isPasswordValid(password)) {
-      console.log('비밀번호 조건을 다시 확인해주세요');
+      const response = await signUp(userid, usernickname, password);
+      console.log(response);
+      if (response?.status == 200) {
+        setIsDone(true);
+      } else {
+        setIsPassed2(false);
+      }
+    } else {
+      setIsPassed1(false);
     }
   };
 
@@ -48,17 +55,23 @@ const SignUpPage = () => {
 
   useEffect(() => {
     checkPasswordMatch();
+    setIsPassed1(true);
   }, [checkPasswordMatch]);
 
   return (
     <div>
       <BasicFrame>
         <div className='flex justify-center items-center'>
-          <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px]'>
+          <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px] ml-[24px]'>
             회원가입
           </h2>
           <InfoHover />
         </div>
+        {isDone && (
+          <div className='font-dnf flex justify-center items-center pt-[4px]'>
+            <SignupSuccess />
+          </div>
+        )}
         {/* 입력창 */}
         <div className='flex justify-center items-center pt-[60px]'>
           <InputBox
@@ -121,6 +134,16 @@ const SignUpPage = () => {
             onClick={() => doSignUp(userid, usernickname, password)}
           />
         </div>
+        {!isPassed1 && (
+          <div className='font-dnf flex justify-center items-center pt-[4px]'>
+            빈칸 혹은 비밀번호를 다시 확인해주세요
+          </div>
+        )}
+        {!isPassed2 && (
+          <div className='font-dnf flex justify-center items-center pt-[4px]'>
+            중복된 아이디가 있습니다.
+          </div>
+        )}
       </BasicFrame>
     </div>
   );
