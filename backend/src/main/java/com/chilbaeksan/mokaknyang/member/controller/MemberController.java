@@ -39,7 +39,6 @@ public class MemberController {
                 .memberBehitNumber(result.getBehitNumber())
                 .memberGoal(result.getGoal())
                 .level(result.getLevel().getLevelExp())
-                .memberCatColor(result.getCatColor())
                 .titleContent(result.getTitle().getTitleContent())
                 .catAssetUrl(result.getCat().getCatAssetUrl())
                 .build();
