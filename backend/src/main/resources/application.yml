@@ -3,10 +3,12 @@ spring:
     name: mokaknyang
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}
-    username: ${MYSQL_USERNAME}
-    password: ${MYSQL_PASSWORD}
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/mokaknyang
+    username: sa
+  h2:
+    console:
+      enabled: true
 
   # Redis 설정
   data:
@@ -18,6 +20,7 @@ spring:
 
   # spring data jpa settings
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: create
     properties:
