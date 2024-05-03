@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import * as constants from '@/components/timer/constants';
 
 interface TimerProps {
   focusTime: number;
@@ -7,11 +8,7 @@ interface TimerProps {
   repeatCount: number;
 }
 
-const PomodoroTimer: React.FC<TimerProps> = ({
-  focusTime,
-  breakTime,
-  repeatCount,
-}) => {
+const PomodoroTimer = ({ focusTime, breakTime, repeatCount }: TimerProps) => {
   // 집중 시간과 휴식 시간을 번갈아가며 사용하기 위한 상태
   const [isFocusing, setIsFocusing] = useState(true);
   const [currentRepeat, setCurrentRepeat] = useState(1);
@@ -54,18 +51,41 @@ const PomodoroTimer: React.FC<TimerProps> = ({
       key={key} // key 변경으로 컴포넌트 리셋
       isPlaying
       duration={timerDuration}
-      colors={['#004777', '#F7B801']}
-      colorsTime={[timerDuration * 0.5, timerDuration * 0.2]}
+      colors={
+        isFocusing ? constants.COLORS.WORK_COLOR : constants.COLORS.REST_COLOR
+      }
+      colorsTime={[
+        timerDuration,
+        timerDuration * 0.75,
+        timerDuration * 0.5,
+        timerDuration * 0.25,
+        0,
+      ]}
       onComplete={handleComplete}
     >
       {({ remainingTime }) => (
         <div>
           {remainingTime === 0 ? (
-            <div>끝</div>
+            <div
+              className='font-dnf text-2xl text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]'
+              style={{ color: 'darkgrey' }}
+            >
+              {constants.END}
+            </div>
           ) : (
             <>
-              <div>남은 시간: {formatTime(remainingTime)}</div>
-              <div>{isFocusing ? '집중' : '휴식'} 시간</div>
+              <div
+                className='font-dnf text-2xl text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]'
+                style={{ color: 'whitesmoke' }}
+              >
+                {formatTime(remainingTime)}
+              </div>
+              <div
+                className='font-neo text-center drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]'
+                style={{ color: 'whitesmoke' }}
+              >
+                {isFocusing ? constants.FOCUS_TIME : constants.REST_TIME}
+              </div>
             </>
           )}
         </div>
