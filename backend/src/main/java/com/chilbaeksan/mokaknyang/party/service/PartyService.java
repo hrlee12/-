@@ -67,6 +67,9 @@ public class PartyService {
             Member findMember = memberRepository.findByMemberId(partyMember.getMemberId())
                     .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
+            if(findMember.getMemberId() == managerMemberId)
+                throw new BaseException(ErrorCode.PARTY_SELF_INVITATION_NOT_ALLOWED);
+
             if(invitationRepository.findByMemberAndParty(findMember, findParty).isPresent())
                 throw new BaseException(ErrorCode.PARTY_INVITATION_ALREADY);
 
