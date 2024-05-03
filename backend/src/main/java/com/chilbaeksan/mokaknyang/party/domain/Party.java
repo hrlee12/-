@@ -35,6 +35,7 @@ public class Party {
     private Byte participateNumber;
 
     @Column(name="party_max_number", nullable = false)
+    @ColumnDefault("6")
     private Byte maxNumber;
 
     @CreationTimestamp
