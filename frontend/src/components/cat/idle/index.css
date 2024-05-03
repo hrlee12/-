@@ -1,6 +1,6 @@
 @keyframes spriteAnimation {
   from {
-    background-position: 0%;
+    background-position: 0;
   }
   to {
     background-position: -700%; /* 마지막 이미지까지 이동하기 위해 */

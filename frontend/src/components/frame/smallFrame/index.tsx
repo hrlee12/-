@@ -5,11 +5,11 @@ interface Props {
   children: ReactNode;
 }
 
-const BasicFrame = ({ children }: Props) => {
+const SmallFrame = ({ children }: Props) => {
   return (
     <>
       <main>
-        <div className='m-4 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius'>
+        <div className='fixed bottom-20 left-10 bg-frameColor w-boxWidth h-48 rounded-boxRadius'>
           {children}
         </div>
       </main>
@@ -18,4 +18,4 @@ const BasicFrame = ({ children }: Props) => {
   );
 };
 
-export default BasicFrame;
+export default SmallFrame;
