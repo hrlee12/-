@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/apis/lib/axios.ts';
+import { useAuthStore } from '@/stores/useAuthStore.ts';
 
 export const signUp = async (
   userId: string,
@@ -23,6 +24,10 @@ export const logIn = async (userId: string, password: string) => {
       id: userId,
       password: password,
     });
+
+    const { setAccessToken } = useAuthStore.getState();
+    setAccessToken(response.data);
+
     return response.data;
   } catch (error) {
     console.log(error);

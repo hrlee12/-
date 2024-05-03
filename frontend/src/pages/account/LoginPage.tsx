@@ -14,7 +14,7 @@ const LoginPage = () => {
   const loginClick = () => {
     const id: string = userid;
     const pw: string = password;
-    logIn(id, pw);
+    logIn(id, pw).then(() => navigate('/catInfo'));
   };
 
   return (
