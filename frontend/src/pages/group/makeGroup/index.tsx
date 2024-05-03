@@ -1,17 +1,12 @@
-import BasicFrame from '@/components/frame/basicFrame';
-import * as constants from '@/pages/group/constants';
-import InputBox from '@/components/inputbox';
-import Button from '@/components/button';
 import React, { useState } from 'react';
-import SearchModal from '@/pages/group/makeGroup/SearchModal.tsx';
+
+import * as constants from '@/pages/group/constants';
 import { makeGroup } from '@/apis/group.ts';
 
-interface MakeGroupProps {
-  partyName: string;
-  partyMessage: string;
-  memberCount: number;
-  partyManagerId: number;
-}
+import BasicFrame from '@/components/frame/basicFrame';
+import InputBox from '@/components/inputbox';
+import Button from '@/components/button';
+import SearchModal from '@/pages/group/makeGroup/SearchModal.tsx';
 
 const MakeGroupPage = () => {
   const [id] = useState<number>(0);
@@ -45,13 +40,19 @@ const MakeGroupPage = () => {
     }
   };
 
-  const clickMakeGroup = async ({
-    partyName,
-    partyMessage,
-    memberCount,
-    partyManagerId,
-  }: MakeGroupProps) => {
-    await makeGroup(partyName, partyMessage, memberCount, partyManagerId);
+  const clickMakeGroup = async () => {
+    const groupInfo = {
+      partyName: partyName,
+      partyMessage: partyMessage,
+      memberCount: memberCount,
+      partyManagerId: 1, // 후에 변경
+    };
+    try {
+      const response = await makeGroup(groupInfo);
+      console.log('그룹 생성 성공', response);
+    } catch (error) {
+      console.error('그룹 생성 실패', error);
+    }
   };
 
   return (
@@ -125,14 +126,7 @@ const MakeGroupPage = () => {
           text={'만들기'}
           size={'small'}
           color={'blue'}
-          onClick={() =>
-            clickMakeGroup({
-              partyName: partyName,
-              partyMessage: partyMessage,
-              memberCount: memberCount,
-              partyManagerId: 1, // partyManagerId는 예시 값
-            })
-          }
+          onClick={() => clickMakeGroup()}
         />
       </div>
     </BasicFrame>

@@ -6,7 +6,10 @@ interface Props {
 
 const MyFrame = ({ children }: Props) => {
   return (
-    <main className='bg-wordBox bg-groupColor h-boxHeight'>{children}</main>
+    <>
+      <main className='bg-wordBox h-boxHeight'>{children}</main>
+      <div className='character-idle fixed right-[0px] bottom-[0px]' />
+    </>
   );
 };
 

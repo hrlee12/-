@@ -1,19 +1,15 @@
 import { axiosInstance } from '@/apis/lib/axios.ts';
+import { MakeGroupInfo, UpdateGroupInfo } from '@/types/group';
 
 // 그룹 생성
-export const makeGroup = async (
-  partyName: string,
-  partyMessage: string,
-  memberCount: number,
-  partyManagerId: number,
-) => {
+export const makeGroup = async (MakeGroupInfo: MakeGroupInfo) => {
   try {
     const response = await axiosInstance.post('/party', {
-      partyName: partyName,
-      partyInviteMessage: partyMessage,
+      partyName: MakeGroupInfo.partyName,
+      partyInviteMessage: MakeGroupInfo.partyMessage,
       partyMaxNumber: 6,
-      partyParticipateNumber: memberCount,
-      partyManagerId: partyManagerId,
+      partyParticipateNumber: MakeGroupInfo.memberCount,
+      partyManagerId: MakeGroupInfo.partyManagerId,
     });
     return response.data;
   } catch (err) {
@@ -84,18 +80,16 @@ export const groupDetail = async (partyId: number) => {
 };
 
 // 그룹 정보 수정
-export const updateGroup = async (
-  partyId: number,
-  partyName: string,
-  partyGoal: string,
-  partyManagerId: number,
-) => {
+export const updateGroup = async (UpdateGroupInfo: UpdateGroupInfo) => {
   try {
-    const response = await axiosInstance.patch(`/party/${partyId}/setting`, {
-      partyName: partyName,
-      partyGoal: partyGoal,
-      partyManagerId: partyManagerId,
-    });
+    const response = await axiosInstance.patch(
+      `/party/${UpdateGroupInfo.partyId}/setting`,
+      {
+        partyName: UpdateGroupInfo.partyName,
+        partyGoal: UpdateGroupInfo.partyGoal,
+        partyManagerId: UpdateGroupInfo.partyManagerId,
+      },
+    );
     return response.data;
   } catch (err) {
     console.log(err);
