@@ -69,10 +69,15 @@ public enum ErrorCode {
     INVITATION_NOT_FOUND(404, "초대장이 존재하지 않습니다."),
     INVIATION_IS_NOT_VALID(408, "초대장이 더 이상 유효하지 않습니다."),
 
+
+    //레벨 관련 에러
+    LEVEL_INVALID_VALUE(400, "유효하지 않는 레벨입니다."),
+
+
     //공통 에러
     BAD_REQUEST(400, "올바르지 않은 요청입니다."),
     INTERNAL_SERVER_ERROR(500, "내부 서버 오류 발생으로 요청에 실패하였습니다.");
-    ;
+
     private final int resultCode;
     private final String message;
 }
