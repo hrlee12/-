@@ -69,4 +69,22 @@ public class MemberServiceImpl implements MemberService {
         return catRepository.findAll(pageable).getContent();
     }
 
+    @Transactional
+    @Override
+    public Cat setSkin(Integer memberId,Integer catId) {
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Cat cat = catRepository.findByCatId(catId)
+                .orElseThrow(() -> new BaseException(ErrorCode.CAT_NOT_FOUND));
+
+        // 만약 레벨 달성을 하지 못했다면
+        if(cat.getCatAchieveLevel().getLevel() > member.getLevel().getLevel()){
+            throw new BaseException(ErrorCode.LEVEL_NOT_ENOUGH_LEVEL);
+        }
+
+        member.setCat(cat);
+        return cat;
+    }
+
 }

@@ -125,4 +125,19 @@ public class MemberController {
 
         return ResponseEntity.ok(result);
     }
+
+    @PatchMapping("/skins")
+    public ResponseEntity<?> setSkin(MemberSkinModifyRequestDto dto, HttpServletRequest request){
+        // 유저 아이디 추출
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
+
+        Cat cat = memberService.setSkin(userId, dto.getCatId());
+
+        MemberSkinModifyResponseDto result = MemberSkinModifyResponseDto.builder()
+                .assetsUrl(cat.getCatAssetUrl())
+                .build();
+
+        return ResponseEntity.ok(result);
+    }
 }

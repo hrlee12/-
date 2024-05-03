@@ -72,6 +72,7 @@ public enum ErrorCode {
 
     //레벨 관련 에러
     LEVEL_INVALID_VALUE(400, "유효하지 않는 레벨입니다."),
+    LEVEL_NOT_ENOUGH_LEVEL(401, "레벨이 충분하지 않습니다."),
 
 
     //공통 에러

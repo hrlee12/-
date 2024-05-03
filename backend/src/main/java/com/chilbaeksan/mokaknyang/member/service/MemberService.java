@@ -22,4 +22,6 @@ public interface MemberService {
     List<Title> getTitles(Pageable pageable);
 
     List<Cat> getCat(Pageable pageable);
+
+    Cat setSkin(Integer userId, Integer catId);
 }
