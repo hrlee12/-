@@ -3,6 +3,8 @@ package com.chilbaeksan.mokaknyang.attack_situation.service;
 import com.chilbaeksan.mokaknyang.attack_situation.domain.AttackSituation;
 import com.chilbaeksan.mokaknyang.attack_situation.dto.request.AttackSituationRegist;
 import com.chilbaeksan.mokaknyang.attack_situation.repository.AttackSituationRepository;
+import com.chilbaeksan.mokaknyang.exception.BaseException;
+import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
 import jakarta.transaction.Transactional;
@@ -22,7 +24,7 @@ public class AttackSituationService {
 
     public AttackSituation registAttackSituation(AttackSituationRegist attackSituationRegist){
         Party party = partyRepository.findByPartyId(attackSituationRegist.getPartyId())
-                .orElseThrow(() -> new NoSuchElementException("Value not present"));
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
 
         return attackSituationRepository.save(
                 AttackSituation.builder()
