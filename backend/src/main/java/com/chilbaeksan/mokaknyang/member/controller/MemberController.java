@@ -4,9 +4,7 @@ import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
-import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
-import com.chilbaeksan.mokaknyang.member.dto.MemberMyInfoResponseDto;
-import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
+import com.chilbaeksan.mokaknyang.member.dto.*;
 import com.chilbaeksan.mokaknyang.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -64,5 +62,20 @@ public class MemberController {
 
         memberService.modifyMyInfo(dto,userId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchMember(MemberSearchRequestDto dto, HttpServletRequest request){
+        // 유저 아이디 추출
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
+
+        Member member = memberService.findMemberByUserId(dto.getUserId());
+
+        MemberSearchResponseDto result = MemberSearchResponseDto.builder()
+                .memberId(member.getMemberId())
+                .build();
+
+        return ResponseEntity.ok(result);
     }
 }

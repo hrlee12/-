@@ -46,4 +46,10 @@ public class MemberServiceImpl implements MemberService {
         member.setTitle(Title.builder().titleId(dto.getTitleId()).build());
     }
 
+    @Override
+    public Member findMemberByUserId(String userId) {
+        return memberRepository.findByLoginId(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_SEARCH_NOT_FOUND_USER_ID));
+    }
+
 }

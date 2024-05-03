@@ -13,4 +13,6 @@ public interface MemberService {
     void setMyInfo(MemberRegisterRequestDto dto, Integer userId);
 
     void modifyMyInfo(MemberModifyRequestDto dto, Integer userId);
+
+    Member findMemberByUserId(String userId);
 }
