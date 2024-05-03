@@ -19,5 +19,3 @@ const BasicFrame = ({ children }: Props) => {
 };
 
 export default BasicFrame;
-
-// ml-[424px] mt-[56px]
