@@ -40,10 +40,6 @@ public class Member {
     @JoinColumn(name="party_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Party party;
 
-    @Column(name="member_cat_color")
-    @Builder.Default
-    private String catColor = "#ffd440";
-
     @Column(name="member_login_id")
     private String loginId;
 
