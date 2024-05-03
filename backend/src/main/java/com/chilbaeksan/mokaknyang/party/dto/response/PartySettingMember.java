@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 public class PartySettingMember {
     private Integer memberId;
     private String memberCatName;
-    private String memberCatColor;
     private Integer catId;
     private LocalDateTime partyCreatedAt;
 }
