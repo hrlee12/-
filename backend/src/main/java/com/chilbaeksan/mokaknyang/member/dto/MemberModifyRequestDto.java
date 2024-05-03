@@ -11,5 +11,4 @@ public class MemberModifyRequestDto {
     private String memberCatName;
     private String memberGoal;
     private Short titleId;
-    private Integer catId;
 }

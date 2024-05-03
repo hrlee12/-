@@ -44,7 +44,6 @@ public class MemberServiceImpl implements MemberService {
         member.setCatName(dto.getMemberCatName());
         member.setGoal(dto.getMemberGoal());
         member.setTitle(Title.builder().titleId(dto.getTitleId()).build());
-        member.setCat(Cat.builder().catId(dto.getCatId()).build());
     }
 
 }
