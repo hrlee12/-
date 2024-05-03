@@ -176,6 +176,9 @@ public class PartyService {
         if(memberPartyRepository.findByMemberAndParty(member, party).isPresent())
             throw new BaseException(ErrorCode.PARTY_ALREADY_ACCEPT);
 
+        member.modifyParty(party);
+        memberRepository.save(member);
+
         return memberPartyRepository.save(MemberParty.builder()
                 .member(member)
                 .party(party)
