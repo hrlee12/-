@@ -8,6 +8,7 @@ import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberTitleResponseDto;
+import com.chilbaeksan.mokaknyang.member.repository.CatRepository;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.member.repository.TitleRepository;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final TitleRepository titleRepository;
+    private final CatRepository catRepository;
 
     @Override
     public Optional<Member> getMyInfo(Integer userId) {
@@ -60,6 +62,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<Title> getTitles(Pageable pageable) {
         return titleRepository.findAll(pageable).getContent();
+    }
+
+    @Override
+    public List<Cat> getCat(Pageable pageable) {
+        return catRepository.findAll(pageable).getContent();
     }
 
 }

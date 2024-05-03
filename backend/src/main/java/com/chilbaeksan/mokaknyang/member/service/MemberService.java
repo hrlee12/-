@@ -1,5 +1,6 @@
 package com.chilbaeksan.mokaknyang.member.service;
 
+import com.chilbaeksan.mokaknyang.member.domain.Cat;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
@@ -19,4 +20,6 @@ public interface MemberService {
     Member findMemberByUserId(String userId);
 
     List<Title> getTitles(Pageable pageable);
+
+    List<Cat> getCat(Pageable pageable);
 }

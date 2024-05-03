@@ -3,6 +3,7 @@ package com.chilbaeksan.mokaknyang.member.controller;
 import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
+import com.chilbaeksan.mokaknyang.member.domain.Cat;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.dto.*;
@@ -100,6 +101,26 @@ public class MemberController {
                                 .titleContent(m.getTitleContent())
                                 .titleAchieveLevel(m.getTitleAchieveLevel().getLevel())
                                 .build()).toList())
+                .build();
+
+        return ResponseEntity.ok(result);
+    }
+    @GetMapping("/skins")
+    public ResponseEntity<?> getSkins(MemberSkinsRequestDto dto, HttpServletRequest request){
+        // 유저 아이디 추출
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
+
+        Pageable pageable = PageRequest.of(dto.getPageNum(), dto.getPageSize());
+
+        List<Cat> cats = memberService.getCat(pageable);
+
+        MemberSkinsResponseDto result = MemberSkinsResponseDto.builder()
+                .cats( cats.stream().map((m) -> MemberSkinsResponseDto.CatDto.builder()
+                        .catId(m.getCatId())
+                        .catAssetUrl(m.getCatAssetUrl())
+                        .catAchieveLevel(m.getCatAchieveLevel().getLevel())
+                        .build()).toList())
                 .build();
 
         return ResponseEntity.ok(result);
