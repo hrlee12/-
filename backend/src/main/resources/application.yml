@@ -7,6 +7,9 @@ spring:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:tcp://localhost/~/mokaknyang
     username: sa
+  h2:
+    console:
+      enabled: true
 
   # Redis 설정
   data:
@@ -17,5 +20,6 @@ spring:
 
   # spring data jpa settings
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update

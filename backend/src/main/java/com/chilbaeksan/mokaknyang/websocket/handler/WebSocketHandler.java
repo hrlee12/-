@@ -1,6 +1,9 @@
 package com.chilbaeksan.mokaknyang.websocket.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -10,9 +13,9 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -33,29 +36,45 @@ public class WebSocketHandler extends TextWebSocketHandler{
     private static ConcurrentHashMap<Integer, String> CLIENT_STATUS
             = new ConcurrentHashMap<>();
 
+    //key : memberId
+    //value : time
+    private static ConcurrentHashMap<Integer, Instant> LAST_PONG_TIME
+            = new ConcurrentHashMap<>();
+
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception{
         Integer[] memberIdAndPartyId = extractMemberIdAndPartyId(session.getUri());
+        int memberId = memberIdAndPartyId[0];
+        int partyId = memberIdAndPartyId[1];
 
-        //세션에 참여하는 클라이언트의 memberId와 partyId를 얻어와서 저장
-        if(CLIENT_PARTY.containsKey(memberIdAndPartyId[1])){
-            List<Integer> list = CLIENT_PARTY.get(memberIdAndPartyId[1]);
-            list.add(memberIdAndPartyId[0]);
-            CLIENT_PARTY.put(memberIdAndPartyId[1], list);
+        if(CLIENT_PARTY.containsKey(partyId)){
+            List<Integer> list = CLIENT_PARTY.get(partyId);
+            list.add(memberId);
+            CLIENT_PARTY.put(partyId, list);
         }
         else{
             List<Integer> list = new ArrayList<>();
-            list.add(memberIdAndPartyId[0]);
-            CLIENT_PARTY.put(memberIdAndPartyId[1], list);
+            list.add(memberId);
+            CLIENT_PARTY.put(partyId, list);
         }
-        //현재 참여하는 클라이언트 상태를 offline으로 설정
-        CLIENT_STATUS.put(memberIdAndPartyId[0], "offline");
+
+        CLIENT_STATUS.put(memberId, "online");
         CLIENTS.put(session.getId(), session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception{
+        Integer[] memberIdAndPartyId = extractMemberIdAndPartyId(session.getUri());
+        int memberId = memberIdAndPartyId[0];
+        int partyId = memberIdAndPartyId[1];
+
         CLIENTS.remove(session.getId());
+        CLIENT_STATUS.remove(memberId);
+        LAST_PONG_TIME.remove(memberId);
+
+        List<Integer> listMemberId = CLIENT_PARTY.get(partyId);
+        listMemberId.remove(memberId);
+        CLIENT_PARTY.put(partyId, listMemberId);
     }
 
     @Override
@@ -64,13 +83,10 @@ public class WebSocketHandler extends TextWebSocketHandler{
             log.info("Received pong:{}", session.getId());
 
             Integer[] memberIdAndPartyId = extractMemberIdAndPartyId(session.getUri());
-            log.info("memberId:"+memberIdAndPartyId[0]+", partyId:"+memberIdAndPartyId[1]);
-            CLIENT_STATUS.put(memberIdAndPartyId[0], "online");
+            int memberId = memberIdAndPartyId[0];
+            CLIENT_STATUS.put(memberId, "online");
 
-            Set<Integer> status = CLIENT_STATUS.keySet();
-            for(int key : status){
-                log.info("client_status:"+CLIENT_STATUS.get(key));
-            }
+            LAST_PONG_TIME.put(memberId, Instant.now());
         }
     }
 
@@ -83,6 +99,31 @@ public class WebSocketHandler extends TextWebSocketHandler{
                 e.printStackTrace();
             }
         });
+    }
+
+    @Scheduled(fixedRate = 10000)
+    public void checkClientStatus(){
+        Instant now = Instant.now();
+
+        for(WebSocketSession webSocketSession : CLIENTS.values()){
+            Integer[] memberIdAndPartyId = extractMemberIdAndPartyId(webSocketSession.getUri());
+            int memberId = memberIdAndPartyId[0];
+
+            if(LAST_PONG_TIME.get(memberId) == null)
+                CLIENT_STATUS.put(memberId, "offline");
+
+            else{
+                Instant lastPongTime = LAST_PONG_TIME.get(memberId);
+                Duration durationSinceLastPong = Duration.between(lastPongTime, now);
+
+                if(durationSinceLastPong.getSeconds() > 15){
+                    //오프라인으로 처리
+                    CLIENT_STATUS.put(memberId, "offline");
+                }
+            }
+        }
+
+        sendGroupMemberStatus();
     }
 
     private Integer[] extractMemberIdAndPartyId(URI uri){
@@ -105,5 +146,39 @@ public class WebSocketHandler extends TextWebSocketHandler{
         }
 
         return memberIdAndPartyId;
+    }
+
+    private void sendGroupMemberStatus() {
+        for(WebSocketSession webSocketSession : CLIENTS.values()){
+            Map<Integer, String> partyMemberStatus = new HashMap<>();
+
+            Integer[] memberIdAndPartyId = extractMemberIdAndPartyId(webSocketSession.getUri());
+            int partyId = memberIdAndPartyId[1];
+
+            List<Integer> list = CLIENT_PARTY.get(partyId);
+
+            if(list == null)
+                return;
+
+            for(int listMemberId : list){
+                String status = CLIENT_STATUS.get(listMemberId);
+                partyMemberStatus.put(listMemberId, status);
+            }
+
+            String jsonData;
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                jsonData = objectMapper.writeValueAsString(partyMemberStatus);
+            } catch (JsonProcessingException e) {
+                log.error("Error converting group member status to JSON: {}", e.getMessage());
+                return;
+            }
+
+            try {
+                webSocketSession.sendMessage(new TextMessage(jsonData));
+            } catch (IOException e) {
+                log.error("Error sending group member status to client {}: {}", webSocketSession.getId(), e.getMessage());
+            }
+        }
     }
 }
