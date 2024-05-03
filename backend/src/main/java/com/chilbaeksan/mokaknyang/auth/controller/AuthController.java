@@ -29,7 +29,7 @@ public class AuthController {
     // register
     @PostMapping
     public ResponseEntity<?> register(@RequestBody UserLoginDto dto) {
-        authService.register(dto.getId(), dto.getPassword());
+        authService.register(dto);
         return ResponseEntity.ok().build();
     }
 
@@ -63,6 +63,7 @@ public class AuthController {
 
         // 쿠키 invalidate 하기
         String cookie = authService.setHttpOnlyCookieInvalidate("refreshToken");
+        authService.logout(userId);
 
         return ResponseEntity.ok()
                 .header("Set-Cookie", cookie)

@@ -18,8 +18,9 @@ spring:
 
   # spring data jpa settings
   jpa:
+    show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: true

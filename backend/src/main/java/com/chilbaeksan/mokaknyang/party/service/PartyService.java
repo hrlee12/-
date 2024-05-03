@@ -259,7 +259,6 @@ public class PartyService {
                     PartySettingMember.builder()
                     .memberId(member.getMemberId())
                     .memberCatName(member.getCatName())
-                    .memberCatColor(member.getCatColor())
                     .catId(cat.getCatId())
                     .partyCreatedAt(memberParty.getCreatedAt())
                     .build()

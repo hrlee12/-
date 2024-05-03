@@ -40,26 +40,27 @@ public class Member {
     @JoinColumn(name="party_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private Party party;
 
-    @Column(name="member_cat_color")
-    @ColumnDefault("'#ffd440'")
-    private String catColor;
-
     @Column(name="member_login_id")
     private String loginId;
 
     @Column(name="member_login_pwd")
     private String loginPwd;
 
+    @Column(name="member_nickname")
+    @Builder.Default
+    private String nickname = "";
+
     @Column(name="member_cat_name")
-    @ColumnDefault("'고먐미'")
-    private String catName;
+    @Builder.Default
+    private String catName = "고먐미";
 
     @Column(name="member_goal")
-    private String goal;
+    @Builder.Default
+    private String goal = "";
 
     @Column(name="member_exp")
-    @ColumnDefault("0")
-    private Integer exp;
+    @Builder.Default
+    private Integer exp = 0;
 
     @CreationTimestamp
     @Column(name="member_created_at")
@@ -73,16 +74,16 @@ public class Member {
     private LocalDateTime deletedAt;
 
     @Column(name="member_is_deleted")
-    @ColumnDefault("false")
-    private Boolean isDeleted;
+    @Builder.Default
+    private Boolean isDeleted=false;
 
     @Column(name="member_hit_number")
-    @ColumnDefault("0")
-    private Integer hitNumber;
+    @Builder.Default
+    private Integer hitNumber=0;
 
     @Column(name="member_behit_number")
-    @ColumnDefault("0")
-    private Integer behitNumber;
+    @Builder.Default
+    private Integer behitNumber=0;
 
     public void hit(){
         this.hitNumber += 1;

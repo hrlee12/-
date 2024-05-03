@@ -1,14 +1,17 @@
 package com.chilbaeksan.mokaknyang.auth.service;
 
 import com.chilbaeksan.mokaknyang.auth.dto.SignInResponse;
+import com.chilbaeksan.mokaknyang.auth.dto.UserLoginDto;
 import com.chilbaeksan.mokaknyang.auth.vo.Token;
 import org.springframework.http.ResponseCookie;
 
 public interface AuthService {
 
-    void register(String id, String password);
+    void register(UserLoginDto dto);
 
     SignInResponse login(String id, String password, String ip);
+
+    void logout(Integer userId);
 
     String createHttpOnlyCookie(String cookieName, String cookieValue);
 
