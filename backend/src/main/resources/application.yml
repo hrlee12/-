@@ -15,6 +15,10 @@ spring:
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
 
+    mongodb:
+      uri: mongodb://${MONGODB_HOST}:${MONGODB_PORT}
+      username: ${MONGODB_USERNAME}
+      password: ${MONGODB_PASSWORD}
 
   # spring data jpa settings
   jpa:
