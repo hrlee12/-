@@ -20,8 +20,8 @@ public class PartyController {
     private final PartyService partyService;
 
     @PostMapping
-    public void registParty(@RequestBody PartyRegist partyRegist){
-        partyService.registParty(partyRegist);
+    public void registParty(HttpServletRequest httpServletRequest, @RequestBody PartyRegist partyRegist){
+        partyService.registParty(httpServletRequest, partyRegist);
     }
 
     @GetMapping("/invited-list")
