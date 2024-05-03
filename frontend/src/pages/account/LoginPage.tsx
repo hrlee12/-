@@ -3,6 +3,7 @@ import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { logIn } from '@/apis/user.ts';
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
@@ -13,8 +14,7 @@ const LoginPage = () => {
   const loginClick = () => {
     const id: string = userid;
     const pw: string = password;
-    console.log('아이디 입력은 -> ' + id);
-    console.log('비밀번호 입력은 -> ' + pw);
+    logIn(id, pw);
   };
 
   return (

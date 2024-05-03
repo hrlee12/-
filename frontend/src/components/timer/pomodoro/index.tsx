@@ -1,5 +1,6 @@
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
+import * as constants from '@/components/timer/constants';
 
 const Pomodoro = () => {
   return (
@@ -12,7 +13,7 @@ const Pomodoro = () => {
           placeholder={'분'}
           onChange={() => {}}
         />
-        <div className='font-dnf text-3xl p-1'>분</div>
+        <div className='font-dnf text-3xl p-1'>{constants.POMODORO.MIN}</div>
         <InputBox
           name={'뽀모도로 쉼'}
           size={'pomodoro'}
@@ -20,7 +21,7 @@ const Pomodoro = () => {
           placeholder={'쉼'}
           onChange={() => {}}
         />
-        <div className='font-dnf text-3xl p-1'>쉼</div>
+        <div className='font-dnf text-3xl p-1'>{constants.POMODORO.REST}</div>
         <InputBox
           name={'뽀모도로 회'}
           size={'pomodoro'}
@@ -28,7 +29,7 @@ const Pomodoro = () => {
           placeholder={'회'}
           onChange={() => {}}
         />
-        <div className='font-dnf text-3xl p-1'>회</div>
+        <div className='font-dnf text-3xl p-1'>{constants.POMODORO.COUNT}</div>
       </div>
       <div className='flex justify-center'>
         <Button

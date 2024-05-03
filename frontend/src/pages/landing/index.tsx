@@ -1,27 +1,18 @@
 import { useNavigate } from 'react-router-dom';
-import Button from '@/components/button';
-import SmallFrame from '@/components/frame/smallFrame';
-import NyanPunch from '@/components/cat/nyanPunch';
+// import Button from '@/components/button';
+import '@/components/cat/idle/index.css';
 
 const Landing = () => {
   const navigate = useNavigate(); // useNavigate 훅을 사용하여 라우팅 함수를 가져옵니다.
 
   return (
-    <SmallFrame>
-      <Button
-        text={'그룹 정보'}
-        size={'admin'}
-        color={'blue'}
-        onClick={() => navigate('/groupInfo')}
-      />
-      <Button
-        text={'예시'}
-        size={'admin'}
-        color={'navy'}
-        onClick={() => navigate('/catSetting')}
-      />
-      <NyanPunch />
-    </SmallFrame>
+    <div className='h-[600px] flex justify-end items-end'>
+      <div
+        className='character-idle'
+        id='clickable-area'
+        onClick={() => navigate('/login')}
+      ></div>
+    </div>
   );
 };
 

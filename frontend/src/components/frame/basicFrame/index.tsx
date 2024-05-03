@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import '@/components/cat/idle/index.css';
-import { FaXmark } from 'react-icons/fa6';
 
 interface Props {
   children: ReactNode;
@@ -10,8 +9,7 @@ const BasicFrame = ({ children }: Props) => {
   return (
     <>
       <main>
-        <FaXmark size={25} className={'fixed right-64 top-3'} />
-        <div className='ml-14 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius'>
+        <div className='m-4 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius'>
           {children}
         </div>
       </main>
