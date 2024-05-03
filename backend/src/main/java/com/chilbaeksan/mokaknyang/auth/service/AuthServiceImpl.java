@@ -8,7 +8,10 @@ import com.chilbaeksan.mokaknyang.auth.repository.LoginRepository;
 import com.chilbaeksan.mokaknyang.auth.vo.Token;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
+import com.chilbaeksan.mokaknyang.member.domain.Cat;
+import com.chilbaeksan.mokaknyang.member.domain.Level;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
+import com.chilbaeksan.mokaknyang.member.domain.Title;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,10 @@ public class AuthServiceImpl implements AuthService {
 
         // 가입 수행
         Member member = Member.builder()
+                .cat(Cat.builder().catId(1).build())
+                .level(Level.builder().level((short) 1).build())
+                .title(Title.builder().titleId((short) 1).build())
+                .exp(0)
                 .loginId(dto.getId())
                 .loginPwd(dto.getPassword())
                 .nickname(dto.getNickname())
