@@ -92,4 +92,6 @@ public class Member {
     public void behit(){
         this.behitNumber += 1;
     }
+
+    public void modifyParty(Party party) { this.party = party; }
 }

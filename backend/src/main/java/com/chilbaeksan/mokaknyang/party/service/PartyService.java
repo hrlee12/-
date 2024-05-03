@@ -42,19 +42,46 @@ public class PartyService {
     private final CatRepository catRepository;
     private final JwtUtil jwtUtil;
 
-    public Party registParty(PartyRegist partyRegist){
-        Member partyManager = memberRepository.findByMemberId(partyRegist.getPartyManagerId())
+    public void registParty(HttpServletRequest httpServletRequest, PartyRegist partyRegist){
+        //파티 생성
+        // int managerMemberId = jwtUtil.getUserId(httpServletRequest).get();
+        int managerMemberId = 1;
+        Member managerMember = memberRepository.findByMemberId(managerMemberId)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
         Party party = Party.builder()
                 .name(partyRegist.getPartyName())
                 .inviteMessage(partyRegist.getPartyInviteMessage())
-                .maxNumber(partyRegist.getPartyMaxNumber())
                 .participateNumber(partyRegist.getPartyParticipateNumber())
-                .member(partyManager)
+                .member(managerMember)
                 .build();
 
-        return partyRepository.save(party);
+        Party saveParty = partyRepository.save(party);
+
+        //멤버 초대
+        Party findParty = partyRepository.findByPartyId(saveParty.getPartyId())
+                .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
+
+        List<PartyMember> partyMembers = partyRegist.getPartyMembers();
+        for(PartyMember partyMember : partyMembers){
+            Member findMember = memberRepository.findByMemberId(partyMember.getMemberId())
+                    .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+            if(findMember.getMemberId() == managerMemberId)
+                throw new BaseException(ErrorCode.PARTY_SELF_INVITATION_NOT_ALLOWED);
+
+            if(invitationRepository.findByMemberAndParty(findMember, findParty).isPresent())
+                throw new BaseException(ErrorCode.PARTY_INVITATION_ALREADY);
+
+            LocalDateTime now = LocalDateTime.now();
+            invitationRepository.save(Invitation.builder()
+                    .member(findMember)
+                    .party(findParty)
+                    .createdAt(now)
+                    .expireTime(now.plusMinutes(30))
+                    .isAccepted(ApprovalStatus.WAIT)
+                    .build());
+        }
     }
 
     public InvitePartyList getInviteGroupList(HttpServletRequest httpServletRequest){
@@ -151,6 +178,9 @@ public class PartyService {
 
         if(memberPartyRepository.findByMemberAndParty(member, party).isPresent())
             throw new BaseException(ErrorCode.PARTY_ALREADY_ACCEPT);
+
+        member.modifyParty(party);
+        memberRepository.save(member);
 
         return memberPartyRepository.save(MemberParty.builder()
                 .member(member)
