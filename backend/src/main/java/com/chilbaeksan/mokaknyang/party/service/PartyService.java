@@ -65,7 +65,7 @@ public class PartyService {
 
         List<PartyMember> partyMembers = partyRegist.getPartyMembers();
         for(PartyMember partyMember : partyMembers){
-            Member findMember = memberRepository.findByMemberId(partyMember.getMemberId())
+            Member findMember = memberRepository.findByLoginId(partyMember.getMemberLoginId())
                     .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
             if(findMember.getMemberId() == managerMemberId)
