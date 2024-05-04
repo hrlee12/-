@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PartyMember {
     private Integer memberId;
-    private String memberCatName;
+    private String memberLoginId;
 }
