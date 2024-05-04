@@ -8,6 +8,7 @@ interface buttonProps {
   color: buttonColor;
   addStyle?: string;
   onClick: () => void;
+  disabled?: boolean;
 }
 
 const Button = ({ text, size, color, addStyle, onClick }: buttonProps) => {

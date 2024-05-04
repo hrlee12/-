@@ -29,3 +29,13 @@ export const patchMyInfo = async () => {
     console.log(error);
   }
 };
+
+// 친구 검색
+export const getSearchFriend = async (userId: string) => {
+  try {
+    const response = await axiosInstance.get(`/member/search?userId=${userId}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
