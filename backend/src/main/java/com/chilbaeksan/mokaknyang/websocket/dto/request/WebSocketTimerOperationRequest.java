@@ -12,6 +12,5 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebSocketTimerOperationRequest {
-    private String memberLoginId;
-    private LocalDateTime serverTime;
+    private Integer partyId;
 }

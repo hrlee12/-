@@ -19,10 +19,10 @@ public class WebSocketConfig implements WebSocketConfigurer, WebSocketMessageBro
                 .setAllowedOrigins("*");
     }
 
+    // 나중에 withSockJS() 추가
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/timer").setAllowedOrigins("*")
-                .withSockJS();
+        registry.addEndpoint("/timer").setAllowedOrigins("*");
     }
 
     @Override
