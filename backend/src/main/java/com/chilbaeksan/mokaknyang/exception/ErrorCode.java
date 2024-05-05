@@ -42,6 +42,11 @@ public enum ErrorCode {
     // 채팅 관련 에러
 
     // 공격 관련 에러
+    ATTACK_HIT_MEMBER_NOT_FOUND(404, "공격한 사용자를 찾을 수 없습니다."),
+    ATTACK_BEHIT_MEMBER_NOT_FOUND(404, "공격 당한 사용자를 찾을 수 없습니다."),
+
+    //공격 상황 관련 에러
+    ATTACK_SITUATION_NOT_FOUND(404, "공격 상황 정보를 찾을 수 없습니다."),
 
     // 뽀모도로 관련 에러
     TIMER_REGISTER_BAD_REQUEST(400, "뽀모도로 타이머 생성요청이 잘못된 요청 형식 입니다."),
