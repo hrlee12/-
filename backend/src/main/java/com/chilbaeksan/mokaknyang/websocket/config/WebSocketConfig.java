@@ -15,7 +15,7 @@ public class WebSocketConfig implements WebSocketConfigurer, WebSocketMessageBro
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry){
-        registry.addHandler(webSocketHandler, "/test")
+        registry.addHandler(webSocketHandler, "/status")
                 .setAllowedOrigins("*");
     }
 
