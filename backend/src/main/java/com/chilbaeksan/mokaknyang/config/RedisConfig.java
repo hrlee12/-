@@ -1,4 +1,4 @@
-package com.chilbaeksan.mokaknyang.auth.config;
+package com.chilbaeksan.mokaknyang.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
