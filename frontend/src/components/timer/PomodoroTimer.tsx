@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import * as constants from '@/components/timer/constants';
+import useTimerStore from '@/stores/useTimerStore.ts';
 
 interface TimerProps {
   focusTime: number;
@@ -13,6 +14,19 @@ const PomodoroTimer = ({ focusTime, breakTime, repeatCount }: TimerProps) => {
   const [isFocusing, setIsFocusing] = useState(true);
   const [currentRepeat, setCurrentRepeat] = useState(1);
   const [key, setKey] = useState(0); // 타이머를 재시작하기 위한 키
+
+  // store에서 타이머 상태 가져오기
+  const { isTimerRunning, setIsTimerRunning, setStartTime } = useTimerStore();
+
+  useEffect(() => {
+    // 타이머가 아직 실행 중이지 않다면 시작 시간을 설정하고 실행 상태를 true로 설정,
+    if (!isTimerRunning) {
+      setStartTime(Date.now());
+      setIsTimerRunning(true);
+    }
+    // 컴포넌트가 언마운트 될 때 타이머 실행 상태를 false로 설정.
+    return () => setIsTimerRunning(false);
+  }, [isTimerRunning, setIsTimerRunning, setStartTime]);
 
   // 타이머가 완료될 때 호출될 함수
   const handleComplete = () => {
