@@ -4,15 +4,25 @@ import * as constants from '@/components/timer/constants';
 import useTimerStore from '@/stores/useTimerStore.ts';
 
 interface TimerProps {
+  nowIsFocus: boolean;
+  nowTimeDuration: number;
+  nowRepeat: number;
   focusTime: number;
   breakTime: number;
   repeatCount: number;
 }
 
-const PomodoroTimer = ({ focusTime, breakTime, repeatCount }: TimerProps) => {
+const PomodoroTimer = ({
+  nowIsFocus,
+  nowTimeDuration,
+  nowRepeat,
+  focusTime,
+  breakTime,
+  repeatCount,
+}: TimerProps) => {
   // 집중 시간과 휴식 시간을 번갈아가며 사용하기 위한 상태
-  const [isFocusing, setIsFocusing] = useState(true);
-  const [currentRepeat, setCurrentRepeat] = useState(1);
+  const [isFocusing, setIsFocusing] = useState(nowIsFocus);
+  const [currentRepeat, setCurrentRepeat] = useState(nowRepeat);
   const [key, setKey] = useState(0); // 타이머를 재시작하기 위한 키
 
   // store에서 타이머 상태 가져오기
@@ -64,6 +74,7 @@ const PomodoroTimer = ({ focusTime, breakTime, repeatCount }: TimerProps) => {
     <CountdownCircleTimer
       key={key} // key 변경으로 컴포넌트 리셋
       isPlaying
+      initialRemainingTime={timerDuration - nowTimeDuration}
       duration={timerDuration}
       colors={
         isFocusing ? constants.COLORS.WORK_COLOR : constants.COLORS.REST_COLOR

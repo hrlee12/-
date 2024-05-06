@@ -3,6 +3,7 @@ import Button from '@/components/button';
 import * as constants from '@/components/timer/constants';
 import { timerSet } from '@/apis/pomodoro.ts';
 import { useState } from 'react';
+import useTimerStore from '@/stores/useTimerStore.ts';
 
 const Pomodoro = () => {
   const [concentrateTime, setConcentrateTime] = useState(0);
@@ -47,7 +48,15 @@ const Pomodoro = () => {
         relaxTime,
       );
     }
+    // 추후에는 response 없을 경우 표시되는 내용을 바꿔야 할지도? 현재는 404에러 발생.
     console.log(response);
+
+    useTimerStore.setState({
+      endPeriod,
+      concentrateTime,
+      relaxTime,
+      isTimerRunning: true, // 타이머가 시작됨
+    });
   };
 
   return (
