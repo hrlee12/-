@@ -5,13 +5,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatListResponseDto {
-    private String userId;
-    private String userNickname;
-    private String contents;
-    private String sendTime;
+
+    private List<MessageDto> chatMessages;
+
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MessageDto {
+        private Integer userId;
+        private String userNickname;
+        private String contents;
+        private String sendTime;
+    }
 }

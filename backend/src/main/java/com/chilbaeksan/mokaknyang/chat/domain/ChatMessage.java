@@ -1,4 +1,4 @@
-package com.chilbaeksan.mokaknyang.chat.dto;
+package com.chilbaeksan.mokaknyang.chat.domain;
 
 import jakarta.persistence.Id;
 import lombok.Builder;
@@ -14,8 +14,9 @@ public class ChatMessage {
     @Id
     private String id;
     @Indexed
-    private Integer groupId;
+    private Integer partyId;
     private Integer senderId;
-    private String content;
-    private String createdAt;
+    private String senderNickname;
+    private String contents;
+    private String sendTime;
 }
