@@ -1,10 +1,14 @@
 package com.chilbaeksan.mokaknyang.chat.controller;
 
+import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
 import com.chilbaeksan.mokaknyang.chat.dto.ChatListRequestDto;
 import com.chilbaeksan.mokaknyang.chat.dto.ChatListResponseDto;
 import com.chilbaeksan.mokaknyang.chat.domain.ChatMessage;
 import com.chilbaeksan.mokaknyang.chat.dto.ChatSendRequestDto;
 import com.chilbaeksan.mokaknyang.chat.service.ChatService;
+import com.chilbaeksan.mokaknyang.chat.service.RedisPublisher;
+import com.chilbaeksan.mokaknyang.exception.BaseException;
+import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
+    private final JwtUtil jwtUtil;
 
     @MessageMapping("/{partyId}")
     @SendTo("/sub/channel/{partyId}")
@@ -34,11 +39,14 @@ public class ChatController {
             ChatSendRequestDto requestDto,
             HttpServletRequest request
     ) {
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
         // 채팅 메시지를 전달하는 로직
         // '채팅' 토픽 구독자에게 전달
 
         // MongoDB에 채팅 메시지 저장
-        chatService.saveMessage(requestDto, partyId);
+        chatService.saveMessage(requestDto, userId, partyId);
     }
 
     @GetMapping("/{partyId}")
@@ -48,8 +56,11 @@ public class ChatController {
             ChatListRequestDto requestDto,
             HttpServletRequest request
     ) {
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
 
         Pageable pageable = PageRequest.of(requestDto.getPageNum(), requestDto.getPageSize());
+
         // 채팅 메시지 MongoDB에서 조회하는 로직 수행
         List<ChatMessage> result = chatService.getPartyMessages(pageable, partyId);
 

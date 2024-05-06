@@ -8,9 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
-@Document(collection = "chat_message")
+@Document(collection = "chat")
 public class ChatMessage {
-
     @Id
     private String id;
     @Indexed
