@@ -10,7 +10,7 @@ const Landing = () => {
       <div
         className='character-idle'
         id='clickable-area'
-        onClick={() => navigate('/group')}
+        onClick={() => navigate('/login')}
       ></div>
     </div>
   );

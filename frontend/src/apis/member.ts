@@ -21,9 +21,13 @@ export const postMyInfo = async () => {
 };
 
 // 회원 정보 수정
-export const patchMyInfo = async () => {
+export const patchMyInfo = async (data: {
+  memberCatName: string;
+  memberGoal: string;
+  titleId: number;
+}) => {
   try {
-    const response = await axiosInstance.patch('/member');
+    const response = await axiosInstance.patch('/member', data);
     return response.data;
   } catch (error) {
     console.log(error);
