@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
 import * as constants from '@/pages/group/constants.ts';
+import { useNavigate } from 'react-router-dom';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
@@ -10,32 +10,28 @@ import {
   groupDetail,
   updateGroup,
 } from '@/apis/group.ts';
-import { useNavigate } from 'react-router-dom';
-
-interface GroupProps {
-  partyId: number;
-  partyName: string;
-  partyGoal: string;
-  partyManagerId: number;
-}
+import { GroupMembers, GroupProps, UpdateGroupInfo } from '@/types/group';
 
 const GroupSetting = () => {
   const navigate = useNavigate();
   const [groupDetails, setGroupDetails] = useState<GroupProps>({
-    partyId: 0,
+    partyId: 6,
     partyName: '',
     partyGoal: '',
-    partyManagerId: 0,
+    partyManagerId: 7,
+    memberCatName: '',
+    partyManagerName: '',
   });
-  const [members, setMembers] = useState<string[]>([]);
+  const [members, setMembers] = useState<GroupMembers[]>([]);
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const detailData = await groupDetail(groupDetails.partyId);
-        const memberData = await getMembers(groupDetails.partyId);
-        setGroupDetails((prev) => ({ ...prev, ...detailData }));
+        const partyId = 7;
+        const detailData = await groupDetail(partyId);
+        const memberData = await getMembers(partyId);
+        setGroupDetails(detailData);
         setMembers(memberData);
       } catch (err) {
         console.error(err);
@@ -43,7 +39,7 @@ const GroupSetting = () => {
     };
 
     fetchDetails();
-  }, [refreshFlag, groupDetails.partyId]);
+  }, [refreshFlag]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -57,12 +53,14 @@ const GroupSetting = () => {
 
   const changeGroupDetails = async () => {
     try {
-      await updateGroup(
-        groupDetails.partyId,
-        groupDetails.partyName,
-        groupDetails.partyGoal,
-        groupDetails.partyManagerId,
-      );
+      const { partyId, partyName, partyGoal, partyManagerId } = groupDetails;
+      const updateInfo: UpdateGroupInfo = {
+        partyId,
+        partyName,
+        partyGoal,
+        partyManagerId,
+      };
+      await updateGroup(updateInfo);
       setRefreshFlag(!refreshFlag);
     } catch (err) {
       console.error(err);
@@ -77,6 +75,15 @@ const GroupSetting = () => {
       console.error(err);
     }
   };
+
+  const renderSaveButton = () => (
+    <Button
+      text={'저장'}
+      size={'small'}
+      color={'blue'}
+      onClick={changeGroupDetails}
+    />
+  );
 
   return (
     <BasicFrame>
@@ -93,21 +100,16 @@ const GroupSetting = () => {
           <select
             className={'w-60 h-10 rounded bg-groupColor'}
             name='partyManagerId'
-            value={groupDetails.partyManagerId}
+            // value={groupDetails.partyManagerId}
             onChange={handleChange}
           >
-            {members.map((member) => (
-              <option key={member.id} value={member.id}>
-                {member.name}
-              </option>
-            ))}
+            {/*{members.map((member, index) => (*/}
+            {/*  <option key={index} value={member.memberId}>*/}
+            {/*    {member.name}*/}
+            {/*  </option>*/}
+            {/*))}*/}
           </select>
-          <Button
-            text={'저장'}
-            size={'small'}
-            color={'blue'}
-            onClick={changeGroupDetails}
-          />
+          {renderSaveButton()}
         </div>
       </div>
       <div className='font-dnf text-2xl pl-9 pt-1'>
@@ -118,16 +120,11 @@ const GroupSetting = () => {
           name='partyName'
           size={'setting'}
           type={'text'}
-          value={groupDetails.partyName}
+          // value={groupDetails.partyName}
           placeholder={''}
           onChange={handleChange}
         />
-        <Button
-          text={'저장'}
-          size={'small'}
-          color={'blue'}
-          onClick={changeGroupDetails}
-        />
+        {renderSaveButton()}
       </div>
       <div className={'pl-9 pt-3'}>
         <div className='font-dnf text-2xl'>
@@ -137,16 +134,11 @@ const GroupSetting = () => {
           name='partyGoal'
           size={'setting'}
           type={'text'}
-          value={groupDetails.partyGoal}
+          // value={groupDetails.partyGoal}
           placeholder={''}
           onChange={handleChange}
         />
-        <Button
-          text={'저장'}
-          size={'small'}
-          color={'blue'}
-          onClick={changeGroupDetails}
-        />
+        {renderSaveButton()}
       </div>
       <Button
         text={'그룹 삭제'}

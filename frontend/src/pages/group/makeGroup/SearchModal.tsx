@@ -6,12 +6,12 @@ interface ModalProps {
   id: number;
   loginId: string;
   onClose: () => void;
-  addMember: (id: number, loginId: string) => void;
+  addMember: (loginId: string) => void;
 }
 
-const SearchModal = ({ id, loginId, onClose, addMember }: ModalProps) => {
+const SearchModal = ({ loginId, onClose, addMember }: ModalProps) => {
   const handleAddClick = () => {
-    addMember(id, loginId);
+    addMember(loginId);
     onClose();
   };
 

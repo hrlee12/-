@@ -10,8 +10,7 @@ import SearchModal from '@/pages/group/makeGroup/SearchModal.tsx';
 import { getSearchFriend } from '@/apis/member.ts';
 
 interface Member {
-  id: number;
-  loginId: string;
+  memberLoginId: string;
 }
 
 const MakeGroupPage = () => {
@@ -39,13 +38,12 @@ const MakeGroupPage = () => {
     setModalOpen(true);
   };
 
-  const addPartyMember = (id: number, loginId: string) => {
+  const addPartyMember = (memberLoginId: string) => {
     setPartyMembers((prev) => {
-      const newMembers = [...prev, { id, loginId }];
+      const newMembers = [...prev, { memberLoginId }];
       setMemberCount(newMembers.length);
       return newMembers;
     });
-    console.log(partyMembers);
   };
 
   const handleCloseModal = () => {
@@ -55,13 +53,12 @@ const MakeGroupPage = () => {
   const clickMakeGroup = async () => {
     const groupInfo = {
       partyName: partyName,
-      partyMessage: partyMessage,
-      memberCount: memberCount,
-      partyManagerId: 1, // 후에 변경
+      partyInviteMessage: partyMessage,
+      partyParticipateNumber: memberCount,
+      partyMembers: partyMembers,
     };
     try {
-      const response = await makeGroup(groupInfo);
-      console.log('그룹 생성 성공', response);
+      await makeGroup(groupInfo);
     } catch (error) {
       console.error('그룹 생성 실패', error);
     }
@@ -134,8 +131,11 @@ const MakeGroupPage = () => {
           </div>
           <div className={'pl-5 grid grid-cols-2 grid-rows-3 gap-1'}>
             {partyMembers.map((member) => (
-              <div key={member.id} className={'font-neo text-xl pt-1'}>
-                {member.loginId}
+              <div
+                key={member.memberLoginId}
+                className={'font-neo text-xl pt-1'}
+              >
+                {member.memberLoginId}
               </div>
             ))}
           </div>

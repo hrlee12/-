@@ -1,16 +1,11 @@
 import { axiosInstance } from '@/apis/lib/axios.ts';
 import { MakeGroupInfo, UpdateGroupInfo } from '@/types/group';
+import { useAuthStore } from '@/stores/useAuthStore.ts';
 
 // 그룹 생성
 export const makeGroup = async (MakeGroupInfo: MakeGroupInfo) => {
   try {
-    const response = await axiosInstance.post('/party', {
-      partyName: MakeGroupInfo.partyName,
-      partyInviteMessage: MakeGroupInfo.partyMessage,
-      partyMaxNumber: 6,
-      partyParticipateNumber: MakeGroupInfo.memberCount,
-      partyManagerId: MakeGroupInfo.partyManagerId,
-    });
+    const response = await axiosInstance.post('/party', MakeGroupInfo);
     return response.data;
   } catch (err) {
     console.error(err);
@@ -30,8 +25,11 @@ export const inviteMember = async (memberId: number) => {
 
 // 그룹 초대 수락
 export const acceptInvite = async (partyId: number) => {
+  const memberId = useAuthStore.getState().accessToken;
   try {
-    const response = await axiosInstance.post(`/party/${partyId}/accept`);
+    const response = await axiosInstance.post(`/party/${partyId}/accept`, {
+      memberId,
+    });
     return response.data;
   } catch (err) {
     console.error(err);
@@ -60,7 +58,7 @@ export const groupMessageList = async () => {
 
 // 가입 그룹 조회
 
-// 그룹 삭제 (partyId 필요없나?)
+//try 그룹 삭제 (partyId 필요없나?)
 export const deleteGroup = async () => {
   try {
     await axiosInstance.delete(`/party`);

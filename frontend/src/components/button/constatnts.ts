@@ -23,6 +23,12 @@ export const BUTTON_SIZE = {
     fontSize: '18px',
     padding: '8px',
   },
+  alarm: {
+    width: '40px',
+    height: '30px',
+    fontSize: '14px',
+    padding: '6px',
+  },
 } as const;
 
 export const BUTTON_TEXT_COLOR = 'white';
