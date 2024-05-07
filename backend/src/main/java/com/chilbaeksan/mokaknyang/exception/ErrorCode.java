@@ -64,6 +64,7 @@ public enum ErrorCode {
 
     //멤버 파티 관련 에러
     MEMBER_PARTY_NOT_FOUND(404, "파티를 수락한 멤버를 찾을 수 없습니다."),
+    MEMBER_PARTY_UNAUTHORIZATION(401,"해당 맴버가 해당 파티에 접근권한이 없습니다."),
 
     //초대 관련 에러
     INVITATION_NOT_FOUND(404, "초대장이 존재하지 않습니다."),

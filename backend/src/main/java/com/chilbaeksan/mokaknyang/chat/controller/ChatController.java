@@ -45,6 +45,7 @@ public class ChatController {
         // 채팅 메시지를 전달하는 로직
         // '채팅' 토픽 구독자에게 전달
 
+
         // MongoDB에 채팅 메시지 저장
         chatService.saveMessage(requestDto, userId, partyId);
     }
@@ -62,7 +63,7 @@ public class ChatController {
         Pageable pageable = PageRequest.of(requestDto.getPageNum(), requestDto.getPageSize());
 
         // 채팅 메시지 MongoDB에서 조회하는 로직 수행
-        List<ChatMessage> result = chatService.getPartyMessages(pageable, partyId);
+        List<ChatMessage> result = chatService.getPartyMessages(pageable, userId, partyId);
 
         //각각 response dto 매핑 하기
         ChatListResponseDto responseDto = ChatListResponseDto.builder()

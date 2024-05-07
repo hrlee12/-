@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ChatService  {
     void saveMessage(ChatSendRequestDto chatSendRequestDto, Integer memberId, Integer partyId);
-    List<ChatMessage> getPartyMessages(Pageable pageable, Integer partyId);
+    List<ChatMessage> getPartyMessages(Pageable pageable, Integer memberId,  Integer partyId);
 }
