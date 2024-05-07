@@ -18,4 +18,4 @@ export const GROUP_SETTING = {
 
 export const MAKE_GROUP = '그룹 초대';
 
-export const GROUP_INVITE_MESSAGE = '친구를 그룹에 초대하시겠습니까?';
+export const GROUP_INVITE_MESSAGE = '친구를 그룹에 추가하시겠습니까?';

@@ -2,8 +2,8 @@
 import { create } from 'zustand';
 
 interface AuthState {
-  accessToken: string | null;
-  setAccessToken: (accessToken: string | null) => void;
+  accessToken: number | null;
+  setAccessToken: (accessToken: number | null) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({

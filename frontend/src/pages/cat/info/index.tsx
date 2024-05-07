@@ -93,7 +93,7 @@ const MyCatInfo = () => {
           />
         </div>
       </div>
-      <div className={'font-dnf text-2xl pl-20'}>{constants.MY_NAME}</div>
+      <div className={'font-dnf text-2xl pl-20'}>{constants.CAT_NAME}</div>
       <div className={'pl-20'}>
         <InputBox
           name={'나의 이름'}
@@ -110,7 +110,7 @@ const MyCatInfo = () => {
           onClick={() => updateMyInfo()}
         />
       </div>
-      <div className={'font-dnf text-2xl pl-20'}>{constants.MY_TITLE}</div>
+      <div className={'font-dnf text-2xl pl-20'}>{constants.TITLE_NAME}</div>
       <div className={'pl-20'}>
         <select
           className={'w-60 h-10 rounded bg-frameColor font-neo pl-5 text-xl'}
