@@ -5,9 +5,9 @@ export function calculateTimerValues(
   repeatCount: number,
   currentTime: number,
 ) {
-  const secGap = Math.floor((currentTime - storedTime) / 1000); // 현재 시간과 저장된 시간 사이의 차이(초)
-  const cycleTime = focusTime * 60 + breakTime * 60; // 집중 시간과 쉬는 시간의 합
-  const totalTime = cycleTime * repeatCount - breakTime * 60; // 마지막 쉬는 시간은 제외
+  const secGap = Math.floor((currentTime - storedTime) / 1000);
+  const cycleTime = focusTime * 60 + breakTime * 60;
+  const totalTime = cycleTime * repeatCount - breakTime * 60;
 
   let nowIsFocus = false;
   let nowTimeDuration = 0;
@@ -37,7 +37,6 @@ export function calculateTimerValues(
       nowRepeat = cycleCompleted * 2 + 2;
     }
   }
-  console.log(nowIsFocus + ' ' + nowTimeDuration + ' ' + nowRepeat);
 
   return { nowIsFocus, nowTimeDuration, nowRepeat };
 }

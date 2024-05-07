@@ -20,34 +20,19 @@ const GroupPreview = () => {
 
   const storedTime = useTimerStore.getState().startTime;
   const focusTime = useTimerStore.getState().concentrateTime;
-  const breakTime = useTimerStore.getState().concentrateTime;
+  const breakTime = useTimerStore.getState().relaxTime;
   const repeatCount = useTimerStore.getState().endPeriod;
 
   useEffect(() => {
-    // setStoredTime(useTimerStore.getState().startTime);
-    // setBreakTime(useTimerStore.getState().relaxTime);
-    // setFocusTime(useTimerStore.getState().concentrateTime);
-    // setRepeatCount(useTimerStore.getState().endPeriod);
     const currentTime = Date.now();
-    console.log(Math.floor((currentTime - storedTime) / 1000));
     const { nowIsFocus, nowTimeDuration, nowRepeat } = calculateTimerValues(
       storedTime,
       focusTime,
       breakTime,
       repeatCount,
-      // useTimerStore.getState().startTime,
-      // useTimerStore.getState().concentrateTime,
-      // useTimerStore.getState().relaxTime,
-      // useTimerStore.getState().endPeriod,
+
       currentTime,
     );
-    // console.log(
-    //   nowIsFocus +
-    //     '<- 이건 집중, 오른쪽은 Duration ' +
-    //     nowTimeDuration +
-    //     '  오른쪽은 반복 횟수' +
-    //     nowRepeat,
-    // );
     setNowIsFocus(nowIsFocus);
     setNowTimeDuration(nowTimeDuration);
     setNowRepeat(nowRepeat);
@@ -78,7 +63,7 @@ const GroupPreview = () => {
         </div>
       )}
       <div
-        className='character-idle fixed right-[10px] bottom-[10px]'
+        className='character-idle fixed right-[0px] bottom-[0px]'
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => navigate('/previewAlone')}

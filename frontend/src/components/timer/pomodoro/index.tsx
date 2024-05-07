@@ -61,7 +61,6 @@ const Pomodoro = () => {
       endPeriod,
       concentrateTime,
       relaxTime,
-      // isTimerRunning: true, // 타이머가 시작됨
     });
 
     navigate('/previewAlone');

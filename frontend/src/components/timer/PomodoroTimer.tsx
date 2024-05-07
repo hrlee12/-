@@ -26,7 +26,7 @@ const PomodoroTimer = ({
 
   // 타이머가 완료될 때 호출될 함수
   const handleComplete = () => {
-    console.log(currentRepeat);
+    // console.log(currentRepeat);
     // 모든 반복이 완료되었는지 확인
     if (currentRepeat === repeatCount * 2 - 1) {
       // 모든 작업이 완료되면 추가 작업을 수행할 수 있습니다.
