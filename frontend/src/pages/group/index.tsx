@@ -51,12 +51,12 @@ const GroupPage = () => {
           </pre>
         </div>
 
-        <div className='fixed bottom-12 right-32'>
+        <div className='fixed bottom-28 right-36'>
           <Button
             text={'혼자하기'}
             size={'small'}
             color={'navy'}
-            onClick={() => navigate('/info')}
+            onClick={() => navigate('/catSetting')}
           />
         </div>
       </div>
