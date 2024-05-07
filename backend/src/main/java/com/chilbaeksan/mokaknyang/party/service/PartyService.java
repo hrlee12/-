@@ -108,6 +108,10 @@ public class PartyService {
             if(party.getIsDeleted())
                 continue;
 
+            //초대 기간이 만료되었으면 가져오지 않는다
+            if((invitation.getExpireTime()).isBefore(LocalDateTime.now()))
+                continue;
+
             Member manager = invitation.getParty().getMember();
 
             inviteParties.add(
@@ -116,7 +120,7 @@ public class PartyService {
                             .memberName(manager.getCatName())
                             .partyId(party.getPartyId())
                             .partyName(party.getName())
-                            .expireTime(invitation.getCreatedAt().plus(30, ChronoUnit.MINUTES))
+                            .expireTime(invitation.getExpireTime())
                             .build()
             );
         }
