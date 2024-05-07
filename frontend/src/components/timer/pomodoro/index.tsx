@@ -4,11 +4,14 @@ import * as constants from '@/components/timer/constants';
 import { timerSet } from '@/apis/pomodoro.ts';
 import { useState } from 'react';
 import useTimerStore from '@/stores/useTimerStore.ts';
+import { useNavigate } from 'react-router-dom';
 
 const Pomodoro = () => {
   const [concentrateTime, setConcentrateTime] = useState(0);
   const [relaxTime, setRelaxTime] = useState(0);
   const [endPeriod, setEndPeriod] = useState(0);
+
+  const navigate = useNavigate();
 
   function formatTime(date: Date) {
     const yyyy = date.getFullYear();
@@ -28,12 +31,12 @@ const Pomodoro = () => {
     groupId?: number,
   ) => {
     const type: string = ''; // 수정 필요
-    const startTime: string = formatTime(new Date());
+    const startTime2: string = formatTime(new Date());
     let response;
     if (groupId) {
       response = await timerSet(
         type,
-        startTime,
+        startTime2,
         endPeriod,
         concentrateTime,
         relaxTime,
@@ -42,7 +45,7 @@ const Pomodoro = () => {
     } else if (!groupId) {
       response = await timerSet(
         type,
-        startTime,
+        startTime2,
         endPeriod,
         concentrateTime,
         relaxTime,
@@ -51,12 +54,17 @@ const Pomodoro = () => {
     // 추후에는 response 없을 경우 표시되는 내용을 바꿔야 할지도? 현재는 404에러 발생.
     console.log(response);
 
+    const startTime = Date.now();
+
     useTimerStore.setState({
+      startTime,
       endPeriod,
       concentrateTime,
       relaxTime,
-      isTimerRunning: true, // 타이머가 시작됨
+      // isTimerRunning: true, // 타이머가 시작됨
     });
+
+    navigate('/previewAlone');
   };
 
   return (

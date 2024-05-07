@@ -13,6 +13,8 @@ import MyCatSetting from '@/pages/cat/Setting';
 import MyCatInfo from '@/pages/cat/info';
 import MyCat from '@/pages/cat';
 import Drawing from '@/pages/drawing';
+import AlonePreview from '@/pages/preview/alonePreview';
+import GroupPreview from '@/pages/preview/groupPreview';
 // import ScreenShare from '@/pages/screenshare';
 
 const RouterComponent = () => {
@@ -34,6 +36,8 @@ const RouterComponent = () => {
         <Route path={'/catInfo'} element={<MyCatInfo />} />
         <Route path={'/catSetting'} element={<MyCatSetting />} />
         <Route path={'/drawing'} element={<Drawing />} />
+        <Route path={'/previewAlone'} element={<AlonePreview />} />
+        <Route path={'/previewTwo'} element={<GroupPreview />} />
       </Routes>
     </HashRouter>
   );
