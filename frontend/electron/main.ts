@@ -96,5 +96,9 @@ app.whenReady().then(() => {
 
 ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
   const win = BrowserWindow.fromWebContents(event.sender);
-  win.setIgnoreMouseEvents(ignore, options);
+  if (win) {
+    win.setIgnoreMouseEvents(ignore, options);
+  } else {
+    console.error('win is null');
+  }
 });
