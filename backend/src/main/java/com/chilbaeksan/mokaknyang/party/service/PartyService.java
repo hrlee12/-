@@ -63,6 +63,12 @@ public class PartyService {
         Party findParty = partyRepository.findByPartyId(saveParty.getPartyId())
                 .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
 
+        //방장은 party를 생성하면 무조건 party에 속해있는 것이다.
+        memberPartyRepository.save(MemberParty.builder()
+                .member(managerMember)
+                .party(findParty)
+                .build());
+
         List<PartyMember> partyMembers = partyRegist.getPartyMembers();
         for(PartyMember partyMember : partyMembers){
             Member findMember = memberRepository.findByLoginId(partyMember.getMemberLoginId())
@@ -102,6 +108,10 @@ public class PartyService {
             if(party.getIsDeleted())
                 continue;
 
+            //초대 기간이 만료되었으면 가져오지 않는다
+            if((invitation.getExpireTime()).isBefore(LocalDateTime.now()))
+                continue;
+
             Member manager = invitation.getParty().getMember();
 
             inviteParties.add(
@@ -110,7 +120,7 @@ public class PartyService {
                             .memberName(manager.getCatName())
                             .partyId(party.getPartyId())
                             .partyName(party.getName())
-                            .expireTime(invitation.getCreatedAt().plus(30, ChronoUnit.MINUTES))
+                            .expireTime(invitation.getExpireTime())
                             .build()
             );
         }
