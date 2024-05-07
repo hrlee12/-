@@ -8,7 +8,6 @@ import lombok.*;
 @Builder
 public class ChatSendRequestDto {
     private Integer partyId;
-    private Integer senderId;
     private String content;
     private MessageType type;
 }

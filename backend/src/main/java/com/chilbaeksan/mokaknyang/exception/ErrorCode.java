@@ -40,6 +40,8 @@ public enum ErrorCode {
     AUTH_LOGOUT_NOT_FOUND_MEMBER(404, "사용자 정보를 찾을 수 없습니다."),
 
     // 채팅 관련 에러
+    CHAT_BAD_REQUEST(400, "채팅전송이 잘못된 요청 형식 입니다."),
+    CHAT_UNAUTHORIZED(401, "해당 그룹에 대한 채팅 권한이 없습니다."),
 
     // 공격 관련 에러
 

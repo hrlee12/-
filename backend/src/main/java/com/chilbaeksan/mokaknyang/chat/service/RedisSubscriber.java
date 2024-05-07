@@ -1,6 +1,7 @@
 package com.chilbaeksan.mokaknyang.chat.service;
 
 import com.chilbaeksan.mokaknyang.chat.dto.ChatSendRequestDto;
+import com.chilbaeksan.mokaknyang.chat.dto.PublishMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,10 +28,8 @@ public class RedisSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             String publishMessage = (String) redisTemplate.getValueSerializer().deserialize(message.getBody());
-            ChatSendRequestDto chatMessageRequestDto = objectMapper.readValue(publishMessage, ChatSendRequestDto.class);
-            messageSendingOperations.convertAndSend("/sub/chats/" + chatMessageRequestDto.getPartyId(), chatMessageRequestDto);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
+            PublishMessage pubMsg = objectMapper.readValue(publishMessage, PublishMessage.class);
+            messageSendingOperations.convertAndSend("/sub/chat/" + pubMsg.getPartyId(), pubMsg);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

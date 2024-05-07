@@ -11,6 +11,7 @@ import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class ChatController {
 
         // 채팅 메시지를 전달하는 로직
         // '채팅' 토픽 구독자에게 전달
-
+        chatService.publishMessage(requestDto, userId);
 
         // MongoDB에 채팅 메시지 저장
         chatService.saveMessage(requestDto, userId, partyId);
@@ -63,11 +64,11 @@ public class ChatController {
         Pageable pageable = PageRequest.of(requestDto.getPageNum(), requestDto.getPageSize());
 
         // 채팅 메시지 MongoDB에서 조회하는 로직 수행
-        List<ChatMessage> result = chatService.getPartyMessages(pageable, userId, partyId);
+        Page<ChatMessage> result = chatService.getPartyMessages(pageable, userId, partyId);
 
         //각각 response dto 매핑 하기
         ChatListResponseDto responseDto = ChatListResponseDto.builder()
-                .chatMessages(result.stream().map(
+                .chatMessages(result.getContent().stream().map(
                         m -> ChatListResponseDto.MessageDto.builder()
                                 .userId(m.getSenderId())
                                 .userNickname(m.getSenderNickname())
