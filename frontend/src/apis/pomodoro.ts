@@ -1,7 +1,6 @@
 import { axiosInstance } from '@/apis/lib/axios.ts';
 
 export const timerSet = async (
-  type: string,
   startTime: string,
   endPeriod: number,
   concentrateTime: number,
@@ -12,7 +11,7 @@ export const timerSet = async (
     let response;
     if (groupId) {
       response = await axiosInstance.post('/pomodoro', {
-        type: type,
+        type: 'group',
         startTime: startTime,
         endPeriod: endPeriod,
         concentrateTime: concentrateTime,
@@ -21,7 +20,7 @@ export const timerSet = async (
       });
     } else if (!groupId) {
       response = await axiosInstance.post('/pomodoro', {
-        type: type,
+        type: 'personal',
         startTime: startTime,
         endPeriod: endPeriod,
         concentrateTime: concentrateTime,

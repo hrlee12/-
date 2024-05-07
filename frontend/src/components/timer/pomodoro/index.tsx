@@ -30,12 +30,10 @@ const Pomodoro = () => {
     relaxTime: number,
     groupId?: number,
   ) => {
-    const type: string = ''; // 수정 필요
     const startTime2: string = formatTime(new Date());
     let response;
     if (groupId) {
       response = await timerSet(
-        type,
         startTime2,
         endPeriod,
         concentrateTime,
@@ -44,7 +42,6 @@ const Pomodoro = () => {
       );
     } else if (!groupId) {
       response = await timerSet(
-        type,
         startTime2,
         endPeriod,
         concentrateTime,
