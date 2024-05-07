@@ -63,6 +63,12 @@ public class PartyService {
         Party findParty = partyRepository.findByPartyId(saveParty.getPartyId())
                 .orElseThrow(() -> new BaseException(ErrorCode.PARTY_NOT_FOUND));
 
+        //방장은 party를 생성하면 무조건 party에 속해있는 것이다.
+        memberPartyRepository.save(MemberParty.builder()
+                .member(managerMember)
+                .party(findParty)
+                .build());
+
         List<PartyMember> partyMembers = partyRegist.getPartyMembers();
         for(PartyMember partyMember : partyMembers){
             Member findMember = memberRepository.findByLoginId(partyMember.getMemberLoginId())
