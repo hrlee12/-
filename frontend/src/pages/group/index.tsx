@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import BasicFrame from '@/components/frame/basicFrame';
 import { useNavigate } from 'react-router-dom';
 import { FaMessage, FaPlus } from 'react-icons/fa6';
@@ -7,11 +7,10 @@ import Button from '@/components/button';
 import GroupMessage from '@/pages/group/GroupMessage.tsx';
 import { InviteMessage } from '@/types/group';
 import { groupMessageList } from '@/apis/group.ts';
-import Group from '@/pages/group/Group.tsx';
 
 const GroupPage = () => {
   const navigate = useNavigate();
-  const [groups, setGroups] = useState([]);
+  const [groups] = useState([]);
   const [messages, setMessages] = useState<InviteMessage[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -42,17 +41,17 @@ const GroupPage = () => {
               <FaPlus
                 size={'25'}
                 className='cursor-pointer'
-                onClick={() => navigate('/groupSetting')}
+                onClick={() => navigate('/makeGroup')}
               />
             </div>
           </div>
-          {groups.length > 0 && (
-            <div id='group-container' className='grid grid-cols-2 p-1'>
-              {groups.map((group, index) => (
-                <Group key={index} group={group} /> // Group 컴포넌트에 group 객체 전달
-              ))}
-            </div>
-          )}
+          {/*{groups.length > 0 && (*/}
+          {/*  <div id='group-container' className='grid grid-cols-2 p-1'>*/}
+          {/*    {groups.map((group, index) => (*/}
+          {/*      <Group key={index} group={group} /> // Group 컴포넌트에 group 객체 전달*/}
+          {/*    ))}*/}
+          {/*  </div>*/}
+          {/*)}*/}
           {showModal && (
             <GroupMessage messages={messages} onClose={closeModal} />
           )}
@@ -67,7 +66,7 @@ const GroupPage = () => {
             text={'혼자하기'}
             size={'small'}
             color={'navy'}
-            onClick={() => navigate('/catInfo')}
+            onClick={() => navigate('/catSetting')}
           />
         </div>
       </div>

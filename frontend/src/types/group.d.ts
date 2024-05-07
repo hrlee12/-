@@ -26,9 +26,11 @@ export interface GroupProps {
   partyManagerId: number;
   memberCatName: string;
   partyManagerName: string;
+  partyMembers: GroupMembers[];
 }
 
 export interface GroupMembers {
+  partyManagerName: string;
   memberId: number;
-  name: string;
+  memberCatName: string;
 }

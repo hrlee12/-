@@ -12,17 +12,6 @@ export const makeGroup = async (MakeGroupInfo: MakeGroupInfo) => {
   }
 };
 
-// 그룹 초대
-export const inviteMember = async (memberId: number) => {
-  try {
-    // memberId의 닉네임을 불러올 수 있도록 호출
-    const response = await axiosInstance.post(`/party/${memberId}/invite`);
-    return response.data;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 // 그룹 초대 수락
 export const acceptInvite = async (partyId: number) => {
   const memberId = useAuthStore.getState().accessToken;
@@ -58,7 +47,7 @@ export const groupMessageList = async () => {
 
 // 가입 그룹 조회
 
-//try 그룹 삭제 (partyId 필요없나?)
+//그룹 삭제 (partyId 필요없나?)
 export const deleteGroup = async () => {
   try {
     await axiosInstance.delete(`/party`);

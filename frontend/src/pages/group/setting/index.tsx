@@ -8,36 +8,42 @@ import {
   deleteGroup,
   getMembers,
   groupDetail,
+  leaveGroup,
   updateGroup,
 } from '@/apis/group.ts';
-import { GroupMembers, GroupProps, UpdateGroupInfo } from '@/types/group';
+import { GroupProps, UpdateGroupInfo } from '@/types/group';
+import { useAuthStore } from '@/stores/useAuthStore.ts';
 
 const GroupSetting = () => {
   const navigate = useNavigate();
+  const myId = useAuthStore.getState().accessToken;
+
   const [groupDetails, setGroupDetails] = useState<GroupProps>({
-    partyId: 6,
+    partyId: 9,
     partyName: '',
     partyGoal: '',
     partyManagerId: 7,
     memberCatName: '',
     partyManagerName: '',
+    partyMembers: [],
   });
-  const [members, setMembers] = useState<GroupMembers[]>([]);
+
   const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const partyId = 7;
+        const partyId = 9;
         const detailData = await groupDetail(partyId);
-        const memberData = await getMembers(partyId);
+        const members = await getMembers(9);
         setGroupDetails(detailData);
-        setMembers(memberData);
+        console.log(members);
       } catch (err) {
         console.error(err);
       }
     };
 
+    console.log(myId);
     fetchDetails();
   }, [refreshFlag]);
 
@@ -47,15 +53,25 @@ const GroupSetting = () => {
     const { name, value } = event.target;
     setGroupDetails((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'partyManagerId' ? parseInt(value, 10) : value,
     }));
   };
 
+  const renderSaveButton = () => (
+    <Button
+      text={'저장'}
+      size={'small'}
+      color={'blue'}
+      onClick={changeGroupDetails}
+    />
+  );
+
   const changeGroupDetails = async () => {
     try {
-      const { partyId, partyName, partyGoal, partyManagerId } = groupDetails;
+      const { partyName, partyGoal, partyManagerId } = groupDetails;
+      console.log(groupDetails);
       const updateInfo: UpdateGroupInfo = {
-        partyId,
+        partyId: 9,
         partyName,
         partyGoal,
         partyManagerId,
@@ -76,14 +92,38 @@ const GroupSetting = () => {
     }
   };
 
-  const renderSaveButton = () => (
-    <Button
-      text={'저장'}
-      size={'small'}
-      color={'blue'}
-      onClick={changeGroupDetails}
-    />
-  );
+  const handleOutGroup = async () => {
+    try {
+      await leaveGroup(9);
+      navigate('/group');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const renderActionButton = () => {
+    if (myId === groupDetails.partyManagerId) {
+      return (
+        <Button
+          text={'그룹 삭제'}
+          addStyle={`fixed left-[275px] top-5`}
+          size={'small'}
+          color={'gray'}
+          onClick={handleDeleteGroup}
+        />
+      );
+    } else {
+      return (
+        <Button
+          text={'그룹 탈퇴'}
+          addStyle={`fixed left-[275px] top-5`}
+          size={'small'}
+          color={'gray'}
+          onClick={handleOutGroup}
+        />
+      );
+    }
+  };
 
   return (
     <BasicFrame>
@@ -98,16 +138,17 @@ const GroupSetting = () => {
         </div>
         <div className={'pl-9'}>
           <select
-            className={'w-60 h-10 rounded bg-groupColor'}
+            className={'font-neo text-2xl pl-2 w-60 h-10 rounded bg-groupColor'}
             name='partyManagerId'
-            // value={groupDetails.partyManagerId}
+            value={groupDetails.partyManagerId}
             onChange={handleChange}
+            disabled={myId !== groupDetails.partyManagerId}
           >
-            {/*{members.map((member, index) => (*/}
-            {/*  <option key={index} value={member.memberId}>*/}
-            {/*    {member.name}*/}
-            {/*  </option>*/}
-            {/*))}*/}
+            {groupDetails.partyMembers.map((member, index) => (
+              <option key={index} value={member.memberId}>
+                {member.memberCatName}
+              </option>
+            ))}
           </select>
           {renderSaveButton()}
         </div>
@@ -120,9 +161,10 @@ const GroupSetting = () => {
           name='partyName'
           size={'setting'}
           type={'text'}
-          // value={groupDetails.partyName}
+          value={groupDetails.partyName}
           placeholder={''}
           onChange={handleChange}
+          addStyle={'text-xl'}
         />
         {renderSaveButton()}
       </div>
@@ -134,19 +176,14 @@ const GroupSetting = () => {
           name='partyGoal'
           size={'setting'}
           type={'text'}
-          // value={groupDetails.partyGoal}
+          value={groupDetails.partyGoal}
           placeholder={''}
           onChange={handleChange}
+          addStyle={'text-xl'}
         />
         {renderSaveButton()}
       </div>
-      <Button
-        text={'그룹 삭제'}
-        addStyle={`fixed left-[275px] top-5`}
-        size={'small'}
-        color={'gray'}
-        onClick={handleDeleteGroup}
-      />
+      {renderActionButton()}
     </BasicFrame>
   );
 };
