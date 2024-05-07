@@ -7,7 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ChatSendRequestDto {
-    private Integer partyId;
-    private String content;
-    private MessageType type;
+    private String contents;
 }

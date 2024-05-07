@@ -34,18 +34,16 @@ public class ChatController {
     private final JwtUtil jwtUtil;
 
     @MessageMapping("/{partyId}")
-    @SendTo("/sub/channel/{partyId}")
     public void sendMessage(
             @DestinationVariable("partyId") Integer partyId,
-            ChatSendRequestDto requestDto,
-            HttpServletRequest request
+            ChatSendRequestDto requestDto
     ) {
-        Integer userId = jwtUtil.getUserId(request)
-                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+        //TODO : userId 가져오는 로직
+        Integer userId = 1;
 
         // 채팅 메시지를 전달하는 로직
         // '채팅' 토픽 구독자에게 전달
-        chatService.publishMessage(requestDto, userId);
+        chatService.publishMessage(requestDto, userId, partyId);
 
         // MongoDB에 채팅 메시지 저장
         chatService.saveMessage(requestDto, userId, partyId);

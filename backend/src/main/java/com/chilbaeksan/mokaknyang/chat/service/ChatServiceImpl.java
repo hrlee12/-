@@ -37,18 +37,18 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public void publishMessage(ChatSendRequestDto chatSendRequestDto, Integer memberId) {
+    public void publishMessage(ChatSendRequestDto chatSendRequestDto, Integer memberId, Integer partyId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
         PublishMessage message = PublishMessage.builder()
-                .partyId(chatSendRequestDto.getPartyId())
+                .partyId(partyId)
                 .senderId(memberId)
                 .sendNickname(member.getNickname())
-                .contents(chatSendRequestDto.getContent())
+                .contents(chatSendRequestDto.getContents())
                 .sendTime(LocalDateTime.now().toString())
                 .build();
         
-        redisPublisher.publish(getTopic(chatSendRequestDto.getPartyId()), message);
+        redisPublisher.publish(getTopic(partyId), message);
         
         // TODO: Redis에서 전송 즉시 캐싱하기
     }
@@ -68,7 +68,7 @@ public class ChatServiceImpl implements ChatService{
                     .partyId(partyId)
                     .senderId(memberId)
                     .senderNickname(member.getNickname())
-                    .contents(chatSendRequestDto.getContent())
+                    .contents(chatSendRequestDto.getContents())
                     .sendTime(LocalDateTime.now().toString())
                     .build();
         }catch(Exception e){
