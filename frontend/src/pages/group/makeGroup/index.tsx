@@ -1,24 +1,67 @@
-import BasicFrame from '@/components/frame/basicFrame';
+import React, { useState } from 'react';
+
 import * as constants from '@/pages/group/constants';
+import { makeGroup } from '@/apis/group.ts';
+
+import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
-import { useState } from 'react';
 import SearchModal from '@/pages/group/makeGroup/SearchModal.tsx';
+import { getSearchFriend } from '@/apis/member.ts';
+
+interface Member {
+  memberLoginId: string;
+}
 
 const MakeGroupPage = () => {
-  const [id, setId] = useState<string>('');
+  const [id, setId] = useState<number>(0);
+  const [loginId, setLoginId] = useState<string>('');
+  const [partyName, setPartyName] = useState<string>('');
+  const [partyMessage, setPartyMessage] = useState<string>('');
+  const [memberCount, setMemberCount] = useState<number>(0);
+  const [partyMembers, setPartyMembers] = useState<Member[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const handleSearchClick = () => {
+  const changeLoginId = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginId(event.target.value);
+  };
+  const changePartyMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPartyMessage(event.target.value);
+  };
+  const changePartyName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPartyName(event.target.value);
+  };
+
+  const handleSearchClick = async (loginId: string) => {
+    const response = await getSearchFriend(loginId);
+    setId(response.memberId);
     setModalOpen(true);
   };
 
-  const handleChangeId = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setId(event.target.value);
+  const addPartyMember = (memberLoginId: string) => {
+    setPartyMembers((prev) => {
+      const newMembers = [...prev, { memberLoginId }];
+      setMemberCount(newMembers.length);
+      return newMembers;
+    });
   };
 
   const handleCloseModal = () => {
     setModalOpen(false);
+  };
+
+  const clickMakeGroup = async () => {
+    const groupInfo = {
+      partyName: partyName,
+      partyInviteMessage: partyMessage,
+      partyParticipateNumber: memberCount,
+      partyMembers: partyMembers,
+    };
+    try {
+      await makeGroup(groupInfo);
+    } catch (error) {
+      console.error('그룹 생성 실패', error);
+    }
   };
 
   return (
@@ -31,15 +74,16 @@ const MakeGroupPage = () => {
           name={'멤버 초대'}
           size={'setting'}
           type={'text'}
-          value={id}
+          value={loginId}
           placeholder={'친구 ID 입력'}
-          onChange={handleChangeId}
+          onChange={changeLoginId}
         />
         <Button
           text={'검색'}
           size={'small'}
           color={'blue'}
-          onClick={handleSearchClick}
+          onClick={() => handleSearchClick(loginId)}
+          disabled={partyMembers.length >= 5}
         />
       </div>
       <div className={'py-3 pl-9'}>
@@ -47,10 +91,18 @@ const MakeGroupPage = () => {
           name={'초대 메세지'}
           size={'large'}
           type={'text'}
+          value={partyMessage}
           placeholder={'초대 메세지'}
-          onChange={() => {}}
+          onChange={changePartyMessage}
         />
-        {modalOpen && <SearchModal onClose={handleCloseModal} memberId={id} />}
+        {modalOpen && (
+          <SearchModal
+            onClose={handleCloseModal}
+            id={id}
+            loginId={loginId}
+            addMember={addPartyMember}
+          />
+        )}
       </div>
       <div className={'flex justify-center'}>
         <div className={'bg-groupColor rounded-boxRadius w-80 h-48'}>
@@ -63,13 +115,29 @@ const MakeGroupPage = () => {
                 name={'그룹 이름 입력'}
                 size={'makeGroupName'}
                 type={'text'}
+                value={partyName}
                 placeholder={''}
-                onChange={() => {}}
+                onChange={changePartyName}
               />
             </div>
           </div>
-          <div className={'font-neo text-xl pt-1 pl-5'}>
-            {constants.GROUP_SETTING.GROUP_MEMBER}
+          <div className={'flex flex-row'}>
+            <div className={'font-neo text-xl pt-1 pl-5'}>
+              {constants.GROUP_SETTING.GROUP_MEMBER}
+            </div>
+            <div className={'font-neo text-xl pl-3 pt-1'}>{memberCount}</div>
+            <div className={'font-dnf text-xl pt-1'}>/</div>
+            <div className={'font-neo text-xl pt-1'}> 5명</div>
+          </div>
+          <div className={'pl-5 grid grid-cols-2 grid-rows-3 gap-1'}>
+            {partyMembers.map((member) => (
+              <div
+                key={member.memberLoginId}
+                className={'font-neo text-xl pt-1'}
+              >
+                {member.memberLoginId}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -78,7 +146,7 @@ const MakeGroupPage = () => {
           text={'만들기'}
           size={'small'}
           color={'blue'}
-          onClick={() => {}}
+          onClick={() => clickMakeGroup()}
         />
       </div>
     </BasicFrame>

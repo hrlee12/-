@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import BasicFrame from '@/components/frame/basicFrame';
 import * as constants from '@/pages/group/constants';
 import Pomodoro from '@/components/timer/pomodoro';
+import { leaveGroup } from '@/apis/group.ts';
 
 // interface GroupProps {
 //   groupName: string;
@@ -13,6 +14,14 @@ import Pomodoro from '@/components/timer/pomodoro';
 
 const GroupInfoPage = () => {
   const navigate = useNavigate();
+
+  const clickLeaveGroup = async (partyId: number) => {
+    try {
+      await leaveGroup(partyId);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <BasicFrame>
@@ -40,13 +49,15 @@ const GroupInfoPage = () => {
             text={'그룹 설정'}
             size='small'
             color='navy'
+            // 여기에 나중에 partyId 들어감
             onClick={() => navigate('/groupSetting')}
           />
           <Button
             text={'그룹 탈퇴'}
             size='small'
             color='gray'
-            onClick={() => {}}
+            // 후에 partyId로 교체
+            onClick={() => clickLeaveGroup(1)}
           />
           <Button
             text={'뒤로 가기'}

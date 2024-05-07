@@ -1,8 +1,8 @@
 export interface MakeGroupInfo {
   partyName: string;
-  partyMessage: string;
-  memberCount: number;
-  partyManagerId: number;
+  partyInviteMessage: string;
+  partyParticipateNumber: number;
+  partyMembers: Member[];
 }
 
 export interface UpdateGroupInfo {
@@ -10,4 +10,25 @@ export interface UpdateGroupInfo {
   partyName: string;
   partyGoal: string;
   partyManagerId: number;
+}
+
+export interface InviteMessage {
+  memberId: number;
+  memberName: string;
+  partyId: number;
+  partyName: string;
+}
+
+export interface GroupProps {
+  partyId: number;
+  partyName: string;
+  partyGoal: string;
+  partyManagerId: number;
+  memberCatName: string;
+  partyManagerName: string;
+}
+
+export interface GroupMembers {
+  memberId: number;
+  name: string;
 }
