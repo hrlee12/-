@@ -43,3 +43,14 @@ export const getSearchFriend = async (userId: string) => {
     console.log(error);
   }
 };
+
+export const getMySkin = async () => {
+  try {
+    const response = await axiosInstance.get(
+      `/member/skins?pageNum=${1}&pageSize=${5}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
