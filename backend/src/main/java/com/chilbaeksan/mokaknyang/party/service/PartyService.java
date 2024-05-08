@@ -4,6 +4,8 @@ import com.chilbaeksan.mokaknyang.Invitation.domain.ApprovalStatus;
 import com.chilbaeksan.mokaknyang.Invitation.domain.Invitation;
 import com.chilbaeksan.mokaknyang.Invitation.repository.InvitationRepository;
 import com.chilbaeksan.mokaknyang.auth.util.JwtUtil;
+import com.chilbaeksan.mokaknyang.chat.domain.ChatMessage;
+import com.chilbaeksan.mokaknyang.chat.repository.ChatRepository;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Cat;
@@ -22,6 +24,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,6 +44,7 @@ public class PartyService {
     private final MemberRepository memberRepository;
     private final InvitationRepository invitationRepository;
     private final MemberPartyRepository memberPartyRepository;
+    private final ChatRepository chatRepository;
     private final CatRepository catRepository;
     private final JwtUtil jwtUtil;
 
@@ -369,5 +375,31 @@ public class PartyService {
                 .hitNumber(partyJoinMember.getHitNumber())
                 .behitNumber(partyJoinMember.getBehitNumber())
                 .build();
+    }
+
+    public PartyJoinList getPartyJoinList(int pageNum){
+        //일단 페이지 사이즈 6으로 지정
+        int pageSize = 6;
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Page<Party> page = partyRepository.findAll(pageable);
+
+        List<PartyJoin> partys = new ArrayList<>();
+        for(Party party : page.getContent()){
+            ChatMessage chatMessage = chatRepository.findFirst1ByPartyIdOrderBySendTimeDesc(party.getPartyId());
+
+            partys.add(
+                    PartyJoin.builder()
+                    .partyId(party.getPartyId())
+                    .partyGoal(party.getPurpose())
+                    .currentNum(party.getParticipateNumber())
+                    .maxNum(party.getMaxNumber())
+                    .lastChatter(chatMessage.getSenderNickname())
+                    .lastChatContent(chatMessage.getContents())
+                    .lastSendChatTime(chatMessage.getSendTime())
+                    .build()
+            );
+        }
+
+        return PartyJoinList.builder().partys(partys).build();
     }
 }

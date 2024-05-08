@@ -14,9 +14,9 @@ import java.time.LocalDateTime;
 public class PartyJoin {
     private Integer partyId;
     private String partyGoal;
-    private Integer currentNum;
-    private Integer maxNum;
+    private Byte currentNum;
+    private Byte maxNum;
     private String lastChatter;
     private String lastChatContent;
-    private LocalDateTime lastSendChatTime;
+    private String lastSendChatTime;
 }

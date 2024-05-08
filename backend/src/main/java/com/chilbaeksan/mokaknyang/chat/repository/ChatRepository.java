@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface ChatRepository extends MongoRepository<ChatMessage, String> {
     Page<ChatMessage> findByPartyId(Integer partyId, Pageable pageable);
-    Optional<ChatMessage> findFirst1ByPartyIdOrderBySendTimeDesc(Integer partyId);
+    ChatMessage findFirst1ByPartyIdOrderBySendTimeDesc(Integer partyId);
 }
