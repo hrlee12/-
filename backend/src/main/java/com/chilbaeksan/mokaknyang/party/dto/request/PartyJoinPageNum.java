@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartyJoin {
+public class PartyJoinPageNum {
     private Integer pageNum;
 }

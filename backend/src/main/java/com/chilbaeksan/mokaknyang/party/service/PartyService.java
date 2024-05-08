@@ -377,10 +377,10 @@ public class PartyService {
                 .build();
     }
 
-    public PartyJoinList getPartyJoinList(int pageNum){
+    public PartyJoinList getPartyJoinList(PartyJoinPageNum partyJoinPageNum){
         //일단 페이지 사이즈 6으로 지정
         int pageSize = 6;
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Pageable pageable = PageRequest.of(partyJoinPageNum.getPageNum(), pageSize);
         Page<Party> page = partyRepository.findAll(pageable);
 
         List<PartyJoin> partys = new ArrayList<>();
