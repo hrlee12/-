@@ -36,7 +36,7 @@ import java.util.List;
 public class ChatController {
     private final ChatService chatService;
     private final JwtUtil jwtUtil;
-    private final Logger log = LoggerFactory.getLogger(ChatController.class);
+
     @MessageMapping("/{partyId}")
     public void sendMessage(
             @DestinationVariable("partyId") Integer partyId,
