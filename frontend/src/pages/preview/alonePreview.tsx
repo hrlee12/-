@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { MyInfoProps } from '@/types/member';
 import { getMyInfo } from '@/apis/member';
 import ProgressBar from '@/components/progressbar/ProgressBar';
+import IdleCat from '@/components/cat';
+import { useSkinStore } from '@/stores/useSkinStore';
 
 const AlonePreview = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -59,6 +61,15 @@ const AlonePreview = () => {
   }, [isHovered, breakTime, focusTime, repeatCount, storedTime]);
 
   useEffect(() => {
+    setIsHovered(true);
+    const timer = setTimeout(() => {
+      setIsHovered(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     const fetchMyInfo = async () => {
       try {
         const response = await getMyInfo();
@@ -86,7 +97,7 @@ const AlonePreview = () => {
             </div>
             <div>
               <span>{myInfo.memberHitNumber}</span>
-              <span>{myInfo.memberHitNumber}</span>
+              <span>{myInfo.memberBehitNumber}</span>
             </div>
             {timer == undefined ||
             (!nowIsFocus && nowTimeDuration == -1 && nowRepeat - 1) ? (
@@ -98,8 +109,8 @@ const AlonePreview = () => {
           </SmallFrameNoCat>
         </div>
       )}
-      <div
-        className='character-idle fixed right-[0px] bottom-[0px]'
+      <IdleCat
+        catId={useSkinStore.getState().skinId}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => navigate('/previewTwo')}
