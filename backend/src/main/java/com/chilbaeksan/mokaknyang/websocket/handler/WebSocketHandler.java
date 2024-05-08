@@ -28,6 +28,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
     //key : partyId
     //value : memberId
+    //key가 1이고 value에 2,3이 들어가있다면 현재 partyId 1에 멤버 2,3이 웹소켓에 접속해있다는 의미
     private static ConcurrentHashMap<Integer, List<Integer>> CLIENT_PARTY
             = new ConcurrentHashMap<>();
 
@@ -38,6 +39,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
     //key : memberId
     //value : time
+    //마지막에 "pong"을 보낸 시간을 저장
     private static ConcurrentHashMap<Integer, Instant> LAST_PONG_TIME
             = new ConcurrentHashMap<>();
 
@@ -84,12 +86,16 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
             Integer[] memberIdAndPartyId = extractMemberIdAndPartyId(session.getUri());
             int memberId = memberIdAndPartyId[0];
-            CLIENT_STATUS.put(memberId, "online");
 
+            //"pong" 메시지를 받으면 "online" 상태로 변경
+            CLIENT_STATUS.put(memberId, "online");
+            //"pong" 메시지를 받은 마지막 시간을 갱신해준다
             LAST_PONG_TIME.put(memberId, Instant.now());
         }
     }
 
+    //5초에 웹소켓에 참여하고 있는 사용자에게 "ping"을 보냄
+    //클라이언트는 접속해있으면 바로 "pong"을 보내야함
     @Scheduled(fixedRate = 5000)
     public void expire(){
         CLIENTS.values().forEach(webSocketSession -> {
@@ -126,6 +132,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
         sendGroupMemberStatus();
     }
 
+    //uri에서 partyId와 memberId를 추출
     private Integer[] extractMemberIdAndPartyId(URI uri){
         Integer[] memberIdAndPartyId = new Integer[2];
 
@@ -148,6 +155,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
         return memberIdAndPartyId;
     }
 
+    //웹 소켓에 참여하는 모든 사용자에게 파티에 속해있는 사용자의 상태를 보내줌
     private void sendGroupMemberStatus() {
         for(WebSocketSession webSocketSession : CLIENTS.values()){
             Map<Integer, String> partyMemberStatus = new HashMap<>();
@@ -157,7 +165,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
             List<Integer> list = CLIENT_PARTY.get(partyId);
 
-            if(list == null)
+            if(list == null || list.isEmpty())
                 return;
 
             for(int listMemberId : list){
@@ -170,14 +178,14 @@ public class WebSocketHandler extends TextWebSocketHandler{
             try {
                 jsonData = objectMapper.writeValueAsString(partyMemberStatus);
             } catch (JsonProcessingException e) {
-                log.error("Error converting group member status to JSON: {}", e.getMessage());
+                log.error("Error converting party member status to JSON: {}", e.getMessage());
                 return;
             }
 
             try {
                 webSocketSession.sendMessage(new TextMessage(jsonData));
             } catch (IOException e) {
-                log.error("Error sending group member status to client {}: {}", webSocketSession.getId(), e.getMessage());
+                log.error("Error sending party member status to client {}: {}", webSocketSession.getId(), e.getMessage());
             }
         }
     }
