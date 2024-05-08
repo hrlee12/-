@@ -91,7 +91,7 @@ public class MemberController {
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
 
-        Pageable pageable = PageRequest.of(dto.getPageNum(), dto.getPageSize());
+        Pageable pageable = PageRequest.of(dto.getPageNum() - 1, dto.getPageSize());
 
         List<Title> titles = memberService.getTitles(pageable);
 
@@ -111,7 +111,7 @@ public class MemberController {
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
 
-        Pageable pageable = PageRequest.of(dto.getPageNum(), dto.getPageSize());
+        Pageable pageable = PageRequest.of(dto.getPageNum() - 1, dto.getPageSize());
 
         List<Cat> cats = memberService.getCat(pageable);
 
