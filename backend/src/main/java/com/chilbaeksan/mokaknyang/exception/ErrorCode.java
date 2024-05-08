@@ -40,6 +40,8 @@ public enum ErrorCode {
     AUTH_LOGOUT_NOT_FOUND_MEMBER(404, "사용자 정보를 찾을 수 없습니다."),
 
     // 채팅 관련 에러
+    CHAT_BAD_REQUEST(400, "채팅전송이 잘못된 요청 형식 입니다."),
+    CHAT_UNAUTHORIZED(401, "해당 그룹에 대한 채팅 권한이 없습니다."),
 
     // 공격 관련 에러
     ATTACK_HIT_MEMBER_NOT_FOUND(404, "공격한 사용자를 찾을 수 없습니다."),
@@ -69,6 +71,7 @@ public enum ErrorCode {
 
     //멤버 파티 관련 에러
     MEMBER_PARTY_NOT_FOUND(404, "파티를 수락한 멤버를 찾을 수 없습니다."),
+    MEMBER_PARTY_UNAUTHORIZATION(401,"해당 맴버가 해당 파티에 접근권한이 없습니다."),
 
     //초대 관련 에러
     INVITATION_NOT_FOUND(404, "초대장이 존재하지 않습니다."),
