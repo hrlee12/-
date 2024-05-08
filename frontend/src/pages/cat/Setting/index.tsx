@@ -4,11 +4,11 @@ import * as constants from '@/pages/cat/constants.ts';
 import Button from '@/components/button';
 import Pomodoro from '@/components/timer/pomodoro';
 import { useNavigate } from 'react-router-dom';
-import { useSkinStateStore } from '@/stores/useSkinStore.ts';
+import { useSkinStore } from '@/stores/useSkinStore.ts';
 
 const MyCatSetting = () => {
   const navigate = useNavigate();
-  const mySkin = useSkinStateStore.getState().skinUrl;
+  const mySkin = useSkinStore.getState().skinUrl;
 
   return (
     <MyFrame>

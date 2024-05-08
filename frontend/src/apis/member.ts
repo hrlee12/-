@@ -44,11 +44,33 @@ export const getSearchFriend = async (userId: string) => {
   }
 };
 
+// 칭호 리스트 불러오기
+export const getTitleList = async () => {
+  try {
+    const response = await axiosInstance.get(
+      `member/title?pageNum=${1}&pageSize=${30}`,
+    );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 스킨 리스트 불러오기
 export const getMySkin = async () => {
   try {
     const response = await axiosInstance.get(
-      `/member/skins?pageNum=${1}&pageSize=${5}`,
+      `/member/skins?pageNum=${1}&pageSize=${50}`,
     );
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const patchMySkin = async (catId: number) => {
+  try {
+    const response = await axiosInstance.patch(`/member/skins`, catId);
     return response.data;
   } catch (error) {
     console.log(error);
