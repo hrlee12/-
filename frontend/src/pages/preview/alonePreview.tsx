@@ -4,6 +4,9 @@ import PomodoroTimer from '@/components/timer/PomodoroTimer.tsx';
 import useTimerStore from '@/stores/useTimerStore';
 import { calculateTimerValues } from '@/components/timer/realTime';
 import { useNavigate } from 'react-router-dom';
+import { MyInfoProps } from '@/types/member';
+import { getMyInfo } from '@/apis/member';
+import ProgressBar from '@/components/progressbar/ProgressBar';
 
 const AlonePreview = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -11,6 +14,17 @@ const AlonePreview = () => {
   const [nowTimeDuration, setNowTimeDuration] = useState(0);
   const [nowRepeat, setNowRepeat] = useState(0);
   const [timer, setTimer] = useState<React.ReactElement | undefined>(undefined);
+  const [myInfo, setMyInfo] = useState<MyInfoProps>({
+    memberExp: 0,
+    memberCreatedAt: '',
+    memberCatName: '',
+    memberHitNumber: 0,
+    memberBehitNumber: 0,
+    level: 1,
+    memberGoal: '',
+    titleContent: '',
+    catAssetUrl: '',
+  });
 
   const navigate = useNavigate();
 
@@ -26,7 +40,6 @@ const AlonePreview = () => {
       focusTime,
       breakTime,
       repeatCount,
-
       currentTime,
     );
 
@@ -45,16 +58,42 @@ const AlonePreview = () => {
     );
   }, [isHovered, breakTime, focusTime, repeatCount, storedTime]);
 
+  useEffect(() => {
+    const fetchMyInfo = async () => {
+      try {
+        const response = await getMyInfo();
+        setMyInfo(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchMyInfo();
+  }, [isHovered]);
+
   return (
     <>
       {isHovered && (
         <div>
           <SmallFrameNoCat>
+            <div>
+              <span>{myInfo.level}</span>
+              <span>{myInfo.titleContent}</span>
+            </div>
+            <div>
+              <ProgressBar value={myInfo.memberExp} max={100} />
+              {myInfo.memberCatName}
+            </div>
+            <div>
+              <span>{myInfo.memberHitNumber}</span>
+              <span>{myInfo.memberHitNumber}</span>
+            </div>
             {timer == undefined ||
             (!nowIsFocus && nowTimeDuration == -1 && nowRepeat - 1) ? (
-              <div className='font-dnf'>타이머를 설정해주세요</div>
+              <div className='font-dnf right-2'>타이머를 설정해주세요</div>
             ) : (
-              timer
+              <>{timer}</>
+              // fixed right-24 bottom-[85px]
             )}
           </SmallFrameNoCat>
         </div>
