@@ -9,8 +9,10 @@ import com.chilbaeksan.mokaknyang.chat.service.ChatService;
 import com.chilbaeksan.mokaknyang.chat.service.RedisPublisher;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
+import com.chilbaeksan.mokaknyang.member.dto.MemberConstant;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +24,7 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,10 +39,11 @@ public class ChatController {
     @MessageMapping("/{partyId}")
     public void sendMessage(
             @DestinationVariable("partyId") Integer partyId,
-            ChatSendRequestDto requestDto
+            ChatSendRequestDto requestDto,
+            @SessionAttribute("memberId") Integer userId
     ) {
-        //TODO : userId 가져오는 로직
-        Integer userId = 1;
+
+        // TODO : userId 가져오기
 
         // 채팅 메시지를 전달하는 로직
         // '채팅' 토픽 구독자에게 전달
