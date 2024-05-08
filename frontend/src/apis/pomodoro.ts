@@ -32,3 +32,15 @@ export const timerSet = async (
     console.log(error);
   }
 };
+
+export const endTimer = async (timerId: number, period: number) => {
+  try {
+    const response = await axiosInstance.post('/pomodoro/result', {
+      timerId: timerId,
+      period: period,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

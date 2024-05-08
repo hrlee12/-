@@ -49,9 +49,9 @@ const Pomodoro = () => {
       );
     }
     // response.data의 timerId값을 zustand에 저장 필요
-    console.log(response.data.timerId);
+    console.log(response?.data.timerId);
 
-    const timerId = response.data;
+    const timerId = response?.data.timerId;
 
     const startTime = Date.now();
 
