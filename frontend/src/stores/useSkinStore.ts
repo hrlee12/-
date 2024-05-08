@@ -7,7 +7,7 @@ interface SkinState {
   setSkinUrl: (skinUrl: string) => void;
 }
 
-export const useSkinStateStore = create<SkinState>((set) => ({
+export const useSkinStore = create<SkinState>((set) => ({
   skinId: 1,
   skinUrl: 'https://mogaknyan.s3.ap-northeast-2.amazonaws.com/cat_idle_01.png',
   setSkinId: (id: number) => {
