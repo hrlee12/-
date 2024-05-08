@@ -13,6 +13,10 @@ public class MemberTitleResponseDto {
     private List<MemberTitleResponseDto.TitleDto> titles;
 
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
     public static class TitleDto{
         private Short titleId;
         private String titleContent;

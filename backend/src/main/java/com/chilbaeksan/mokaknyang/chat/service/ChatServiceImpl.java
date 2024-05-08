@@ -12,15 +12,24 @@ import com.chilbaeksan.mokaknyang.member_party.domain.MemberParty;
 import com.chilbaeksan.mokaknyang.member_party.repository.MemberPartyRepository;
 import com.chilbaeksan.mokaknyang.party.domain.Party;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.flogger.Flogger;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.listener.ChannelTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService{
@@ -30,16 +39,35 @@ public class ChatServiceImpl implements ChatService{
     private final PartyRepository partyRepository;
 
     private final RedisPublisher redisPublisher;
+    private final RedisSubscriber redisSubscriber;
 
+    // 채팅방(topic)에 발행되는 메시지를 처리할 Listner
+    private final RedisMessageListenerContainer redisMessageListener;
+    private Map<String, ChannelTopic> topics;
+
+    @PostConstruct
+    private void init() {
+        topics = new HashMap<>();
+    }
 
     private ChannelTopic getTopic(Integer partyId){
-        return new ChannelTopic(String.valueOf(partyId));
+        return new ChannelTopic("party_"+ partyId);
     }
 
     @Override
     public void publishMessage(ChatSendRequestDto chatSendRequestDto, Integer memberId, Integer partyId) {
         Member member = memberRepository.findByMemberId(memberId).orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
 
+        // 만약 해당 서버가 해당 토픽에 대해서 구독이 안되어 있는 부분이면 구독 리스너를 달아놓는다.
+        ChannelTopic topic = topics.get(String.valueOf(partyId));
+
+        if (topic == null) {
+            topic = getTopic(partyId);
+            redisMessageListener.addMessageListener(redisSubscriber, topic);
+            topics.put(String.valueOf(partyId), topic);
+        }
+
+        //메시지 발행 수행
         PublishMessage message = PublishMessage.builder()
                 .partyId(partyId)
                 .senderId(memberId)
@@ -47,7 +75,7 @@ public class ChatServiceImpl implements ChatService{
                 .contents(chatSendRequestDto.getContents())
                 .sendTime(LocalDateTime.now().toString())
                 .build();
-        
+
         redisPublisher.publish(getTopic(partyId), message);
         
         // TODO: Redis에서 전송 즉시 캐싱하기
@@ -85,7 +113,9 @@ public class ChatServiceImpl implements ChatService{
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_PARTY_UNAUTHORIZATION));
 
         //가입하고 있다면 데이터를 가지고 온다.
-        return chatRepository.findByPartyId(partyId, pageable);
+        Page<ChatMessage> result =  chatRepository.findAllByPartyIdOrderBySendTimeDesc(partyId, pageable);
+        log.info(result.getContent().toString());
+        return result;
 
         // TODO: Redis 캐싱 기법 적용하여, 조회 속도 빠르게 하기
     }

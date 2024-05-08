@@ -12,6 +12,10 @@ import java.util.List;
 public class MemberSkinsResponseDto {
     private List<MemberSkinsResponseDto.CatDto> cats;
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    @Setter
     public static class CatDto{
         private Integer catId;
         private String catAssetUrl;
