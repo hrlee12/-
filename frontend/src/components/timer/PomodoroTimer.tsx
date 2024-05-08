@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import * as constants from '@/components/timer/constants';
+import useTimerStore from '@/stores/useTimerStore';
+import { endTimer } from '@/apis/pomodoro';
 
 interface TimerProps {
   nowIsFocus: boolean;
@@ -29,8 +31,11 @@ const PomodoroTimer = ({
     // console.log(currentRepeat);
     // 모든 반복이 완료되었는지 확인
     if (currentRepeat === repeatCount * 2 - 1) {
-      // 모든 작업이 완료되면 추가 작업을 수행할 수 있습니다.
-      console.log('뽀모도로 타이머 완료!');
+      // 모든 작업이 완료된 후 추가 작업
+      const timerId = useTimerStore.getState().timerId;
+      const period = useTimerStore.getState().endPeriod;
+      endTimer(timerId, period);
+
       return { shouldRepeat: false };
     }
 

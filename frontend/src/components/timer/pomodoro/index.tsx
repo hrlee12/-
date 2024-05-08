@@ -30,12 +30,10 @@ const Pomodoro = () => {
     relaxTime: number,
     groupId?: number,
   ) => {
-    const type: string = ''; // 수정 필요
     const startTime2: string = formatTime(new Date());
     let response;
     if (groupId) {
       response = await timerSet(
-        type,
         startTime2,
         endPeriod,
         concentrateTime,
@@ -44,15 +42,16 @@ const Pomodoro = () => {
       );
     } else if (!groupId) {
       response = await timerSet(
-        type,
         startTime2,
         endPeriod,
         concentrateTime,
         relaxTime,
       );
     }
-    // 추후에는 response 없을 경우 표시되는 내용을 바꿔야 할지도? 현재는 404에러 발생.
-    console.log(response);
+    // response.data의 timerId값을 zustand에 저장 필요
+    console.log(response?.data.timerId);
+
+    const timerId = response?.data.timerId;
 
     const startTime = Date.now();
 
@@ -61,6 +60,7 @@ const Pomodoro = () => {
       endPeriod,
       concentrateTime,
       relaxTime,
+      timerId,
     });
 
     navigate('/previewAlone');
