@@ -6,7 +6,7 @@ interface catProps {
 }
 
 const IdleCat = ({ catId, onMouseEnter, onMouseLeave, onClick }: catProps) => {
-  const imageUrl = `public/assets/cat0${catId}_idle_blink_strip8.png`;
+  const imageUrl = `https://mogaknyan.s3.ap-northeast-2.amazonaws.com/cat_idle_0${catId}.png`;
 
   const style = {
     backgroundImage: `url('${imageUrl}')`,
