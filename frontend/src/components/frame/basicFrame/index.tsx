@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import '@/components/cat/idle/index.css';
+import IdleCat from '@/components/cat/idle';
+import { useSkinStore } from '@/stores/useSkinStore';
 
 interface Props {
   children: ReactNode;
@@ -13,7 +15,7 @@ const BasicFrame = ({ children }: Props) => {
           {children}
         </div>
       </main>
-      <div className='character-idle fixed right-[0px] bottom-[0px]' />
+      <IdleCat catId={useSkinStore.getState().skinId} />
     </>
   );
 };

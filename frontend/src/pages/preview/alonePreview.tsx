@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { MyInfoProps } from '@/types/member';
 import { getMyInfo } from '@/apis/member';
 import ProgressBar from '@/components/progressbar/ProgressBar';
-import IdleCat from '@/components/cat';
+import IdleCat from '@/components/cat/idle';
 import { useSkinStore } from '@/stores/useSkinStore';
 
 const AlonePreview = () => {
