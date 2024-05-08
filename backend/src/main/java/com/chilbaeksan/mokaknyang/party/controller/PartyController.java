@@ -1,10 +1,7 @@
 package com.chilbaeksan.mokaknyang.party.controller;
 
 import com.chilbaeksan.mokaknyang.party.dto.request.*;
-import com.chilbaeksan.mokaknyang.party.dto.response.HoverMemberInfo;
-import com.chilbaeksan.mokaknyang.party.dto.response.InvitePartyList;
-import com.chilbaeksan.mokaknyang.party.dto.response.PartyJoinMemberList;
-import com.chilbaeksan.mokaknyang.party.dto.response.PartySettingInfo;
+import com.chilbaeksan.mokaknyang.party.dto.response.*;
 import com.chilbaeksan.mokaknyang.party.service.PartyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -77,5 +74,11 @@ public class PartyController {
     public ResponseEntity<HoverMemberInfo> getHoverMemberInfo(@PathVariable Integer partyId, @PathVariable Integer memberId){
         HoverMemberInfo hoverMemberInfo = partyService.getHoverMemberInfo(partyId, memberId);
         return ResponseEntity.ok(hoverMemberInfo);
+    }
+
+    @GetMapping
+    public ResponseEntity<PartyJoinList> getPartyJoinList(@RequestBody PartyJoinPageNum partyJoinPageNum){
+        PartyJoinList partyJoinList = partyService.getPartyJoinList(partyJoinPageNum);
+        return ResponseEntity.ok(partyJoinList);
     }
 }
