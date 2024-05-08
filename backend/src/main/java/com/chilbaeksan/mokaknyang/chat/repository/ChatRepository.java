@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChatRepository extends MongoRepository<ChatMessage, String> {
-    Page<ChatMessage> findByPartyId(Integer partyId, Pageable pageable);
+    Page<ChatMessage> findAllByPartyIdOrderBySendTimeDesc(Integer partyId, Pageable pageable);
 }

@@ -11,6 +11,9 @@ import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,13 +29,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/v1/chat")
 @RequiredArgsConstructor
 public class ChatController {
     private final ChatService chatService;
     private final JwtUtil jwtUtil;
-
+    private final Logger log = LoggerFactory.getLogger(ChatController.class);
     @MessageMapping("/{partyId}")
     public void sendMessage(
             @DestinationVariable("partyId") Integer partyId,
@@ -59,7 +63,7 @@ public class ChatController {
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
 
-        Pageable pageable = PageRequest.of(requestDto.getPageNum(), requestDto.getPageSize());
+        Pageable pageable = PageRequest.of(requestDto.getPageNum()-1, requestDto.getPageSize());
 
         // 채팅 메시지 MongoDB에서 조회하는 로직 수행
         Page<ChatMessage> result = chatService.getPartyMessages(pageable, userId, partyId);
@@ -67,7 +71,7 @@ public class ChatController {
         //각각 response dto 매핑 하기
         ChatListResponseDto responseDto = ChatListResponseDto.builder()
                 .chatMessages(result.getContent().stream().map(
-                        m -> ChatListResponseDto.MessageDto.builder()
+                                (m) -> ChatListResponseDto.MessageDto.builder()
                                 .userId(m.getSenderId())
                                 .userNickname(m.getSenderNickname())
                                 .contents(m.getContents())

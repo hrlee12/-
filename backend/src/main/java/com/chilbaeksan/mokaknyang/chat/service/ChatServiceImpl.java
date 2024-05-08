@@ -14,6 +14,10 @@ import com.chilbaeksan.mokaknyang.party.domain.Party;
 import com.chilbaeksan.mokaknyang.party.repository.PartyRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.flogger.Flogger;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -21,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService{
@@ -31,9 +36,8 @@ public class ChatServiceImpl implements ChatService{
 
     private final RedisPublisher redisPublisher;
 
-
     private ChannelTopic getTopic(Integer partyId){
-        return new ChannelTopic(String.valueOf(partyId));
+        return new ChannelTopic("party_"+ partyId);
     }
 
     @Override
@@ -85,7 +89,9 @@ public class ChatServiceImpl implements ChatService{
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_PARTY_UNAUTHORIZATION));
 
         //가입하고 있다면 데이터를 가지고 온다.
-        return chatRepository.findByPartyId(partyId, pageable);
+        Page<ChatMessage> result =  chatRepository.findAllByPartyIdOrderBySendTimeDesc(partyId, pageable);
+        log.info(result.getContent().toString());
+        return result;
 
         // TODO: Redis 캐싱 기법 적용하여, 조회 속도 빠르게 하기
     }
