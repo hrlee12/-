@@ -1,16 +1,15 @@
 package com.chilbaeksan.mokaknyang.chat.service;
 
-import com.chilbaeksan.mokaknyang.chat.dto.ChatSendRequestDto;
 import com.chilbaeksan.mokaknyang.chat.dto.PublishMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,10 @@ public class RedisSubscriber implements MessageListener {
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
-            String publishMessage = (String) redisTemplate.getValueSerializer().deserialize(message.getBody());
+            log.info("============================================");
+            String publishMessage = redisTemplate.getStringSerializer().deserialize(message.getBody());
             PublishMessage pubMsg = objectMapper.readValue(publishMessage, PublishMessage.class);
+            log.info(pubMsg.getContents());
             messageSendingOperations.convertAndSend("/sub/chat/" + pubMsg.getPartyId(), pubMsg);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

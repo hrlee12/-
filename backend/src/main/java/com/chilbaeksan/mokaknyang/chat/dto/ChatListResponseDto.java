@@ -1,9 +1,7 @@
 package com.chilbaeksan.mokaknyang.chat.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.util.List;
 
@@ -13,11 +11,13 @@ import java.util.List;
 @AllArgsConstructor
 public class ChatListResponseDto {
 
-    private List<MessageDto> chatMessages;
+    private List<ChatListResponseDto.MessageDto> chatMessages;
 
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
+    @Setter
     public static class MessageDto {
         private Integer userId;
         private String userNickname;
