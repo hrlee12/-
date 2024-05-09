@@ -84,6 +84,8 @@ public class MemberServiceImpl implements MemberService {
         }
 
         member.setCat(cat);
+        memberRepository.save(member);
+
         return cat;
     }
 
