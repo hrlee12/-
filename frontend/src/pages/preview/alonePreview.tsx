@@ -9,6 +9,7 @@ import { getMyInfo } from '@/apis/member';
 import ProgressBar from '@/components/progressbar/ProgressBar';
 import IdleCat from '@/components/cat/idle';
 import { useSkinStore } from '@/stores/useSkinStore';
+import ProfileCat from '@/components/cat/profile';
 
 const AlonePreview = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -87,25 +88,58 @@ const AlonePreview = () => {
       {isHovered && (
         <div>
           <SmallFrameNoCat>
-            <div>
-              <span>{myInfo.level}</span>
-              <span>{myInfo.titleContent}</span>
+            <div className='flex flex-col justify-between p-4 space-y-4 w-[205px] font-neo font-bold text-lg'>
+              <div className='flex justify-between'>
+                <span className='text-sm' style={{ paddingTop: 8 }}>
+                  LV.{myInfo.level}
+                </span>
+                {myInfo.titleContent.length > 6 ? (
+                  <span className='text-sm'>{myInfo.titleContent}</span>
+                ) : (
+                  <span>{myInfo.titleContent}</span>
+                )}
+              </div>
+              <div style={{ marginTop: 0 }}>
+                <ProgressBar value={myInfo.memberExp} max={100} />
+              </div>
+              {myInfo.memberCatName.length < 5 ? (
+                <div
+                  className={'text-3xl h-8'}
+                  style={{ marginTop: 0, paddingTop: 7 }}
+                >
+                  {myInfo.memberCatName}
+                </div>
+              ) : (
+                <div
+                  className={'text-xl h-8'}
+                  style={{ marginTop: 0, paddingTop: 7 }}
+                >
+                  {myInfo.memberCatName}
+                </div>
+              )}
+
+              <div className='flex justify-between pl-[20px]'>
+                <ProfileCat catId={1} />
+                <ProfileCat catId={5} />
+              </div>
+              <div
+                className='flex justify-between pl-[10px] pr-[10px] w-[205px]'
+                style={{ marginTop: 0 }}
+              >
+                <span>{myInfo.memberHitNumber}번 공격!</span>
+                <span>{myInfo.memberBehitNumber}번 으악!</span>
+              </div>
+              <div className='absolute right-0 pr-4 bottom-1'>
+                {timer == undefined ||
+                (!nowIsFocus && nowTimeDuration == -1 && nowRepeat - 1) ? (
+                  <div className='absolute font-dnf w-[205px] right-0 pl-2 bottom-20'>
+                    타이머를 설정해주세요
+                  </div>
+                ) : (
+                  <div className='pb-[2px]'>{timer}</div>
+                )}
+              </div>
             </div>
-            <div>
-              <ProgressBar value={myInfo.memberExp} max={100} />
-              {myInfo.memberCatName}
-            </div>
-            <div>
-              <span>{myInfo.memberHitNumber}</span>
-              <span>{myInfo.memberBehitNumber}</span>
-            </div>
-            {timer == undefined ||
-            (!nowIsFocus && nowTimeDuration == -1 && nowRepeat - 1) ? (
-              <div className='font-dnf right-2'>타이머를 설정해주세요</div>
-            ) : (
-              <>{timer}</>
-              // fixed right-24 bottom-[85px]
-            )}
           </SmallFrameNoCat>
         </div>
       )}
