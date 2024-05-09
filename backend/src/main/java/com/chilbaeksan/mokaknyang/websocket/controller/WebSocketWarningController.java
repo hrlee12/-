@@ -21,7 +21,7 @@ public class WebSocketWarningController {
 
     @MessageMapping("/warning/{partyId}")
     public void warningAlarm(@DestinationVariable("partyId") Integer partyId, WebSocketMemberListRequest webSocketMemberListRequest){
-        //TODO: 해당 파티 소켓에 참여하고 있는 사용자들의 정보(memberId, currentProcess, currentUrl, partyPurpose)를 받아 AI 서버에 요청
+        //TODO: 해당 파티 소켓에 참여하고 있는 "online"상태의 사용자들의 정보(memberId, currentProcess, currentUrl, partyPurpose)를 받아 AI 서버에 요청
         //추후 승윤이가 ai 쪽 구현하면 구현할 예정
         //RestTemplate이나 WebClient 사용 (아마 WebClient가 비동기니까 더 좋을 듯?)
 
