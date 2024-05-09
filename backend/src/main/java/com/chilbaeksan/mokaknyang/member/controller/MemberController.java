@@ -42,7 +42,7 @@ public class MemberController {
                 .memberHitNumber(result.getHitNumber())
                 .memberBehitNumber(result.getBehitNumber())
                 .memberGoal(result.getGoal())
-                .level(result.getLevel().getLevelExp())
+                .level(Integer.valueOf(result.getLevel().getLevel()))
                 .titleContent(result.getTitle().getTitleContent())
                 .catId(result.getCat().getCatId())
                 .build();
