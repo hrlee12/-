@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BasicFrame from '@/components/frame/basicFrame';
 import { useNavigate } from 'react-router-dom';
 import { FaMessage, FaPlus } from 'react-icons/fa6';
@@ -7,12 +7,23 @@ import Button from '@/components/button';
 import GroupMessage from '@/pages/group/GroupMessage.tsx';
 import { InviteMessage } from '@/types/group';
 import { groupMessageList } from '@/apis/group.ts';
+import { getMyInfo } from '@/apis/member.ts';
+import { useSkinStore } from '@/stores/useSkinStore.ts';
 
 const GroupPage = () => {
   const navigate = useNavigate();
   const [groups] = useState([]);
   const [messages, setMessages] = useState<InviteMessage[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchMyInfo = async () => {
+      const response = await getMyInfo();
+      useSkinStore.getState().setSkinId(response.catId);
+    };
+
+    fetchMyInfo();
+  }, []);
 
   const checkMessage = async () => {
     const response = await groupMessageList();

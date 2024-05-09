@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-// import Button from '@/components/button';
 import '@/components/cat/idle/index.css';
 import IdleCat from '@/components/cat/idle';
 import { useSkinStore } from '@/stores/useSkinStore';

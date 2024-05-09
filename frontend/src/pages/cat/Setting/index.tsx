@@ -8,7 +8,7 @@ import { useSkinStore } from '@/stores/useSkinStore.ts';
 
 const MyCatSetting = () => {
   const navigate = useNavigate();
-  const mySkin = useSkinStore.getState().skinUrl;
+  const mySkin = useSkinStore.getState().skinId;
 
   return (
     <MyFrame>
@@ -17,11 +17,11 @@ const MyCatSetting = () => {
           <div
             className='character-idle'
             id='clickable-area'
-            style={{ backgroundImage: `url('${mySkin}')` }}
+            style={{
+              backgroundImage: `url(${import.meta.env.VITE_IMG_URL}/cat_idle_0${mySkin}.png)`,
+            }}
             onClick={() => navigate('/catSkin')}
-          >
-            {' '}
-          </div>
+          ></div>
         </div>
       </div>
       <div className='flex flex-col font-dnf text-2xl pl-20'>

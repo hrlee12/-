@@ -12,6 +12,6 @@ export interface MyInfoProps {
 
 export interface MySkins {
   catId: number;
-  assetsUrl: string;
+  catAssetUrl: string;
   achieveLevel: number;
 }
