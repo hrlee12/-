@@ -46,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
                 .exp(0)
                 .loginId(dto.getId())
                 .loginPwd(dto.getPassword())
-                .nickname(dto.getNickname())
+                .catName(dto.getNickname())
                 .build();
         memberRepository.save(member);
     }
