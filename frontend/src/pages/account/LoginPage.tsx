@@ -16,7 +16,6 @@ const LoginPage = () => {
     const id: string = userid;
     const pw: string = password;
     const response = await logIn(id, pw);
-    // console.log(response);
     if (response?.status == 200) {
       navigate('/group');
     }
