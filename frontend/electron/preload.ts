@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
     return ipcRenderer.invoke(channel, ...omit);
   },
 
+
   // You can expose other APTs you need here.
   // ...
 });
@@ -38,3 +39,18 @@ window.addEventListener('DOMContentLoaded', () => {
     console.error('#clickable-area not found');
   }
 });
+
+type CallbackType = (data:string)=> void;
+contextBridge.exposeInMainWorld('electronAPI', {
+  getActiveWindowProcessName: () => ipcRenderer.send('get-active-window-process-name'),
+  onActiveWindowProcessName: (callback:CallbackType) => ipcRenderer.on('active-window-process-name', (_, data) => callback(data)),
+});
+
+
+// process.once('loaded', () => {
+//   contextBridge.exposeInMainWorld(
+//       'electronAPI', {
+//         getActiveWindow: () => ipcRenderer.invoke('get-active-window')
+//       }
+//   );
+// });

@@ -3,6 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "binary": {
+    "module_name": "active-win",
+    "module_path": ".node_modules/active-win/lib/binding/napi-9-win32-unknown-x64/node-active-win.node"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
@@ -10,10 +14,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "active-win": "^9.0.0",
     "autoprefixer": "^10.4.19",
+    "aws-sdk": "^2.1616.0",
     "axios": "^1.6.8",
     "electron-updater": "^6.1.8",
     "fabric": "^5.3.0",
+    "get-windows": "^9.1.1",
+    "mock-aws-s3": "^4.0.2",
+    "nock": "^13.5.4",
+    "node-gyp": "^10.1.0",
+    "node-pre-gyp": "^0.17.0",
     "openvidu-browser": "^2.29.1",
     "react": "^18.2.0",
     "react-countdown-circle-timer": "^3.2.1",

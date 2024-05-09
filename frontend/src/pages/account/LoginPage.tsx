@@ -1,9 +1,34 @@
 import Button from '@/components/button';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
-import { useState } from 'react';
+import {useState} from 'react';
+// import {useEffect} from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '@/apis/user.ts';
+// import {exec} from 'child_process';
+// import {activeWindow} from "active-win";
+
+// interface WindowInfo {
+//   title: string,
+//   id: number,
+//   bounds: {
+//     x: number,
+//     y: number,
+//     height: number,
+//     width: number
+//   },
+//   owner : {
+//     name: string,
+//     processId: number,
+//     bundleId: string,
+//     path: string
+//   },
+//   url: string,
+//   memoryUsage: number
+// }
+
+
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
@@ -22,6 +47,66 @@ const LoginPage = () => {
     }
     setIsPassed(false);
   };
+  //
+  // useEffect(() => {
+  //   window.electronAPI.getActiveWindow().then((windowInfo: WindowInfo) => {
+  //     console.log(windowInfo.title);
+  //
+  //   });
+  // }, []);
+  //
+  // useEffect(() => {
+  //   window.electronAPI.getActiveWindow().then((windowInfo: WindowInfo) => {
+  //     console.log(windowInfo.title);
+  //
+  //   });
+  // }, []);
+
+//   const topWindow = async()=>{
+//     const psScript:string = `
+// Add-Type @"
+//   using System;
+//   using System.Runtime.InteropServices;
+//   public class User32 {
+//     [DllImport("user32.dll")]
+//     public static extern IntPtr GetForegroundWindow();
+//     [DllImport("user32.dll")]
+//     public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
+//   }
+// "@;
+//
+// $foregroundWindowHandle = [User32]::GetForegroundWindow();
+// $processId = 0;
+// [User32]::GetWindowThreadProcessId($foregroundWindowHandle, [ref]$processId);
+// $process = Get-Process | Where-Object { $_.Id -eq $processId };
+// $process.Name;
+// `.trim();
+//
+//     const command = `powershell -Command "${psScript}"`;
+//
+//     exec(command, (error, stdout, stderr) => {
+//       if (error) {
+//         console.error(`exec error: ${error}`);
+//         return;
+//       }
+//       if (stderr) {
+//         console.error(`stderr: ${stderr}`);
+//         return;
+//       }
+//       console.log(`현재 활성화된 창의 프로세스 이름: ${stdout.trim()}`);
+//     });
+//
+//   }
+
+  const topWindow = async () => {
+    window.electronAPI.onActiveWindowProcessName((name) => {
+      console.log('Active window process name:', name);
+      console.log('hello');
+    });
+
+    console.log("get : " + await window.electronAPI.getActiveWindowProcessName());
+
+  }
 
   return (
     <div>
@@ -67,6 +152,12 @@ const LoginPage = () => {
               size={'small'}
               color={'green'}
               onClick={() => navigate('/signup')}
+            />
+            <Button
+            text={'window test'}
+            size={'small'}
+            color={'green'}
+            onClick={topWindow}
             />
           </div>
           {!isPassed && (
