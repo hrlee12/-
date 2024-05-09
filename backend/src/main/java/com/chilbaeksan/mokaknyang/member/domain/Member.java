@@ -46,10 +46,6 @@ public class Member {
     @Column(name="member_login_pwd")
     private String loginPwd;
 
-    @Column(name="member_nickname")
-    @Builder.Default
-    private String nickname = "";
-
     @Column(name="member_cat_name")
     @Builder.Default
     private String catName = "고먐미";
