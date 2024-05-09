@@ -23,9 +23,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Slf4j
@@ -38,12 +40,20 @@ public class ChatController {
 
     @MessageMapping("/{partyId}")
     public void sendMessage(
+            SimpMessageHeaderAccessor headerAccessor,
             @DestinationVariable("partyId") Integer partyId,
-            ChatSendRequestDto requestDto,
-            @SessionAttribute("memberId") Integer userId
+            ChatSendRequestDto requestDto
     ) {
-
-        // TODO : userId 가져오기
+        log.info("hello");
+        Integer userId = null;
+        Principal jwtPrincipal = headerAccessor.getUser();
+        if (jwtPrincipal != null) {
+            // 사용자 식별 가능
+            userId = Integer.valueOf(jwtPrincipal.getName());
+        }
+        else{
+            throw new RuntimeException("로그인이 안 되어 있습니다.");
+        }
 
         // 채팅 메시지를 전달하는 로직
         // '채팅' 토픽 구독자에게 전달
