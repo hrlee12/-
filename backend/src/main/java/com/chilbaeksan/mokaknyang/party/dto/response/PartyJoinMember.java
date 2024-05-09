@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class PartyJoinMember {
     private Integer memberId;
     private String name;
-    private String skin;
+    private String catId;
 }
