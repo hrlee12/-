@@ -9,3 +9,9 @@ export interface MyInfoProps {
   titleContent: string;
   catAssetUrl: string;
 }
+
+export interface MySkins {
+  catId: number;
+  catAssetUrl: string;
+  achieveLevel: number;
+}

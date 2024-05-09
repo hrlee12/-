@@ -15,6 +15,7 @@ import MyCat from '@/pages/cat';
 import Drawing from '@/pages/drawing';
 import AlonePreview from '@/pages/preview/alonePreview';
 import GroupPreview from '@/pages/preview/groupPreview';
+import MyCatSkin from '@/pages/cat/skin';
 // import ScreenShare from '@/pages/screenshare';
 
 const RouterComponent = () => {
@@ -35,6 +36,7 @@ const RouterComponent = () => {
         {/*후에 여기 개인 id 바인딩을 고려해야함*/}
         <Route path={'/catInfo'} element={<MyCatInfo />} />
         <Route path={'/catSetting'} element={<MyCatSetting />} />
+        <Route path={'/catSkin'} element={<MyCatSkin />} />
         <Route path={'/drawing'} element={<Drawing />} />
         <Route path={'/previewAlone'} element={<AlonePreview />} />
         <Route path={'/previewTwo'} element={<GroupPreview />} />
