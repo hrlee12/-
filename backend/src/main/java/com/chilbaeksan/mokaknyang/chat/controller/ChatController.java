@@ -38,7 +38,7 @@ public class ChatController {
     private final ChatService chatService;
     private final JwtUtil jwtUtil;
 
-    @MessageMapping("/{partyId}")
+    @MessageMapping("/chat/{partyId}")
     public void sendMessage(
             SimpMessageHeaderAccessor headerAccessor,
             @DestinationVariable("partyId") Integer partyId,

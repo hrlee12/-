@@ -1,11 +1,8 @@
 package com.chilbaeksan.mokaknyang.chat.interceptor;
 
-import com.chilbaeksan.mokaknyang.chat.Handler.UserShakehandHandler;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -30,9 +27,6 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
         return message;
     }
     private String extractTokenFromHttpRequest(List<String> authorizationHeaders) {
-        // 실제로 JWT 토큰을 추출하는 방법은 요구사항에 따라 다를 수 있습니다.
-        // 예를 들어, 요청 헤더에서 토큰을 추출하거나, 쿠키에서 토큰을 추출하는 등의 방법이 있습니다.
-        // 여기서는 간단히 헤더에서 추출하는 것으로 가정합니다.
 
         if (authorizationHeaders != null && !authorizationHeaders.isEmpty()) {
             String authorizationHeader = authorizationHeaders.get(0);
@@ -40,7 +34,7 @@ public class FilterChannelInterceptor implements ChannelInterceptor {
                 return authorizationHeader.substring(7);
             }
         }else{
-            throw new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN);
+            throw new RuntimeException("사용자가 로그인되어 있지 않습니다");
         }
         return null;
     }
