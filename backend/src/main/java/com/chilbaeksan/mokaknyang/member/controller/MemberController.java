@@ -140,4 +140,22 @@ public class MemberController {
 
         return ResponseEntity.ok(result);
     }
+
+    @GetMapping("/party")
+    public ResponseEntity<?> getJoinParty(HttpServletRequest request){
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
+        Member member = memberService.getJoinParty(userId);
+        Integer partyId = 0;
+
+        if(member.getParty() != null)
+            partyId = member.getParty().getPartyId();
+
+        MemberJoinPartyResponse result = MemberJoinPartyResponse.builder()
+                .partyId(partyId)
+                .build();
+
+        return ResponseEntity.ok(result);
+    }
 }
