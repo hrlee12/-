@@ -62,10 +62,12 @@ const SignUpPage = () => {
     <div>
       <BasicFrame>
         <div className='flex justify-center items-center'>
-          <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px] ml-[24px]'>
+          <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px]'>
             회원가입
           </h2>
-          <InfoHover />
+          <div className='absolute pl-[345px] pt-[85px] w-full'>
+            <InfoHover />
+          </div>
         </div>
         {isDone && (
           <div className='font-dnf flex justify-center items-center pt-[4px]'>
