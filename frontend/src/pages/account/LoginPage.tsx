@@ -4,6 +4,7 @@ import InputBox from '@/components/inputbox';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '@/apis/user.ts';
+import { FaCircleXmark } from 'react-icons/fa6';
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
@@ -25,6 +26,10 @@ const LoginPage = () => {
 
   return (
     <div>
+      <FaCircleXmark
+        className='absolute ml-[15px] mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
+        onClick={() => navigate('/')}
+      />
       <BasicFrame>
         <div className='flex justify-center items-center'>
           <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px]'>
