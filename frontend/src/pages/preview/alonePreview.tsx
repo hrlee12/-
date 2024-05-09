@@ -87,25 +87,33 @@ const AlonePreview = () => {
       {isHovered && (
         <div>
           <SmallFrameNoCat>
-            <div>
-              <span>{myInfo.level}</span>
-              <span>{myInfo.titleContent}</span>
-            </div>
-            <div>
+            <div className='flex flex-col justify-between p-4 space-y-4 w-[205px] font-neo font-bold text-lg'>
+              <div className='flex justify-between'>
+                <span className='text-sm'>LV.{myInfo.level}</span>
+                {myInfo.titleContent.length > 6 ? (
+                  <span className='text-sm'>{myInfo.titleContent}</span>
+                ) : (
+                  <span>{myInfo.titleContent}</span>
+                )}
+              </div>
               <ProgressBar value={myInfo.memberExp} max={100} />
-              {myInfo.memberCatName}
+              <div>{myInfo.memberCatName}</div>
+              <div className='flex justify-between'>
+                <span>{myInfo.memberHitNumber}</span>
+                <span>{myInfo.memberBehitNumber}</span>
+              </div>
+              <div className='absolute right-0 pr-4 bottom-1'>
+                {timer == undefined ||
+                (!nowIsFocus && nowTimeDuration == -1 && nowRepeat - 1) ? (
+                  <div className='absolute font-dnf w-[205px] right-0 pl-2 bottom-20'>
+                    타이머를 설정해주세요
+                  </div>
+                ) : (
+                  <>{timer}</>
+                  // fixed right-24 bottom-[85px]
+                )}
+              </div>
             </div>
-            <div>
-              <span>{myInfo.memberHitNumber}</span>
-              <span>{myInfo.memberBehitNumber}</span>
-            </div>
-            {timer == undefined ||
-            (!nowIsFocus && nowTimeDuration == -1 && nowRepeat - 1) ? (
-              <div className='font-dnf right-2'>타이머를 설정해주세요</div>
-            ) : (
-              <>{timer}</>
-              // fixed right-24 bottom-[85px]
-            )}
           </SmallFrameNoCat>
         </div>
       )}
