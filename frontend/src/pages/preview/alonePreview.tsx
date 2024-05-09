@@ -36,6 +36,18 @@ const AlonePreview = () => {
   const breakTime = useTimerStore.getState().relaxTime;
   const repeatCount = useTimerStore.getState().endPeriod;
 
+  const movePage = () => {
+    useTimerStore.setState({
+      startTime: 0,
+      endPeriod: 0,
+      concentrateTime: 0,
+      relaxTime: 0,
+      timerId: -1,
+    });
+
+    navigate('/group');
+  };
+
   useEffect(() => {
     const currentTime = Date.now();
     const { nowIsFocus, nowTimeDuration, nowRepeat } = calculateTimerValues(
@@ -147,7 +159,7 @@ const AlonePreview = () => {
         catId={useSkinStore.getState().skinId}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={() => navigate('/previewTwo')}
+        onClick={() => movePage()}
       />
     </>
   );
