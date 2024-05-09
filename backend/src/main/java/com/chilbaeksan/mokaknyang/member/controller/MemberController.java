@@ -44,7 +44,7 @@ public class MemberController {
                 .memberGoal(result.getGoal())
                 .level(result.getLevel().getLevelExp())
                 .titleContent(result.getTitle().getTitleContent())
-                .catAssetUrl(result.getCat().getCatAssetUrl())
+                .catId(result.getCat().getCatId())
                 .build();
 
         return ResponseEntity.ok(response);
