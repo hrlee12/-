@@ -266,13 +266,13 @@ public class PartyService {
             if(catRepository.findByCatId(memberParty.getMember().getCat().getCatId()).isEmpty())
                 throw new BaseException(ErrorCode.CAT_NOT_FOUND);
 
-            String skin = memberParty.getMember().getCat().getCatAssetUrl();
+            Integer catId = memberParty.getMember().getCat().getCatId();
 
             members.add(
                     PartyJoinMember.builder()
                     .memberId(memberId)
                     .name(name)
-                    .skin(skin)
+                    .catId(catId)
                     .build()
             );
         }
