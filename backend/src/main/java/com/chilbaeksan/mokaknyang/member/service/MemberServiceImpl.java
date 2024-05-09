@@ -92,5 +92,5 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public Member getJoinParty(Integer memberId){ return memberRepository.findByMemberId(memberId)
-            .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));}
+            .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));}
 }
