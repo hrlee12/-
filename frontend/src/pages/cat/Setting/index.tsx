@@ -5,10 +5,18 @@ import Button from '@/components/button';
 import Pomodoro from '@/components/timer/pomodoro';
 import { useNavigate } from 'react-router-dom';
 import { useSkinStore } from '@/stores/useSkinStore.ts';
+import { logOut } from '@/apis/user';
 
 const MyCatSetting = () => {
   const navigate = useNavigate();
   const mySkin = useSkinStore.getState().skinId;
+
+  const logOutClick = async () => {
+    const response = await logOut();
+    if (response?.status == 200) {
+      navigate('/');
+    }
+  };
 
   return (
     <MyFrame>
@@ -39,7 +47,9 @@ const MyCatSetting = () => {
           text={'로그아웃'}
           size={'small'}
           color={'gray'}
-          onClick={() => {}}
+          onClick={() => {
+            logOutClick();
+          }}
         />
       </div>
     </MyFrame>
