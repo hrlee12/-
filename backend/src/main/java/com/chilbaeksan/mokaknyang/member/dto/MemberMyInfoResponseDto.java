@@ -16,5 +16,5 @@ public class MemberMyInfoResponseDto {
    private String memberGoal;
    private Integer level;
    private String titleContent;
-   private String catAssetUrl;
+   private Integer catId;
 }

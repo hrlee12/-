@@ -71,7 +71,7 @@ public class ChatServiceImpl implements ChatService{
         PublishMessage message = PublishMessage.builder()
                 .partyId(partyId)
                 .senderId(memberId)
-                .sendNickname(member.getNickname())
+                .sendNickname(member.getCatName())
                 .contents(chatSendRequestDto.getContents())
                 .sendTime(LocalDateTime.now().toString())
                 .build();
@@ -95,7 +95,7 @@ public class ChatServiceImpl implements ChatService{
             entity = ChatMessage.builder()
                     .partyId(partyId)
                     .senderId(memberId)
-                    .senderNickname(member.getNickname())
+                    .senderNickname(member.getCatName())
                     .contents(chatSendRequestDto.getContents())
                     .sendTime(LocalDateTime.now().toString())
                     .build();
