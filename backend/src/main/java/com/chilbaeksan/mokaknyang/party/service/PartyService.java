@@ -398,13 +398,14 @@ public class PartyService {
 
             partys.add(
                     PartyJoin.builder()
-                    .partyId(party.getPartyId())
-                    .partyGoal(party.getPurpose())
-                    .currentNum(party.getParticipateNumber())
-                    .maxNum(party.getMaxNumber())
-                    .lastChatter(null)
-                    .lastChatContent(null)
-                    .lastSendChatTime(null)
+                            .partyId(party.getPartyId())
+                            .partyGoal(party.getPurpose())
+                            .partyName(party.getName())
+                            .currentNum(party.getParticipateNumber())
+                            .maxNum(party.getMaxNumber())
+                            .lastChatter(null)
+                            .lastChatContent(null)
+                            .lastSendChatTime(null)
                     .build()
             );
         }
