@@ -378,8 +378,7 @@ public class PartyService {
     }
 
     public PartyJoinList getPartyJoinList(Integer pageNum, Integer pageSize){
-        //일단 페이지 사이즈 6으로 지정
-        Pageable pageable = PageRequest.of(pageNum, pageSize);
+        Pageable pageable = PageRequest.of(pageNum-1, pageSize);
         Page<Party> page = partyRepository.findAll(pageable);
 
         List<PartyJoin> partys = new ArrayList<>();
