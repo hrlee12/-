@@ -377,13 +377,24 @@ public class PartyService {
                 .build();
     }
 
-    public PartyJoinList getPartyJoinList(Integer pageNum, Integer pageSize){
+    public PartyJoinList getPartyJoinList(Integer pageNum, Integer pageSize, HttpServletRequest request){
+        int memberId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
+        Member member = memberRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
         Pageable pageable = PageRequest.of(pageNum-1, pageSize);
-        Page<Party> page = partyRepository.findAll(pageable);
+        Page<MemberParty> page = memberPartyRepository.findByMember(member, pageable);
 
         List<PartyJoin> partys = new ArrayList<>();
-        for(Party party : page.getContent()){
-            ChatMessage chatMessage = chatRepository.findFirst1ByPartyIdOrderBySendTimeDesc(party.getPartyId());
+        for(MemberParty memberParty : page.getContent()){
+            if(memberParty.getParty() == null)
+                throw new BaseException(ErrorCode.PARTY_NOT_FOUND);
+
+            Party party = memberParty.getParty();
+
+            ChatMessage chatMessage = chatRepository.findFirst1ByPartyIdOrderBySendTimeDesc(memberParty.getParty().getPartyId());
 
             partys.add(
                     PartyJoin.builder()
