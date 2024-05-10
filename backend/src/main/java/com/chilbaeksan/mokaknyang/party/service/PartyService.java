@@ -394,7 +394,7 @@ public class PartyService {
 
             Party party = memberParty.getParty();
 
-            ChatMessage chatMessage = chatRepository.findFirst1ByPartyIdOrderBySendTimeDesc(memberParty.getParty().getPartyId());
+//            ChatMessage chatMessage = chatRepository.findFirst1ByPartyIdOrderBySendTimeDesc(memberParty.getParty().getPartyId());
 
             partys.add(
                     PartyJoin.builder()
@@ -402,9 +402,9 @@ public class PartyService {
                     .partyGoal(party.getPurpose())
                     .currentNum(party.getParticipateNumber())
                     .maxNum(party.getMaxNumber())
-                    .lastChatter(chatMessage.getSenderNickname())
-                    .lastChatContent(chatMessage.getContents())
-                    .lastSendChatTime(chatMessage.getSendTime())
+                    .lastChatter(null)
+                    .lastChatContent(null)
+                    .lastSendChatTime(null)
                     .build()
             );
         }
