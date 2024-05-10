@@ -33,3 +33,16 @@ export const logIn = async (userId: string, password: string) => {
     console.log(error);
   }
 };
+
+export const logOut = async () => {
+  try {
+    const response = await axiosInstance.post('/auth/logout');
+
+    const { setAccessToken } = useAuthStore.getState();
+    setAccessToken(response.data);
+
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -4,6 +4,8 @@ import InputBox from '@/components/inputbox';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '@/apis/user.ts';
+import { FaCircleXmark } from 'react-icons/fa6';
+import CrouchCat from '@/components/cat/crouch';
 import { getMyInfo } from '@/apis/member.ts';
 import { useSkinStore } from '@/stores/useSkinStore.ts';
 
@@ -28,12 +30,36 @@ const LoginPage = () => {
 
   return (
     <div>
+      <FaCircleXmark
+        className='absolute ml-[15px] mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
+        onClick={() => navigate('/')}
+      />
       <BasicFrame>
         <div className='flex justify-center items-center'>
           <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px]'>
             모각냥
             <div className='text-[18px] text'>모두 각자 냥이</div>
           </h2>
+          <CrouchCat
+            catId={1}
+            addStyle={{ left: 60, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={2}
+            addStyle={{ left: 100, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={3}
+            addStyle={{ left: 140, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={4}
+            addStyle={{ left: 180, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={5}
+            addStyle={{ left: 220, top: 80, width: 150, height: 150 }}
+          />
         </div>
         <div className='pt-[160px]'>
           {/* 입력창 */}
