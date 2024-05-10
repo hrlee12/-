@@ -77,8 +77,8 @@ public class PartyController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<PartyJoinList> getPartyJoinList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize){
-        PartyJoinList partyJoinList = partyService.getPartyJoinList(pageNum, pageSize);
+    public ResponseEntity<PartyJoinList> getPartyJoinList(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize, HttpServletRequest request){
+        PartyJoinList partyJoinList = partyService.getPartyJoinList(pageNum, pageSize, request);
         return ResponseEntity.ok(partyJoinList);
     }
 }
