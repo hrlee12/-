@@ -77,8 +77,12 @@ public class WebSocketHandler extends TextWebSocketHandler{
         LAST_PONG_TIME.remove(memberId);
 
         List<Integer> listMemberId = CLIENT_PARTY.get(partyId);
-        listMemberId.remove(memberId);
-        CLIENT_PARTY.put(partyId, listMemberId);
+        listMemberId.remove(Integer.valueOf(memberId));
+
+        if(listMemberId.isEmpty())
+            CLIENT_PARTY.remove(partyId);
+        else
+            CLIENT_PARTY.put(partyId, listMemberId);
     }
 
     @Override
@@ -221,6 +225,33 @@ public class WebSocketHandler extends TextWebSocketHandler{
             webSocketSession.sendMessage(new TextMessage(jsonData));
         } catch (IOException e) {
             log.error("Error sending party member status to client {}: {}", webSocketSession.getId(), e.getMessage());
+        }
+    }
+
+    public void printLog(){
+        log.info("여기서부터 CLIENTS 정보");
+        Set<String> set1 = CLIENTS.keySet();
+        for(String key : set1){
+            log.info("session id:"+key+", session:"+CLIENTS.get(key));
+        }
+
+        log.info("여기서부터 CLIENT_PARTY 정보");
+        Set<Integer> set2 = CLIENT_PARTY.keySet();
+        for(int partyId : set2){
+            List<Integer> list = CLIENT_PARTY.get(partyId);
+            log.info("partyId:"+partyId+", members:"+list.toString());
+        }
+
+        log.info("여기서부터 LAST_PONG_TIME 정보");
+        Set<Integer> set3 = LAST_PONG_TIME.keySet();
+        for(int memberId : set3){
+            log.info("memberId:"+memberId+", last pong time:"+LAST_PONG_TIME.get(memberId));
+        }
+
+        log.info("여기서부터 CLIENT_STATUS 정보");
+        Set<Integer> set4 = CLIENT_STATUS.keySet();
+        for(int memberId : set4){
+            log.info("memberId:"+memberId+", status:"+CLIENT_STATUS.get(memberId));
         }
     }
 }
