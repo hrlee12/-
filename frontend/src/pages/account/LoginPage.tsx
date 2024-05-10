@@ -1,10 +1,14 @@
 import Button from '@/components/button';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
-import { useState } from 'react';
+import {useState} from 'react';
+
+
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '@/apis/user.ts';
 import CrouchCat from '@/components/cat/crouch';
+
+
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
@@ -22,6 +26,10 @@ const LoginPage = () => {
     }
     setIsPassed(false);
   };
+
+
+
+
 
   return (
     <div>
@@ -88,6 +96,7 @@ const LoginPage = () => {
               color={'green'}
               onClick={() => navigate('/signup')}
             />
+
           </div>
           {!isPassed && (
             <div className='font-dnf flex justify-center items-center pt-[20px]'>
