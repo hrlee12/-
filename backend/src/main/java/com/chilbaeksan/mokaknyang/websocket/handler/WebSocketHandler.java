@@ -62,6 +62,8 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
         CLIENT_STATUS.put(memberId, "online");
         CLIENTS.put(session.getId(), session);
+
+        sendLoginPartyMemberStatus(session);
     }
 
     @Override
@@ -75,8 +77,12 @@ public class WebSocketHandler extends TextWebSocketHandler{
         LAST_PONG_TIME.remove(memberId);
 
         List<Integer> listMemberId = CLIENT_PARTY.get(partyId);
-        listMemberId.remove(memberId);
-        CLIENT_PARTY.put(partyId, listMemberId);
+        listMemberId.remove(Integer.valueOf(memberId));
+
+        if(listMemberId.isEmpty())
+            CLIENT_PARTY.remove(partyId);
+        else
+            CLIENT_PARTY.put(partyId, listMemberId);
     }
 
     @Override
@@ -129,7 +135,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
             }
         }
 
-        sendGroupMemberStatus();
+        sendPartyMemberStatus();
     }
 
     //uri에서 partyId와 memberId를 추출
@@ -156,7 +162,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
     }
 
     //웹 소켓에 참여하는 모든 사용자에게 파티에 속해있는 사용자의 상태를 보내줌
-    private void sendGroupMemberStatus() {
+    private void sendPartyMemberStatus() {
         for(WebSocketSession webSocketSession : CLIENTS.values()){
             Map<Integer, String> partyMemberStatus = new HashMap<>();
 
@@ -187,6 +193,65 @@ public class WebSocketHandler extends TextWebSocketHandler{
             } catch (IOException e) {
                 log.error("Error sending party member status to client {}: {}", webSocketSession.getId(), e.getMessage());
             }
+        }
+    }
+
+    //로그인 시 해당 파티에 참여하고 있는 사용자들의 정보를 보여준다
+    public void sendLoginPartyMemberStatus(WebSocketSession webSocketSession){
+        List<Integer> loginPartyMemberList = new ArrayList<>();
+
+        Integer[] memberIdAndPartyId = extractMemberIdAndPartyId(webSocketSession.getUri());
+        int partyId = memberIdAndPartyId[1];
+
+        List<Integer> list = CLIENT_PARTY.get(partyId);
+
+        if(list == null || list.isEmpty())
+            return;
+
+        for(int listMemberId : list){
+            loginPartyMemberList.add(listMemberId);
+        }
+
+        String jsonData;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            jsonData = objectMapper.writeValueAsString(loginPartyMemberList);
+        } catch (JsonProcessingException e) {
+            log.error("Error converting party member status to JSON: {}", e.getMessage());
+            return;
+        }
+
+        try {
+            webSocketSession.sendMessage(new TextMessage(jsonData));
+        } catch (IOException e) {
+            log.error("Error sending party member status to client {}: {}", webSocketSession.getId(), e.getMessage());
+        }
+    }
+
+    public void printLog(){
+        log.info("여기서부터 CLIENTS 정보");
+        Set<String> set1 = CLIENTS.keySet();
+        for(String key : set1){
+            log.info("session id:"+key+", session:"+CLIENTS.get(key));
+        }
+
+        log.info("여기서부터 CLIENT_PARTY 정보");
+        Set<Integer> set2 = CLIENT_PARTY.keySet();
+        for(int partyId : set2){
+            List<Integer> list = CLIENT_PARTY.get(partyId);
+            log.info("partyId:"+partyId+", members:"+list.toString());
+        }
+
+        log.info("여기서부터 LAST_PONG_TIME 정보");
+        Set<Integer> set3 = LAST_PONG_TIME.keySet();
+        for(int memberId : set3){
+            log.info("memberId:"+memberId+", last pong time:"+LAST_PONG_TIME.get(memberId));
+        }
+
+        log.info("여기서부터 CLIENT_STATUS 정보");
+        Set<Integer> set4 = CLIENT_STATUS.keySet();
+        for(int memberId : set4){
+            log.info("memberId:"+memberId+", status:"+CLIENT_STATUS.get(memberId));
         }
     }
 }
