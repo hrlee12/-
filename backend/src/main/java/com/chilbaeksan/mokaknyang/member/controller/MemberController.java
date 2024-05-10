@@ -127,7 +127,7 @@ public class MemberController {
     }
 
     @PatchMapping("/skins")
-    public ResponseEntity<?> setSkin(MemberSkinModifyRequestDto dto, HttpServletRequest request){
+    public ResponseEntity<?> setSkin(@RequestBody MemberSkinModifyRequestDto dto, HttpServletRequest request){
         // 유저 아이디 추출
         Integer userId = jwtUtil.getUserId(request)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN)); // 없으면 로그인 안된거임
