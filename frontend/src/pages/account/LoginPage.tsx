@@ -4,6 +4,7 @@ import InputBox from '@/components/inputbox';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '@/apis/user.ts';
+import CrouchCat from '@/components/cat/crouch';
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
@@ -30,6 +31,26 @@ const LoginPage = () => {
             모각냥
             <div className='text-[18px] text'>모두 각자 냥이</div>
           </h2>
+          <CrouchCat
+            catId={1}
+            addStyle={{ left: 60, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={2}
+            addStyle={{ left: 100, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={3}
+            addStyle={{ left: 140, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={4}
+            addStyle={{ left: 180, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={5}
+            addStyle={{ left: 220, top: 80, width: 150, height: 150 }}
+          />
         </div>
         <div className='pt-[160px]'>
           {/* 입력창 */}
