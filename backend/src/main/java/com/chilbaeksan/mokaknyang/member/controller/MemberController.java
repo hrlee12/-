@@ -42,7 +42,7 @@ public class MemberController {
                 .memberHitNumber(result.getHitNumber())
                 .memberBehitNumber(result.getBehitNumber())
                 .memberGoal(result.getGoal())
-                .level(result.getLevel().getLevelExp())
+                .level(Integer.valueOf(result.getLevel().getLevel()))
                 .titleContent(result.getTitle().getTitleContent())
                 .catId(result.getCat().getCatId())
                 .build();
@@ -136,6 +136,24 @@ public class MemberController {
 
         MemberSkinModifyResponseDto result = MemberSkinModifyResponseDto.builder()
                 .assetsUrl(cat.getCatAssetUrl())
+                .build();
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/party")
+    public ResponseEntity<?> getJoinParty(HttpServletRequest request){
+        Integer userId = jwtUtil.getUserId(request)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
+        Member member = memberService.getJoinParty(userId);
+        Integer partyId = 0;
+
+        if(member.getParty() != null)
+            partyId = member.getParty().getPartyId();
+
+        MemberJoinPartyResponse result = MemberJoinPartyResponse.builder()
+                .partyId(partyId)
                 .build();
 
         return ResponseEntity.ok(result);

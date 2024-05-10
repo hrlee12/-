@@ -24,4 +24,6 @@ public interface MemberService {
     List<Cat> getCat(Pageable pageable);
 
     Cat setSkin(Integer userId, Integer catId);
+
+    Member getJoinParty(Integer memberId);
 }
