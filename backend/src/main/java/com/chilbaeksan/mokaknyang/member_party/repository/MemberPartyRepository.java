@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface MemberPartyRepository extends JpaRepository<MemberParty, Integer> {
     Optional<MemberParty> findByMemberAndParty(Member member, Party party);
     List<MemberParty> findByParty(Party party);
+    List<MemberParty> findByMember(Member member);
 }
