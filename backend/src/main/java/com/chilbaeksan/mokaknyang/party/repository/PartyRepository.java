@@ -9,5 +9,4 @@ import java.util.Optional;
 
 public interface PartyRepository extends JpaRepository<Party, Integer> {
     Optional<Party> findByPartyId(Integer partyId);
-    Page<Party> findAll(Pageable pageable);
 }
