@@ -1,10 +1,11 @@
 import Button from '@/components/button';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
-import { useState } from 'react';
+import {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '@/apis/user.ts';
 import { FaCircleXmark } from 'react-icons/fa6';
+import CrouchCat from '@/components/cat/crouch';
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
@@ -17,7 +18,6 @@ const LoginPage = () => {
     const id: string = userid;
     const pw: string = password;
     const response = await logIn(id, pw);
-    // console.log(response);
     if (response?.status == 200) {
       navigate('/group');
     }
@@ -36,6 +36,26 @@ const LoginPage = () => {
             모각냥
             <div className='text-[18px] text'>모두 각자 냥이</div>
           </h2>
+          <CrouchCat
+            catId={1}
+            addStyle={{ left: 60, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={2}
+            addStyle={{ left: 100, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={3}
+            addStyle={{ left: 140, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={4}
+            addStyle={{ left: 180, top: 80, width: 150, height: 150 }}
+          />
+          <CrouchCat
+            catId={5}
+            addStyle={{ left: 220, top: 80, width: 150, height: 150 }}
+          />
         </div>
         <div className='pt-[160px]'>
           {/* 입력창 */}
@@ -73,6 +93,7 @@ const LoginPage = () => {
               color={'green'}
               onClick={() => navigate('/signup')}
             />
+
           </div>
           {!isPassed && (
             <div className='font-dnf flex justify-center items-center pt-[20px]'>
