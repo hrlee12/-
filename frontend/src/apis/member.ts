@@ -70,7 +70,9 @@ export const getMySkin = async () => {
 
 export const patchMySkin = async (catId: number) => {
   try {
-    const response = await axiosInstance.patch(`/member/skins`, catId);
+    const response = await axiosInstance.patch(`/member/skins`, {
+      catId: catId,
+    });
     return response.data;
   } catch (error) {
     console.log(error);

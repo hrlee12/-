@@ -31,6 +31,18 @@ export interface GroupProps {
 
 export interface GroupMembers {
   partyManagerName: string;
+  catId: number;
   memberId: number;
   memberCatName: string;
+}
+
+export interface JoinGroupInfo {
+  partyId: number;
+  partyName: string;
+  partyGoal: string;
+  currentNum: number;
+  maxNum: number;
+  lastChatter: string;
+  lastChatterContent: string;
+  lastSendChatTime: string;
 }

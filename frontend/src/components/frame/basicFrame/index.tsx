@@ -11,7 +11,7 @@ const BasicFrame = ({ children }: Props) => {
   return (
     <>
       <main>
-        <div className='m-4 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius'>
+        <div className='m-4 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius shadow-inputBoxShadow'>
           {children}
         </div>
       </main>
