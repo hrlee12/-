@@ -2,6 +2,18 @@ import { axiosInstance } from '@/apis/lib/axios.ts';
 import { MakeGroupInfo, UpdateGroupInfo } from '@/types/group';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 
+// 그룹 조회
+export const getGroup = async () => {
+  try {
+    const response = await axiosInstance.get(
+      `party/list?pageNum=${1}&pageSize=${6}`,
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // 그룹 생성
 export const makeGroup = async (MakeGroupInfo: MakeGroupInfo) => {
   try {
@@ -44,8 +56,6 @@ export const groupMessageList = async () => {
     console.log(err);
   }
 };
-
-// 가입 그룹 조회
 
 //그룹 삭제 (partyId 필요없나?)
 export const deleteGroup = async () => {

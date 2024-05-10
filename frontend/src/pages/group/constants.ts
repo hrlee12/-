@@ -4,6 +4,13 @@ export const GROUP_INFO = {
   NAME: '그룹 이름',
   COUNT: '멤버 수',
   GOAL: '그룹 목표',
+  POMODORO: '뽀모도로',
+  NO_GOAL: '목표를 추가해보세요!',
+};
+
+export const GROUP_MEESAGE = {
+  LIST: '메세지 목록',
+  NO_MESSAGE: '메세지가 없습니다.',
 };
 
 export const NO_GROUP_MESSAGE = '친구를 초대해\n그룹을 만들어보세요!';

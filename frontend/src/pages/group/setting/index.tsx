@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import * as constants from '@/pages/group/constants.ts';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
 import {
   deleteGroup,
-  getMembers,
   groupDetail,
   leaveGroup,
   updateGroup,
@@ -15,14 +14,16 @@ import { GroupProps, UpdateGroupInfo } from '@/types/group';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 
 const GroupSetting = () => {
+  const { groupId } = useParams();
   const navigate = useNavigate();
+  const partyId = Number(groupId);
   const myId = useAuthStore.getState().accessToken;
 
   const [groupDetails, setGroupDetails] = useState<GroupProps>({
-    partyId: 9,
+    partyId: partyId,
     partyName: '',
     partyGoal: '',
-    partyManagerId: 7,
+    partyManagerId: 0,
     memberCatName: '',
     partyManagerName: '',
     partyMembers: [],
@@ -33,11 +34,8 @@ const GroupSetting = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const partyId = 9;
         const detailData = await groupDetail(partyId);
-        const members = await getMembers(9);
         setGroupDetails(detailData);
-        console.log(members);
       } catch (err) {
         console.error(err);
       }
@@ -69,15 +67,15 @@ const GroupSetting = () => {
   const changeGroupDetails = async () => {
     try {
       const { partyName, partyGoal, partyManagerId } = groupDetails;
-      console.log(groupDetails);
       const updateInfo: UpdateGroupInfo = {
-        partyId: 9,
+        partyId: partyId,
         partyName,
         partyGoal,
         partyManagerId,
       };
       await updateGroup(updateInfo);
       setRefreshFlag(!refreshFlag);
+      navigate('/group');
     } catch (err) {
       console.error(err);
     }
@@ -94,7 +92,7 @@ const GroupSetting = () => {
 
   const handleOutGroup = async () => {
     try {
-      await leaveGroup(9);
+      await leaveGroup(partyId);
       navigate('/group');
     } catch (err) {
       console.log(err);

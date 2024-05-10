@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Button from '@/components/button';
-import { acceptInvite, rejectInvite } from '@/apis/group.ts';
+import { acceptInvite, rejectInvite } from '@/apis/group';
 import { InviteMessage } from '@/types/group';
+import * as constants from '@/pages/group/constants';
 
 interface MessageProps {
   messages: InviteMessage[];
@@ -31,7 +32,7 @@ const GroupMessage = ({ messages: initialMessages, onClose }: MessageProps) => {
   return (
     <div className='fixed right-24 bg-groupColor rounded-lg w-96 h-64 flex justify-center items-center border-spacing-1'>
       <div className='bg-white p-5 rounded-lg'>
-        <h2 className={'font-neo '}>메시지 목록</h2>
+        <h2 className={'font-neo '}>{constants.GROUP_MEESAGE.LIST}</h2>
         <ul
           style={{
             maxHeight: '150px',
@@ -64,7 +65,7 @@ const GroupMessage = ({ messages: initialMessages, onClose }: MessageProps) => {
               </li>
             ))
           ) : (
-            <li className={'font-neo'}>메시지가 없습니다.</li>
+            <li className={'font-neo'}>{constants.GROUP_MEESAGE.NO_MESSAGE}</li>
           )}
         </ul>
         <div className='flex justify-center mt-1'>

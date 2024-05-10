@@ -1,11 +1,13 @@
 import Button from '@/components/button';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
-import {useState} from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logIn } from '@/apis/user.ts';
 import { FaCircleXmark } from 'react-icons/fa6';
 import CrouchCat from '@/components/cat/crouch';
+import { getMyInfo } from '@/apis/member.ts';
+import { useSkinStore } from '@/stores/useSkinStore.ts';
 
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
@@ -19,6 +21,8 @@ const LoginPage = () => {
     const pw: string = password;
     const response = await logIn(id, pw);
     if (response?.status == 200) {
+      const response = await getMyInfo();
+      useSkinStore.getState().setSkinId(response.catId);
       navigate('/group');
     }
     setIsPassed(false);
@@ -93,7 +97,6 @@ const LoginPage = () => {
               color={'green'}
               onClick={() => navigate('/signup')}
             />
-
           </div>
           {!isPassed && (
             <div className='font-dnf flex justify-center items-center pt-[20px]'>

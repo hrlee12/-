@@ -5,21 +5,20 @@ import { FaMessage, FaPlus } from 'react-icons/fa6';
 import * as constants from '@/pages/group/constants';
 import Button from '@/components/button';
 import GroupMessage from '@/pages/group/GroupMessage.tsx';
-import { InviteMessage } from '@/types/group';
-import { groupMessageList } from '@/apis/group.ts';
-import { getMyInfo } from '@/apis/member.ts';
-import { useSkinStore } from '@/stores/useSkinStore.ts';
+import { InviteMessage, JoinGroupInfo } from '@/types/group';
+import { getGroup, groupMessageList } from '@/apis/group.ts';
+import Group from '@/pages/group/Group.tsx';
 
 const GroupPage = () => {
   const navigate = useNavigate();
-  const [groups] = useState([]);
+  const [groups, setGroups] = useState<JoinGroupInfo[]>([]);
   const [messages, setMessages] = useState<InviteMessage[]>([]);
   const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMyInfo = async () => {
-      const response = await getMyInfo();
-      useSkinStore.getState().setSkinId(response.catId);
+      const groupResponse = await getGroup();
+      setGroups(groupResponse.partys);
     };
 
     fetchMyInfo();
@@ -56,27 +55,29 @@ const GroupPage = () => {
               />
             </div>
           </div>
-          {/*{groups.length > 0 && (*/}
-          {/*  <div id='group-container' className='grid grid-cols-2 p-1'>*/}
-          {/*    {groups.map((group, index) => (*/}
-          {/*      <Group key={index} group={group} /> // Group 컴포넌트에 group 객체 전달*/}
-          {/*    ))}*/}
-          {/*  </div>*/}
-          {/*)}*/}
+          {groups.length > 0 && (
+            <div id='group-container' className='grid grid-cols-2 p-1'>
+              {groups.map((group, index) => (
+                <Group key={index} group={group} />
+              ))}
+            </div>
+          )}
           {showModal && (
             <GroupMessage messages={messages} onClose={closeModal} />
           )}
         </div>
-        <div className='flex-grow flex items-center justify-center'>
-          <pre className='font-neo text-3xl text-center'>
-            {groups.length ? '' : constants.NO_GROUP_MESSAGE}
-          </pre>
-        </div>
-        <div className='fixed bottom-12 right-32'>
+        {groups.length === 0 && (
+          <div className='flex-grow flex items-center justify-center'>
+            <pre className='font-neo text-3xl text-center'>
+              {groups.length ? '' : constants.NO_GROUP_MESSAGE}
+            </pre>
+          </div>
+        )}
+        <div className='fixed bottom-28 right-36'>
           <Button
             text={'혼자하기'}
             size={'small'}
-            color={'navy'}
+            color={'green'}
             onClick={() => navigate('/catSetting')}
           />
         </div>
