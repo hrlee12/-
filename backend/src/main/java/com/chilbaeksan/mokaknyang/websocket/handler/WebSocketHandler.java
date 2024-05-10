@@ -77,7 +77,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
         LAST_PONG_TIME.remove(memberId);
 
         List<Integer> listMemberId = CLIENT_PARTY.get(partyId);
-        listMemberId.remove(memberId);
+        listMemberId.remove(Integer.valueOf(memberId));
         CLIENT_PARTY.put(partyId, listMemberId);
     }
 
