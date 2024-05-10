@@ -1,12 +1,10 @@
 import { app, BrowserWindow, screen, ipcMain } from 'electron';
-// import { createRequire } from 'node:module'
+
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import {exec} from "child_process";
-// import { activeWindow} from "active-win";
-// import {activeWindow} from "get-windows";
+import {spawn} from "child_process";
 
-// const require = createRequire(import.meta.url)
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // The built directory structure
@@ -119,58 +117,26 @@ ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
 
 // PowerShell 스크립트 실행 함수
 function getActiveWindowProcessName() {
-  const psScript = `
-   Add-Type @"
-  using System;
-  using System.Runtime.InteropServices;
-  public class User32 {
-    [DllImport("user32.dll")]
-    public static extern IntPtr GetForegroundWindow();
-    [DllImport("user32.dll")]
-    public static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);
-  }
-"@
+  const psScript = `Add-Type @"\nusing System;\nusing System.Runtime.InteropServices;\npublic class User32 {\n[DllImport("user32.dll")]\npublic static extern IntPtr GetForegroundWindow();\n[DllImport("user32.dll")]\npublic static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);\n}\n"@\n$foregroundWindowHandle = [User32]::GetForegroundWindow()\n$processId = 0\n[User32]::GetWindowThreadProcessId($foregroundWindowHandle, [ref]$processId)\n$process = Get-Process | Where-Object { $_.Id -eq $processId }\n$process.Name`;
 
-$foregroundWindowHandle = [User32]::GetForegroundWindow()
-$processId = 0
-[User32]::GetWindowThreadProcessId($foregroundWindowHandle, [ref]$processId)
-$process = Get-Process | Where-Object { $_.Id -eq $processId }
-$process.Name
-  `;
 
-  exec(psScript, (error, stdout:string, stderr:string) => {
-  // exec(`powershell -Command "${psScript}"`, (error, stdout:string, stderr:string) => {
-    if (error) {
-      console.error(`exec error: ${error}`);
-      console.log(stderr);
-      return;
-    }
-    console.log("stdout >>>>>>>>>>>>>>>>>>> " + stdout);
-    win!.webContents.send('active-window-process-name', stdout.trim());
+  const ps = spawn('powershell.exe', ["-Command", psScript]);
+
+  ps.stdout.on('data', (data)=>{
+    // console.log(`stdout: ${data}`);
+    win!.webContents.send('active-window-process-name', data);
+  })
+
+  ps.stderr.on('data', (data)=>{
+    console.log('stderr : ' + data);
   });
+
+  ps.on('close', (code) => {
+    console.log('child process exited with code : ' + code);
+  })
+
 }
 
 // 렌더러 프로세스에서 메시지 수신
 ipcMain.on('get-active-window-process-name', getActiveWindowProcessName);
 
-
-
-// ipcMain.handle('get-active-window', async () => {
-//   try {
-//     const windowInfo = await activeWindow();
-//     return windowInfo;
-//   } catch (error) {
-//     console.error('Failed to get active window information:', error);
-//     return null;
-//   }
-// });
-
-// ipcMain.handle('get-active-window', async () => {
-//   try {
-//     const windowInfo = await activeWindow();
-//     return windowInfo;
-//   } catch (error) {
-//     console.error('Failed to get active window information:', error);
-//     return null;
-//   }
-// });

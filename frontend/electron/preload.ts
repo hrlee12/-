@@ -22,8 +22,7 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
   },
 
 
-  // You can expose other APTs you need here.
-  // ...
+
 });
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -47,10 +46,3 @@ contextBridge.exposeInMainWorld('electronAPI', {
 });
 
 
-// process.once('loaded', () => {
-//   contextBridge.exposeInMainWorld(
-//       'electronAPI', {
-//         getActiveWindow: () => ipcRenderer.invoke('get-active-window')
-//       }
-//   );
-// });
