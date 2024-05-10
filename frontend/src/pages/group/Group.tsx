@@ -1,22 +1,28 @@
 import { useNavigate } from 'react-router-dom';
-
-interface GroupDetailProps {
-  group: {
-    partyId: number;
-    partyName: string;
-    partyGoal: string | null;
-    currentNum: number;
-  };
-}
+import { useAuthStore } from '@/stores/useAuthStore.ts';
+import { GroupDetailProps } from '@/types/group';
+import { Socket } from '@/apis/websocket/Socket.ts';
 
 const Group = ({ group }: GroupDetailProps) => {
   const navigate = useNavigate();
   const groupId = group.partyId;
+  const memberId: number | null = useAuthStore.getState().accessToken;
+
+  const openGroup = async (groupId: number, memberId: number | null) => {
+    try {
+      const socket = new Socket();
+      const url = `https://mogaknyang-back.duckdns.org/status?memberId=${memberId}&partyId=${groupId}`;
+      socket.connect(url);
+      navigate(`/groupInfo/${groupId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div
       className='pl-1 pt-8 pb-1'
-      onClick={() => navigate(`/groupInfo/${groupId}`)}
+      onClick={() => openGroup(groupId, memberId)}
     >
       <div className='bg-groupColor w-48 h-24 rounded-3xl'>
         <div className='flex place-content-around gap-8 pt-3'>

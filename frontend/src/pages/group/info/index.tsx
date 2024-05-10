@@ -66,7 +66,9 @@ const GroupInfoPage = () => {
             {groupInfo.partyMembers.map((member) => (
               <div key={member.memberId} className='flex pl-5 items-center'>
                 <ProfileCat catId={member.catId} />
-                <div className='text-xl pl-2'>{member.memberCatName}</div>
+                <div className='font-neo text-xl pl-2'>
+                  {member.memberCatName}
+                </div>
               </div>
             ))}
           </div>

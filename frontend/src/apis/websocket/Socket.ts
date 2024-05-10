@@ -42,5 +42,9 @@ export class Socket {
 
   private handleMessage(data: string): void {
     console.log('Processing message:', data);
+    // 서버로부터 "ping" 메시지 수신 시 "pong"으로 응답
+    if (data === 'ping') {
+      this.sendMessage('pong');
+    }
   }
 }
