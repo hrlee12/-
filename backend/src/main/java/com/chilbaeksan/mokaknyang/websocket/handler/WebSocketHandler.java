@@ -51,7 +51,10 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
         if(CLIENT_PARTY.containsKey(partyId)){
             List<Integer> list = CLIENT_PARTY.get(partyId);
-            list.add(memberId);
+
+            if(!list.contains(memberId))
+                list.add(memberId);
+
             CLIENT_PARTY.put(partyId, list);
         }
         else{
