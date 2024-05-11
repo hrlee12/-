@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import BasicFrame from '@/components/frame/basicFrame';
 import { useNavigate } from 'react-router-dom';
-import { FaMessage, FaPlus } from 'react-icons/fa6';
+import { FaCircleXmark, FaMessage, FaPlus } from 'react-icons/fa6';
 import * as constants from '@/pages/group/constants';
 import Button from '@/components/button';
 import GroupMessage from '@/pages/group/GroupMessage.tsx';
@@ -35,54 +35,60 @@ const GroupPage = () => {
   };
 
   return (
-    <BasicFrame>
-      <div className='flex flex-col justify-between h-96'>
-        <div>
-          <div className='flex place-content-around gap-40 pt-8'>
-            <div className='font-dnf text-4xl pb-3'>
-              {constants.GROUP_INFO.GROUP}
+    <>
+      <FaCircleXmark
+        className='absolute ml-[15px] mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
+        onClick={() => navigate('/')}
+      />
+      <BasicFrame>
+        <div className='flex flex-col justify-between h-96'>
+          <div>
+            <div className='flex place-content-around gap-40 pt-8'>
+              <div className='font-dnf text-4xl pb-3'>
+                {constants.GROUP_INFO.GROUP}
+              </div>
+              <div className='flex flex-row gap-3 pt-3'>
+                <FaMessage
+                  size={'25'}
+                  className='cursor-pointer'
+                  onClick={checkMessage}
+                />
+                <FaPlus
+                  size={'25'}
+                  className='cursor-pointer'
+                  onClick={() => navigate('/makeGroup')}
+                />
+              </div>
             </div>
-            <div className='flex flex-row gap-3 pt-3'>
-              <FaMessage
-                size={'25'}
-                className='cursor-pointer'
-                onClick={checkMessage}
-              />
-              <FaPlus
-                size={'25'}
-                className='cursor-pointer'
-                onClick={() => navigate('/makeGroup')}
-              />
-            </div>
+            {groups.length > 0 && (
+              <div id='group-container' className='grid grid-cols-2 p-1'>
+                {groups.map((group, index) => (
+                  <Group key={index} group={group} />
+                ))}
+              </div>
+            )}
+            {showModal && (
+              <GroupMessage messages={messages} onClose={closeModal} />
+            )}
           </div>
-          {groups.length > 0 && (
-            <div id='group-container' className='grid grid-cols-2 p-1'>
-              {groups.map((group, index) => (
-                <Group key={index} group={group} />
-              ))}
+          {groups.length === 0 && (
+            <div className='flex-grow flex items-center justify-center'>
+              <pre className='font-neo text-3xl text-center'>
+                {groups.length ? '' : constants.NO_GROUP_MESSAGE}
+              </pre>
             </div>
           )}
-          {showModal && (
-            <GroupMessage messages={messages} onClose={closeModal} />
-          )}
-        </div>
-        {groups.length === 0 && (
-          <div className='flex-grow flex items-center justify-center'>
-            <pre className='font-neo text-3xl text-center'>
-              {groups.length ? '' : constants.NO_GROUP_MESSAGE}
-            </pre>
+          <div className='fixed bottom-28 right-36'>
+            <Button
+              text={'혼자하기'}
+              size={'small'}
+              color={'green'}
+              onClick={() => navigate('/catSetting')}
+            />
           </div>
-        )}
-        <div className='fixed bottom-28 right-36'>
-          <Button
-            text={'혼자하기'}
-            size={'small'}
-            color={'green'}
-            onClick={() => navigate('/catSetting')}
-          />
         </div>
-      </div>
-    </BasicFrame>
+      </BasicFrame>
+    </>
   );
 };
 
