@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { fabric } from 'fabric';
 
 const Drawing = () => {
@@ -6,6 +6,9 @@ const Drawing = () => {
   // const [nowPanel, setNowPanel] = useState(null);
   const [activeTool, setActiveTool] = useState('select');
   const [color, setColor] = useState<string>('black');
+  const [objectCount, setObjectCount] = useState<number>(0);
+  const isInitialMount = useRef(true);
+
 
   useEffect(() => {
     const newCanvas = new fabric.Canvas('canvas', {
@@ -15,11 +18,56 @@ const Drawing = () => {
       backgroundColor: 'white',
     });
     setCanvas(newCanvas);
+    isInitialMount.current = false;
+
+    console.log(canvas);
     //언마운트 시 캔버스 정리, 이벤트 제거
     return () => {
       newCanvas.dispose();
     };
   }, []);
+
+
+  canvas?.on('object:added', (e)=>{
+      console.log("IIIIIIIIIIIi");
+          // const objects:fabric.Object[] = canvas!.getObjects();
+
+          // console.log(objects);
+          // if (objectCount < objects.length){
+          //     const newObjects = objects[objects.length-1];
+              e.target!.animate('opacity', '0', {
+                  duration: 3000,
+                  onChange: canvas!.renderAll.bind(canvas),
+                  onComplete: function() {
+                      canvas!.remove(e.target!);
+                  }
+              })
+          // }
+
+          // setObjectCount(objects.length)
+  })
+  // useEffect(()=>{
+  //     console.log(canvas);
+  //     // if (isInitialMount.current)
+  //     //     return;
+  //     //
+  //     // const objects:fabric.Object[] = canvas!.getObjects();
+  //     //
+  //     // console.log(objects);
+  //     // if (objectCount < objects.length){
+  //     //     const newObjects = objects[objects.length-1];
+  //     //     newObjects.animate('opacity', '0', {
+  //     //         duration: 5000,
+  //     //         onChange: canvas!.renderAll.bind(canvas),
+  //     //         onComplete: function() {
+  //     //             canvas!.remove(newObjects);
+  //     //         }
+  //     //     })
+  //     // }
+  //     //
+  //     // setObjectCount(objects.length)
+  // }, [canvas?.targets])
+
 
   const handleColorChange = (newColor: string) => {
     if (canvas) {
@@ -31,14 +79,14 @@ const Drawing = () => {
     }
   };
 
-  const setEraser = () => {
-    if (canvas) {
-      setActiveTool('pen');
-      canvas.isDrawingMode = true;
-      canvas.freeDrawingBrush.color = canvas.backgroundColor as string;
-      canvas.freeDrawingBrush.width = 15;
-    }
-  };
+  // const setEraser = () => {
+  //   if (canvas) {
+  //     setActiveTool('pen');
+  //     canvas.isDrawingMode = true;
+  //     canvas.freeDrawingBrush.color = canvas.backgroundColor as string;
+  //     canvas.freeDrawingBrush.width = 15;
+  //   }
+  // };
 
   const handleSelectTool = () => {
     if (canvas) {
@@ -85,12 +133,12 @@ const Drawing = () => {
       >
         빨강
       </button>
-      <button
-        style={{ width: '48px', height: '48px', border: '1px solid black' }}
-        onClick={() => setEraser()}
-      >
-        지우개
-      </button>
+      {/*<button*/}
+      {/*  style={{ width: '48px', height: '48px', border: '1px solid black' }}*/}
+      {/*  onClick={() => setEraser()}*/}
+      {/*>*/}
+      {/*  지우개*/}
+      {/*</button>*/}
     </>
   );
 };
