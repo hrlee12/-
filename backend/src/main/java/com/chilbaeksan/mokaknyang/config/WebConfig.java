@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173","https://mogaknyan.duckdns.org") // 모든 출처 허용
+                .allowedOrigins("http://localhost:5173", "http://localhost:5174", "https://mogaknyan.duckdns.org") // 모든 출처 허용
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS", "PATCH", "TRACE") // 모든 HTTP 메소드 허용
                 .allowedHeaders("Content-Type", "Authorization") // 모든 헤더 허용
                 .allowCredentials(true) // 쿠키를 포함시키기 위해 필요
