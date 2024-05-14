@@ -2,12 +2,12 @@ import Button from '@/components/button';
 import { useNavigate, useParams } from 'react-router-dom';
 import BasicFrame from '@/components/frame/basicFrame';
 import * as constants from '@/pages/group/constants';
-import Pomodoro from '@/components/timer/pomodoro';
 import { groupDetail, leaveGroup } from '@/apis/group.ts';
 import { useEffect, useState } from 'react';
 import { GroupProps } from '@/types/group';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 import ProfileCat from '@/components/cat/profile';
+import MultiPomodoro from '@/components/timer/pomodoro/multiPomodoro';
 
 const GroupInfoPage = () => {
   const { groupId } = useParams();
@@ -75,7 +75,7 @@ const GroupInfoPage = () => {
         <div className='flex flex-col font-dnf text-2xl pl-5 py-2'>
           {constants.GROUP_INFO.POMODORO}
         </div>
-        <Pomodoro />
+        <MultiPomodoro />
         <div className='flex justify-center pt-3'>
           {myId === groupInfo.partyManagerId ? (
             <Button

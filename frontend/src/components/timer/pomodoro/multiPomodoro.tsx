@@ -6,7 +6,7 @@ import { useState } from 'react';
 import useTimerStore from '@/stores/useTimerStore.ts';
 import { useNavigate } from 'react-router-dom';
 
-const Pomodoro = () => {
+const MultiPomodoro = () => {
   const [concentrateTime, setConcentrateTime] = useState(0);
   const [relaxTime, setRelaxTime] = useState(0);
   const [endPeriod, setEndPeriod] = useState(0);
@@ -61,7 +61,7 @@ const Pomodoro = () => {
       timerId,
     });
 
-    navigate('/previewAlone');
+    navigate('/previewTwo');
   };
 
   return (
@@ -113,4 +113,4 @@ const Pomodoro = () => {
   );
 };
 
-export default Pomodoro;
+export default MultiPomodoro;
