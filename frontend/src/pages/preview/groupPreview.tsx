@@ -3,13 +3,15 @@ import SmallFrameNoCat from '@/components/frame/smallFrame/noCat.tsx';
 import PomodoroTimer from '@/components/timer/PomodoroTimer.tsx';
 import useTimerStore from '@/stores/useTimerStore';
 import { calculateTimerValues } from '@/components/timer/realTime';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { MyInfoProps } from '@/types/member';
 import { getMyInfo } from '@/apis/member';
 import ProgressBar from '@/components/progressbar/ProgressBar';
 import IdleCat from '@/components/cat/idle';
 import { useSkinStore } from '@/stores/useSkinStore';
 import ProfileCat from '@/components/cat/profile';
+import { getMembers } from '@/apis/group';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const GroupPreview = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -30,7 +32,9 @@ const GroupPreview = () => {
   });
 
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const { groupId } = location.state || {};
+  
   const storedTime = useTimerStore.getState().startTime;
   const focusTime = useTimerStore.getState().concentrateTime;
   const breakTime = useTimerStore.getState().relaxTime;
@@ -81,6 +85,55 @@ const GroupPreview = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+
+    const getMembersInfo = async () => {
+      try {
+        const response = await getMembers(groupId)
+        const managerId = response.managerId
+        if(managerId === useAuthStore.getState().accessToken) {
+          // const sessionResponse = await fetchSession();
+          // socket.emit('sessionCreated', { sessionId: sessionResponse.data.id });
+          // await fetchToken(sessionResponse.data.id);
+        } else {
+          // 위는 방장일 경우 세션을 발급받고, 방장이 아닐경우 Session을 가져올때까지 기다림
+          // socket.on('sessionCreated', async (data) => {
+          //   // 세션 생성 알림을 받으면, 해당 세션 ID로 토큰을 요청합니다.
+          //   await fetchToken(data.sessionId);
+          // });
+        }
+        // const TOKEN = useAuthStore.getState().openViduToken;
+
+        // session.on('streamCreated', (event: StreamEvent) => {
+        //   session.subscribe(event.stream, 'video-container');
+        //   console.log('내 화면 공유중');
+        // });
+
+        // await session.connect(TOKEN, console.log('세션 연결 성공'));
+
+        // navigator.mediaDevices
+        //   .getUserMedia({ video: true, audio: true })
+        //   .then(() => {
+        //     const publisher: Publisher = OV.initPublisher('publisher', {
+        //       videoSource: 'screen', // 화면 공유 활성화
+        //       publishAudio: false, // 오디오 활성화 여부 (화면 공유시 시스템 오디오 포함 여부)
+        //       publishVideo: true, // 비디오 활성화 여부 (화면 공유시에는 화면을)
+        //       resolution: '640x480', // 해상도 설정
+        //       frameRate: 30, // 프레임 레이트 설정
+        //       mirror: false, // 화면 공유일 때는 미러링을 비활성화
+        //     });
+        //     session.publish(publisher);
+        //   })
+        //   .catch((error) => {
+        //     console.error('카메라/마이크 접근 권한 문제:', error);
+        //   });
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getMembersInfo()
+  }, [groupId])
 
   useEffect(() => {
     const fetchMyInfo = async () => {
@@ -155,12 +208,15 @@ const GroupPreview = () => {
           </SmallFrameNoCat>
         </div>
       )}
+      <div id='cat-box'>
+
       <IdleCat
         catId={useSkinStore.getState().skinId}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => movePage()}
       />
+      </div>
     </>
   );
 };

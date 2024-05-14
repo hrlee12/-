@@ -6,10 +6,16 @@ import { useState } from 'react';
 import useTimerStore from '@/stores/useTimerStore.ts';
 import { useNavigate } from 'react-router-dom';
 
-const MultiPomodoro = () => {
+interface GroupIdProps {
+  groupId: number;
+}
+
+const MultiPomodoro = ({groupId}: GroupIdProps) => {
   const [concentrateTime, setConcentrateTime] = useState(0);
   const [relaxTime, setRelaxTime] = useState(0);
   const [endPeriod, setEndPeriod] = useState(0);
+
+const partyId = groupId
 
   const navigate = useNavigate();
 
@@ -61,7 +67,7 @@ const MultiPomodoro = () => {
       timerId,
     });
 
-    navigate('/previewTwo');
+    navigate('/previewTwo', { state: { partyId } });
   };
 
   return (

@@ -75,7 +75,7 @@ const GroupInfoPage = () => {
         <div className='flex flex-col font-dnf text-2xl pl-5 py-2'>
           {constants.GROUP_INFO.POMODORO}
         </div>
-        <MultiPomodoro />
+        <MultiPomodoro groupId={partyId}/>
         <div className='flex justify-center pt-3'>
           {myId === groupInfo.partyManagerId ? (
             <Button
