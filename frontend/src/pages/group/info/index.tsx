@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { GroupProps } from '@/types/group';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 import ProfileCat from '@/components/cat/profile';
-import { Socket } from '@/apis/websocket/Socket.ts';
 
 const GroupInfoPage = () => {
   const { groupId } = useParams();
@@ -39,20 +38,10 @@ const GroupInfoPage = () => {
     fetchGroupInfo();
   }, [partyId]);
 
-  const openChatting = async (partyId: number) => {
-    try {
-      const socket = new Socket();
-      const chatWsUrl = `https://mogaknyang-back.duckdns.org/ws/sub/chat/${partyId}`;
-      socket.connect(chatWsUrl); // 채팅방 별 동적 URL 생성
-      navigate(`/chatting/${partyId}`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const clickLeaveGroup = async (partyId: number) => {
     try {
       await leaveGroup(partyId);
+      navigate(-1); // 그룹 탈퇴 후 이전 페이지로 이동
     } catch (error) {
       console.log(error);
     }
@@ -70,7 +59,7 @@ const GroupInfoPage = () => {
             size={'small'}
             color={'blue'}
             addStyle={'top-5'}
-            onClick={() => openChatting(partyId)}
+            onClick={() => navigate(`/chatting/${partyId}`)}
           />
         </div>
         <div className='font-dnf text-2xl pl-5 pt-3'>

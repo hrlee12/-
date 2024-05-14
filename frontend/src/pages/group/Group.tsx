@@ -10,9 +10,9 @@ const Group = ({ group }: GroupDetailProps) => {
 
   const openGroup = async (groupId: number) => {
     try {
-      const socket = new Socket();
-      const baseWsUrl = 'https://mogaknyang-back.duckdns.org/ws';
-      socket.connect(baseWsUrl);
+      // const socket = new Socket();
+      // const baseWsUrl = 'https://mogaknyang-back.duckdns.org/ws';
+      // socket.connect(baseWsUrl);
       navigate(`/groupInfo/${groupId}`);
     } catch (err) {
       console.log(err);

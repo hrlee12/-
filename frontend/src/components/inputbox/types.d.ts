@@ -6,6 +6,7 @@ export type inputSizeType =
   | 'large'
   | 'setting'
   | 'makeGroupName'
+  | 'chatting'
   | 'pomodoro';
 
 export type inputType = (typeof constants.INPUT_TYPE)[number];
