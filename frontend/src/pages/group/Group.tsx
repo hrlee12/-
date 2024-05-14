@@ -1,18 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@/stores/useAuthStore.ts';
 import { GroupDetailProps } from '@/types/group';
-import { Socket } from '@/apis/websocket/Socket.ts';
 
 const Group = ({ group }: GroupDetailProps) => {
   const navigate = useNavigate();
   const groupId = group.partyId;
-  const memberId: number | null = useAuthStore.getState().accessToken;
 
   const openGroup = async (groupId: number) => {
     try {
-      // const socket = new Socket();
-      // const baseWsUrl = 'https://mogaknyang-back.duckdns.org/ws';
-      // socket.connect(baseWsUrl);
       navigate(`/groupInfo/${groupId}`);
     } catch (err) {
       console.log(err);
@@ -20,10 +14,7 @@ const Group = ({ group }: GroupDetailProps) => {
   };
 
   return (
-    <div
-      className='pl-1 pt-8 pb-1'
-      onClick={() => openGroup(groupId, memberId)}
-    >
+    <div className='pl-1 pt-8 pb-1' onClick={() => openGroup(groupId)}>
       <div className='bg-groupColor w-48 h-24 rounded-3xl'>
         <div className='flex place-content-around gap-8 pt-3'>
           <div className='font-dnf'>{group.partyName}</div>

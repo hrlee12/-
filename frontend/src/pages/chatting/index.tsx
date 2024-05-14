@@ -6,6 +6,7 @@ import Button from '@/components/button';
 import { Socket } from '@/apis/websocket/Socket.ts';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 import { getChattingList } from '@/apis/group.ts';
+import ProfileCat from '@/components/cat/profile';
 
 interface ChatMessage {
   userId: number;

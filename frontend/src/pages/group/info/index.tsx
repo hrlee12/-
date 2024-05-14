@@ -1,13 +1,14 @@
-import Button from '@/components/button';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import BasicFrame from '@/components/frame/basicFrame';
 import * as constants from '@/pages/group/constants';
 import Pomodoro from '@/components/timer/pomodoro';
 import { groupDetail, leaveGroup } from '@/apis/group.ts';
-import { useEffect, useState } from 'react';
 import { GroupProps } from '@/types/group';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 import ProfileCat from '@/components/cat/profile';
+import Button from '@/components/button';
+import { GroupSocket } from '@/apis/websocket/groupSocket.ts';
 
 const GroupInfoPage = () => {
   const { groupId } = useParams();
@@ -22,8 +23,9 @@ const GroupInfoPage = () => {
     partyMembers: [],
   };
   const partyId = Number(groupId);
-  const myId = useAuthStore.getState().accessToken;
+  const myId = useAuthStore.getState().accessToken; // 변경: memberId를 가져옴
   const [groupInfo, setGroupInfo] = useState<GroupProps>(defaultGroupInfo);
+  const socketRef = useRef<GroupSocket | null>(null);
 
   useEffect(() => {
     const fetchGroupInfo = async () => {
@@ -36,7 +38,20 @@ const GroupInfoPage = () => {
     };
 
     fetchGroupInfo();
-  }, [partyId]);
+
+    const socket = new GroupSocket(myId, partyId);
+    socket.connect();
+
+    socket.onMessage((data) => {
+      console.log('Received status message:', data); // 수신된 메시지를 콘솔에 출력
+    });
+
+    socketRef.current = socket;
+
+    return () => {
+      socketRef.current?.disconnect();
+    };
+  }, [partyId, myId]);
 
   const clickLeaveGroup = async (partyId: number) => {
     try {
