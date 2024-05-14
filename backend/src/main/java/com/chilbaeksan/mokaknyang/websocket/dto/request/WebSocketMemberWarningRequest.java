@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WebSocketMemberWarningRequest {
-    private String goal;
-    private String process;
+    private Integer memberId;
+    private String result;
 }
