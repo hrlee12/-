@@ -8,11 +8,11 @@ const Group = ({ group }: GroupDetailProps) => {
   const groupId = group.partyId;
   const memberId: number | null = useAuthStore.getState().accessToken;
 
-  const openGroup = async (groupId: number, memberId: number | null) => {
+  const openGroup = async (groupId: number) => {
     try {
       const socket = new Socket();
-      const url = `https://mogaknyang-back.duckdns.org/status?memberId=${memberId}&partyId=${groupId}`;
-      socket.connect(url);
+      const baseWsUrl = 'https://mogaknyang-back.duckdns.org/ws';
+      socket.connect(baseWsUrl);
       navigate(`/groupInfo/${groupId}`);
     } catch (err) {
       console.log(err);

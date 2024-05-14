@@ -2,8 +2,26 @@ import BasicFrame from '@/components/frame/basicFrame';
 import ChatBox from '@/pages/chatting/chatBox.tsx';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
+// import { useParams } from 'react-router-dom';
+// import { useEffect } from 'react';
 
 const Chatting = () => {
+  // const { groupId } = useParams();
+  // const partyId = Number(groupId);
+
+  // useEffect(() => {
+  //   const fetchChattingInfo = async () => {
+  //     try {
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //
+  //   fetchChattingInfo();
+  // }, []);
+  //
+  // const sendChattingInfo = async () => {};
+
   return (
     <BasicFrame>
       <div
