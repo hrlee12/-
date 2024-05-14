@@ -2,24 +2,21 @@ package com.chilbaeksan.mokaknyang.timer.service;
 
 
 import com.chilbaeksan.mokaknyang.auth.domain.Login;
-import com.chilbaeksan.mokaknyang.auth.dto.LoginInfoDto;
 import com.chilbaeksan.mokaknyang.auth.repository.LoginRepository;
 import com.chilbaeksan.mokaknyang.exception.BaseException;
 import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.exp.domain.Exp;
 import com.chilbaeksan.mokaknyang.exp.domain.ExpType;
 import com.chilbaeksan.mokaknyang.exp.repository.ExpRepository;
-import com.chilbaeksan.mokaknyang.exp.service.ExpService;
 import com.chilbaeksan.mokaknyang.member.domain.Level;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.repository.LevelRepository;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
+import com.chilbaeksan.mokaknyang.timer.controller.AIClient;
 import com.chilbaeksan.mokaknyang.timer.domain.Timer;
 import com.chilbaeksan.mokaknyang.timer.domain.TimerLog;
 import com.chilbaeksan.mokaknyang.timer.domain.TimerType;
-import com.chilbaeksan.mokaknyang.timer.dto.TimerRegisterRequestDto;
-import com.chilbaeksan.mokaknyang.timer.dto.TimerResultRequestDto;
-import com.chilbaeksan.mokaknyang.timer.dto.TimerTopProcessRequestDto;
+import com.chilbaeksan.mokaknyang.timer.dto.*;
 import com.chilbaeksan.mokaknyang.timer.repository.TimerLogRepository;
 import com.chilbaeksan.mokaknyang.timer.repository.TimerRepository;
 import jakarta.transaction.Transactional;
@@ -37,7 +34,7 @@ public class TimerServiceImpl implements TimerService {
     private final LoginRepository loginRepository;
     private final MemberRepository memberRepository;
     private final LevelRepository levelRepository;
-    private final ExpService expService;
+    private final AIClient aiClient;
 
     @Override
     public Timer registerTimer(TimerRegisterRequestDto dto, Integer manageId) {
@@ -64,12 +61,32 @@ public class TimerServiceImpl implements TimerService {
 
     @Transactional
     @Override
-    public void setTopProcess(TimerTopProcessRequestDto dto, Integer userId) {
+    public TopProcessAIResponseDto setTopProcess(TimerTopProcessRequestDto dto, Integer userId) {
         Login loginInfo = loginRepository.findByMemberId(userId)
+                .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_IS_NOT_LOGIN));
+
+        Member member = memberRepository.findByMemberId(userId)
                 .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+        String process;
+        if(dto.getUrl().equals("") || dto.getUrl() == null){
+            process = dto.getTop();
+        }else{
+            process = dto.getTop() + " - " + dto.getUrl();
+        }
+
+        TopProcessAIRequestDto req = TopProcessAIRequestDto.builder()
+                .goal(member.getGoal())
+                .process(process)
+                .build();
+
+        TopProcessAIResponseDto result = aiClient.isRelatedWithGoal(req);
+
         // redis내에 현재 프로세스 변경
         loginInfo.setCurrentProcess(dto.getTop());
         loginInfo.setCurrentUrl(dto.getUrl());
+
+        return result;
     }
 
     @Transactional
