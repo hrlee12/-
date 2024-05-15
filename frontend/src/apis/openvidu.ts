@@ -1,7 +1,7 @@
 import { useAuthStore } from '@/stores/useAuthStore';
 import { axiosInstanceCustom } from './lib/axios';
 
-export const fetchSession = async (groupId: number) => {
+export const fetchSession = async (groupId: string) => {
   try {
     const response = await axiosInstanceCustom.post('/sessions', {
       customSessionId: groupId,
@@ -9,8 +9,6 @@ export const fetchSession = async (groupId: number) => {
 
     const { setOpenViduSession } = useAuthStore.getState();
     setOpenViduSession(response.data);
-
-    console.log(response.data);
 
     return response;
   } catch (error) {

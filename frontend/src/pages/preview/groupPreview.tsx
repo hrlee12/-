@@ -34,7 +34,7 @@ const GroupPreview = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { groupId } = location.state || {};
+  const { partyId: groupId } = location.state || {};
 
   const storedTime = useTimerStore.getState().startTime;
   const focusTime = useTimerStore.getState().concentrateTime;
@@ -93,7 +93,7 @@ const GroupPreview = () => {
 
     const connectSession = async () => {
       try {
-        await fetchSession(groupId);
+        await fetchSession(groupId.toString());
         await fetchToken(useAuthStore.getState().openViduSession);
 
         const TOKEN = useAuthStore.getState().openViduToken;
