@@ -10,6 +10,11 @@ import ProfileCat from '@/components/cat/profile';
 import Button from '@/components/button';
 import { GroupSocket } from '@/apis/websocket/groupSocket.ts';
 
+interface StatusMessage {
+  userId: number;
+  status: string;
+}
+
 const GroupInfoPage = () => {
   const { groupId } = useParams();
   const navigate = useNavigate();
@@ -25,6 +30,7 @@ const GroupInfoPage = () => {
   const partyId = Number(groupId);
   const myId = useAuthStore.getState().accessToken; // 변경: memberId를 가져옴
   const [groupInfo, setGroupInfo] = useState<GroupProps>(defaultGroupInfo);
+  const [userIds, setUserIds] = useState<number[]>([]); // userIds 배열을 상태로 추가
   const socketRef = useRef<GroupSocket | null>(null);
 
   useEffect(() => {
@@ -42,8 +48,10 @@ const GroupInfoPage = () => {
     const socket = new GroupSocket(myId, partyId);
     socket.connect();
 
-    socket.onMessage((data) => {
+    socket.onMessage((data: StatusMessage[]) => {
       console.log('Received status message:', data); // 수신된 메시지를 콘솔에 출력
+      const ids = data.map((msg) => msg.userId); // userId 값을 추출하여 배열에 저장
+      setUserIds(ids); // 상태로 userId 배열을 설정
     });
 
     socketRef.current = socket;
