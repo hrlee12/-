@@ -1,23 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-
-interface GroupDetailProps {
-  group: {
-    partyId: number;
-    partyName: string;
-    partyGoal: string | null;
-    currentNum: number;
-  };
-}
+import { GroupDetailProps } from '@/types/group';
 
 const Group = ({ group }: GroupDetailProps) => {
   const navigate = useNavigate();
   const groupId = group.partyId;
 
+  const openGroup = async (groupId: number) => {
+    try {
+      navigate(`/groupInfo/${groupId}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <div
-      className='pl-1 pt-8 pb-1'
-      onClick={() => navigate(`/groupInfo/${groupId}`)}
-    >
+    <div className='pl-1 pt-8 pb-1' onClick={() => openGroup(groupId)}>
       <div className='bg-groupColor w-48 h-24 rounded-3xl'>
         <div className='flex place-content-around gap-8 pt-3'>
           <div className='font-dnf'>{group.partyName}</div>
