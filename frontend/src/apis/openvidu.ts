@@ -1,15 +1,11 @@
 import { useAuthStore } from '@/stores/useAuthStore';
-import { axiosInstance } from './lib/axios';
+import { axiosInstanceCustom } from './lib/axios';
 
 export const fetchSession = async (groupId: number) => {
   try {
-    axiosInstance.defaults.baseURL = import.meta.env.VITE_OPENVIDU_URL;
-
-    const response = await axiosInstance.post('/sessions', {
+    const response = await axiosInstanceCustom.post('/sessions', {
       customSessionId: groupId,
     });
-
-    axiosInstance.defaults.baseURL = import.meta.env.VITE_API_URL;
 
     const { setOpenViduSession } = useAuthStore.getState();
     setOpenViduSession(response.data);
@@ -24,13 +20,9 @@ export const fetchSession = async (groupId: number) => {
 
 export const fetchToken = async (sessionId: string) => {
   try {
-    axiosInstance.defaults.baseURL = import.meta.env.VITE_OPENVIDU_URL;
-
-    const response = await axiosInstance.post(
+    const response = await axiosInstanceCustom.post(
       `/sessions/${sessionId}/connections`,
     );
-
-    axiosInstance.defaults.baseURL = import.meta.env.VITE_API_URL;
 
     const { setOpenViduToken } = useAuthStore.getState();
     setOpenViduToken(response.data);
