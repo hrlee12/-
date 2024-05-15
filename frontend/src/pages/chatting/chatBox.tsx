@@ -1,8 +1,15 @@
-const ChatBox = () => {
+interface ChatBoxProps {
+  userNickname: string;
+  contents: string;
+}
+
+const ChatBox = ({ userNickname, contents }: ChatBoxProps) => {
   return (
-    <div className={'pl-6 pb-2'}>
-      <div className={`bg-groupColor w-[300px] h-[75px] rounded-boxRadius`}>
-        <div className={'pl-6 pt-2 font-neo'}>{'여기에 나중에 채팅 18px'}</div>
+    <div className={'pl-6 px-2 pt-2'}>
+      <div className={`bg-groupColor w-[300px] h-[40px] rounded-boxRadius`}>
+        <div className={'pl-6 pt-2 font-neo'}>
+          <strong>{userNickname}</strong>: {contents}
+        </div>
       </div>
     </div>
   );

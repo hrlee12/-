@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
 import { Socket } from '@/apis/websocket/Socket.ts';
 import { useAuthStore } from '@/stores/useAuthStore.ts';
 import { getChattingList } from '@/apis/group.ts';
-import ProfileCat from '@/components/cat/profile';
+import ChatBox from '@/pages/chatting/chatBox.tsx';
+import { getMyInfo } from '@/apis/member.ts';
+import { useParams } from 'react-router-dom';
 
 interface ChatMessage {
   userId: number;
@@ -19,10 +20,12 @@ const Chatting = () => {
   const { groupId } = useParams();
   const partyId = Number(groupId);
   const token = useAuthStore.getState().accessToken;
+  const [myName, setMyName] = useState<string>('');
   const [messageList, setMessageList] = useState<ChatMessage[]>([]);
   const [socketMessageList, setSocketMessageList] = useState<ChatMessage[]>([]);
   const [message, setMessage] = useState('');
   const socketRef = useRef<Socket | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchChattingList = async () => {
@@ -37,7 +40,17 @@ const Chatting = () => {
       console.log(chatMessages);
     };
 
+    const fetchMyInfo = async () => {
+      try {
+        const response = await getMyInfo();
+        setMyName(response.memberCatName);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     fetchChattingList();
+    fetchMyInfo();
 
     const chatWsUrl = `https://mogaknyang-back.duckdns.org/ws`;
     const socket = new Socket();
@@ -56,29 +69,58 @@ const Chatting = () => {
     };
   }, [partyId, token]);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [socketMessageList]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
   const handleSendMessage = () => {
     if (message.trim() && socketRef.current?.connected) {
-      // 메시지 내용만 보냅니다.
       socketRef.current.sendMessage(partyId, message);
+      setSocketMessageList((prevMessages) => [
+        ...prevMessages,
+        {
+          userId: 0, // 현재 사용자 ID를 설정하거나 다른 값으로 대체할 수 있습니다.
+          userNickname: myName,
+          contents: message,
+          sendTime: new Date().toISOString(),
+        },
+      ]);
       setMessage('');
+      scrollToBottom(); // 메시지 전송 후 스크롤을 맨 아래로 이동
     } else {
       console.error('WebSocket is not connected or message is empty');
     }
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <BasicFrame>
-      <div className='flex flex-col-reverse overflow-y-hidden space-y-1 space-y-reverse'>
-        {[...messageList, ...socketMessageList].map((msg, index) => (
-          <div key={index} className='chat-message'>
-            <strong>{msg.userNickname}</strong>: {msg.contents}{' '}
-            <em>{msg.sendTime}</em>
-          </div>
+      <div
+        id={'here'}
+        className='flex flex-col overflow-y-auto max-h-[400px] space-y-1'
+      >
+        {messageList.reverse().map((msg, index) => (
+          <ChatBox
+            key={`message-${index}`}
+            userNickname={msg.userNickname || myName}
+            contents={msg.contents}
+          />
         ))}
+        {socketMessageList.reverse().map((msg, index) => (
+          <ChatBox
+            key={`socketMessage-${index}`}
+            userNickname={msg.userNickname || myName}
+            contents={msg.contents}
+          />
+        ))}
+        <div ref={messagesEndRef} />
       </div>
       <div className='fixed bottom-28 flex flex-row pl-6'>
         <div className={'pt-2'}>
