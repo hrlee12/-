@@ -1,5 +1,20 @@
 import { ipcRenderer, contextBridge } from 'electron';
 
+
+contextBridge.exposeInMainWorld("setClickableArea", {
+  make : () => {
+    const el :HTMLCollectionOf<Element> = document.getElementsByClassName('clickable-area');
+    Array.from(el).forEach((e :Element) => {
+        e.addEventListener('mouseenter', () => {
+          ipcRenderer.send('set-ignore-mouse-events', false);
+        });
+        e.addEventListener('mouseleave', () => {
+          ipcRenderer.send('set-ignore-mouse-events', true, { forward: true });
+        });
+    });
+  }
+});
+
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
   on(...args: Parameters<typeof ipcRenderer.on>) {
@@ -25,19 +40,6 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-  const el = document.getElementById('clickable-area');
-  if (el) {
-    el.addEventListener('mouseenter', () => {
-      ipcRenderer.send('set-ignore-mouse-events', false);
-    });
-    el.addEventListener('mouseleave', () => {
-      ipcRenderer.send('set-ignore-mouse-events', true, { forward: true });
-    });
-  } else {
-    console.error('#clickable-area not found');
-  }
-});
 
 type CallbackType = (data:string)=> void;
 contextBridge.exposeInMainWorld('electronAPI', {

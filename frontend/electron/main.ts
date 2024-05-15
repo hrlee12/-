@@ -36,12 +36,14 @@ function createWindow() {
   const windowPosX = width - windowWidth;
   const windowPosY = height - windowHeight;
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    icon: path.join(process.env.VITE_PUBLIC!, 'electron-vite.svg'),
     width: windowWidth,
     height: windowHeight,
     x: windowPosX,
     y: windowPosY,
     webPreferences: {
+      nodeIntegration: true,
+      // contextIsolation: false,
       preload: path.join(__dirname, 'preload.mjs'),
     },
 
@@ -51,13 +53,15 @@ function createWindow() {
     //프레임
     frame: false,
   });
+  win.loadURL('http://localhost:5173')
 
   // 항상 상위에 위치
   win.setAlwaysOnTop(true, 'screen-saver');
   win.setVisibleOnAllWorkspaces(true);
 
   // 마우스 클릭 무시
-  // win.setIgnoreMouseEvents(true);
+  win.setIgnoreMouseEvents(true, {forward : true});
+  // win.setIgnoreMouseEvents(false);
 
   // 실행시 개발자 도구를 같이 실행(마우스 클릭 무시를 적용한 개발용)
   win.webContents.openDevTools();
@@ -77,7 +81,7 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow();
-
+});
   //
   // setInterval(async () => {
   //   console.log(await activeWindow());
@@ -85,34 +89,32 @@ app.whenReady().then(() => {
   // }, 1000); // 1초마다 현재 활성화된 창의 정보를 콘솔에 출력
 
 
-  app.on('activate', () => {
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
+app.on('activate', () => {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+   if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
+});
 
 
-
-  });
   // Quit when all windows are closed, except on macOS. There, it's common
   // for applications and their menu bar to stay active until the user quits
   // explicitly with Cmd + Q.
-  app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-      app.quit();
-      win = null;
-    }
-  });
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+    win = null;
+  }
 });
 
 ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
   const win = BrowserWindow.fromWebContents(event.sender);
-  if (win) {
-    win.setIgnoreMouseEvents(ignore, options);
-  } else {
-    console.error('win is null');
-  }
+  win!.setIgnoreMouseEvents(ignore, options);
+  console.log('Received set-ignore-mouse-events event');
+  console.log('Ignore:', ignore);
+  console.log('Options:', options);
+  console.log('BrowserWindow:', win);
 });
 
 // PowerShell 스크립트 실행 함수
