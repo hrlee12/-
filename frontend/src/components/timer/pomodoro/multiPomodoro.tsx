@@ -10,12 +10,12 @@ interface GroupIdProps {
   groupId: number;
 }
 
-const MultiPomodoro = ({groupId}: GroupIdProps) => {
+const MultiPomodoro = ({ groupId }: GroupIdProps) => {
   const [concentrateTime, setConcentrateTime] = useState(0);
   const [relaxTime, setRelaxTime] = useState(0);
   const [endPeriod, setEndPeriod] = useState(0);
 
-const partyId = groupId
+  const partyId = groupId;
 
   const navigate = useNavigate();
 
@@ -112,7 +112,9 @@ const partyId = groupId
           text={'시작'}
           size={'small'}
           color={'blue'}
-          onClick={() => startTimer(endPeriod, concentrateTime, relaxTime)}
+          onClick={() =>
+            startTimer(endPeriod, concentrateTime, relaxTime, partyId)
+          }
         />
       </div>
     </div>
