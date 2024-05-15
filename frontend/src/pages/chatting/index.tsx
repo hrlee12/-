@@ -30,12 +30,14 @@ const Chatting = () => {
   useEffect(() => {
     const fetchChattingList = async () => {
       const response = await getChattingList(partyId);
-      const chatMessages = response.chatMessages.map((msg: any) => ({
-        userId: msg.userId,
-        userNickname: msg.userNickname,
-        contents: msg.contents,
-        sendTime: msg.sendTime,
-      }));
+      const chatMessages: ChatMessage[] = response.chatMessages
+        .map((msg: ChatMessage) => ({
+          userId: msg.userId,
+          userNickname: msg.userNickname,
+          contents: msg.contents,
+          sendTime: msg.sendTime,
+        }))
+        .reverse(); // 메시지 리스트를 역순으로 정렬하여 최신 메시지가 맨 아래에 오도록 함
       setMessageList(chatMessages);
       console.log(chatMessages);
     };
@@ -71,7 +73,7 @@ const Chatting = () => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [socketMessageList]);
+  }, [messageList, socketMessageList]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
@@ -80,15 +82,6 @@ const Chatting = () => {
   const handleSendMessage = () => {
     if (message.trim() && socketRef.current?.connected) {
       socketRef.current.sendMessage(partyId, message);
-      setSocketMessageList((prevMessages) => [
-        ...prevMessages,
-        {
-          userId: 0, // 현재 사용자 ID를 설정하거나 다른 값으로 대체할 수 있습니다.
-          userNickname: myName,
-          contents: message,
-          sendTime: new Date().toISOString(),
-        },
-      ]);
       setMessage('');
       scrollToBottom(); // 메시지 전송 후 스크롤을 맨 아래로 이동
     } else {
@@ -104,18 +97,11 @@ const Chatting = () => {
     <BasicFrame>
       <div
         id={'here'}
-        className='flex flex-col overflow-y-auto max-h-[400px] space-y-1'
+        className='flex flex-col overflow-y-auto max-h-[400px] space-y-1 scrollbar-hide'
       >
-        {messageList.reverse().map((msg, index) => (
+        {[...messageList, ...socketMessageList].map((msg, index) => (
           <ChatBox
             key={`message-${index}`}
-            userNickname={msg.userNickname || myName}
-            contents={msg.contents}
-          />
-        ))}
-        {socketMessageList.reverse().map((msg, index) => (
-          <ChatBox
-            key={`socketMessage-${index}`}
             userNickname={msg.userNickname || myName}
             contents={msg.contents}
           />
