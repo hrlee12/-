@@ -111,3 +111,15 @@ export const getMembers = async (partyId: number) => {
     console.log(err);
   }
 };
+
+// 채팅창 내부 조회
+export const getChattingList = async (partyId: number) => {
+  try {
+    const response = await axiosInstance.get(
+      `/chat/${partyId}? pageNum=${1}&pageSize=${10}`,
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
