@@ -5,12 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebSocketTimerOperationRequest {
-    private Integer partyId;
+public class WebSocketMemberWarningRequest {
+    private Integer memberId;
+    private String result;
 }

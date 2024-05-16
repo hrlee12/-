@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WebSocketMemberWarningResponse {
     private Integer memberId;
+    private String result;
 }
