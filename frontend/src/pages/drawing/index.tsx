@@ -7,17 +7,15 @@ import {useAuthStore} from "@/stores/useAuthStore.ts";
 const Drawing = () => {
     const {groupId} = useParams();
     const partyId = Number(groupId);
-    const token = useAuthStore.getState().accessToken;
+    const token = 1
 
   const [canvas, setCanvas] = useState<fabric.Canvas | null>();
   const [canvas2, setCanvas2] = useState<fabric.Canvas | null>();
-  const [canvas3, setCanvas3] = useState<fabric.Canvas | null>();
   // const [nowPanel, setNowPanel] = useState(null);
   const [activeTool, setActiveTool] = useState('select');
   const [color, setColor] = useState<string>('black');
   // const [objectCount, setObjectCount] = useState<number>(0);
-  const isInitialMount = useRef(true);
-
+const [test, setTest] = useState<string|null>(null);
 
   useEffect(() => {
     const newCanvas = new fabric.Canvas('canvas', {
@@ -27,7 +25,6 @@ const Drawing = () => {
       backgroundColor: 'white',
     });
     setCanvas(newCanvas);
-    isInitialMount.current = false;
 
       const newCanvas2 = new fabric.Canvas('canvas2', {
           width: 500,
@@ -37,13 +34,6 @@ const Drawing = () => {
       });
       setCanvas2(newCanvas2);
 
-      const newCanvas3 = new fabric.Canvas('canvas3', {
-          width: 500,
-          height: 500,
-          isDrawingMode: true, //드로잉모드 true로 안해주면 기본값 false
-          backgroundColor: 'white',
-      });
-      setCanvas3(newCanvas3);
 
 
       console.log(canvas);
@@ -56,8 +46,6 @@ const Drawing = () => {
     const chatWsUrl = `https://mogaknyang-back.duckdns.org/ws`;
     const socket = new Socket();
     socket.connect(chatWsUrl, partyId, token);
-
-
 
 //     canvas?.on('object:modified', (e)=>{
 //         console.log("IIIIIIIIIIIi");
@@ -88,36 +76,60 @@ const Drawing = () => {
         })
 
         const data = JSON.stringify(e.target?.toJSON());
-
+        console.log(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+        console.log("before : " + data);
         socket.sendMessage(partyId, data);
 
 
     })
 
-    socket.onMessage((data:string) => {
-        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-
-
-        fabric.util.enlivenObjects([JSON.parse(data)], function(objects:fabric.Object[]) {
-            const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
-            canvas2!.renderOnAddRemove = false;
-
-            objects.forEach(function(o) {
-                o.animate('opacity', '0', {
-                    duration: 3000,
-                    onChange: canvas2!.renderAll.bind(canvas2),
-                    onComplete: function () {
-                        canvas2!.remove(o);
-                    }
-                });
-                canvas2?.add(o);
-            });
-
-            canvas2!.renderOnAddRemove = origRenderOnAddRemove;
-            canvas2?.renderAll();
-        }, "fabric");
-    })
-    // canvas?.on('object:added', (e)=>{
+    // socket.onMessage((data:string) => {
+    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    //
+    //     const replace = JSON.stringify(JSON.parse(data).object).slice(1).replace(/\\"/g, '"');
+    //     console.log(replace);
+    //     if (test !== null) {
+    //         if (test === null){
+    //             console.log("same");
+    //             console.log(test);
+    //             // console.log(replace);
+    //
+    //         } else {
+    //             console.log("heart");
+    //             // console.log(replace);
+    //             console.log(test);
+    //
+    //
+    //         }
+    //     } else {
+    //         console.log("test is null");
+    //     }
+    //     //
+    //     // console.log("replace : " + replace);
+    //     // console.log("after : " + data);
+    //     // console.log('delete object : ' + JSON.parse(data).object);
+    //     fabric.util.enlivenObjects([JSON.parse(data).object], function(objects:fabric.Object[]) {
+    //         const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
+    //         if (canvas2 == undefined) return;
+    //         canvas2!.renderOnAddRemove = false;
+    //
+    //         objects.forEach(function(o) {
+    //             o.animate('opacity', '0', {
+    //                 duration: 3000,
+    //                 onChange: canvas2!.renderAll.bind(canvas2),
+    //                 onComplete: function () {
+    //                     canvas2!.remove(o);
+    //                 }
+    //             });
+    //             canvas2?.add(o);
+    //         });
+    //
+    //         if(canvas2 == undefined) return;
+    //         canvas2!.renderOnAddRemove = origRenderOnAddRemove;
+    //         canvas2?.renderAll();
+    //     }, "fabric");
+    // })
+    canvas?.on('object:added', (e)=>{
     //     console.log("hi");
     //     // const objects:fabric.Object[] = canvas!.getObjects();
     //
@@ -134,37 +146,39 @@ const Drawing = () => {
     //             canvas!.remove(e.target!);
     //         }
     //     })
-    //     const json = JSON.stringify(e.target?.toJSON());
+        const json = JSON.stringify(e.target?.toJSON());
     //     // const data = JSON.parse(json);
     //     // console.log(json);
     //     // canvas2?.add(data);
     //     // canvas2?.loadFromJSON(data!, ()=>{});
     //     // canvas2?.loadFromJSON(data, canvas2.renderAll.bind(canvas2));
-    //
-    //     fabric.util.enlivenObjects([JSON.parse(json)], function(objects:fabric.Object[]) {
-    //         const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
-    //         canvas2!.renderOnAddRemove = false;
-    //
-    //         objects.forEach(function(o) {
-    //             o.animate('opacity', '0', {
-    //                 duration: 3000,
-    //                 onChange: canvas2!.renderAll.bind(canvas2),
-    //                 onComplete: function () {
-    //                     canvas2!.remove(o);
-    //                 }
-    //             });
-    //             canvas2?.add(o);
-    //         });
-    //
-    //         canvas2!.renderOnAddRemove = origRenderOnAddRemove;
-    //         canvas2?.renderAll();
-    //     }, "fabric");
+    //     console.log("json : " + JSON.parse(json));
+        setTest(json);
+    //     //
+    //     // fabric.util.enlivenObjects([JSON.parse(json)], function(objects:fabric.Object[]) {
+    //     //     const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
+    //     //     canvas2!.renderOnAddRemove = false;
+    //     //
+    //     //     objects.forEach(function(o) {
+    //     //         o.animate('opacity', '0', {
+    //     //             duration: 3000,
+    //     //             onChange: canvas2!.renderAll.bind(canvas2),
+    //     //             onComplete: function () {
+    //     //                 canvas2!.remove(o);
+    //     //             }
+    //     //         });
+    //     //         canvas2?.add(o);
+    //     //     });
+    //     //
+    //     //     canvas2!.renderOnAddRemove = origRenderOnAddRemove;
+    //     //     canvas2?.renderAll();
+    //     // }, "fabric");
     //
     //     // }
     //
     //     // setObjectCount(objects.length)
-    // })
-    //
+    })
+
     // canvas3?.on('object:added', (e)=>{
     //     console.log("hi");
     //     // const objects:fabric.Object[] = canvas!.getObjects();
@@ -357,7 +371,7 @@ const Drawing = () => {
       <>
 
           <canvas id='canvas2' style={{border: '1px solid red'}}/>
-d          <canvas id='canvas' style={{border: '1px solid red'}}/>
+         <canvas id='canvas' style={{border: '1px solid red'}}/>
           <button
               style={{width: '48px', height: '48px', border: '1px solid black'}}
               onClick={() => handleSelectTool()}

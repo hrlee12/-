@@ -36,8 +36,8 @@ function createWindow() {
   const windowPosY = height - windowHeight;
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC!, 'electron-vite.svg'),
-    width: width,
-    height: height,
+    width: 800,
+    height: 600,
     x: windowPosX,
     y: windowPosY,
     webPreferences: {
@@ -59,7 +59,7 @@ function createWindow() {
   win.setVisibleOnAllWorkspaces(true);
 
   // 마우스 클릭 무시
-  win.setIgnoreMouseEvents(true, { forward: true });
+  // win.setIgnoreMouseEvents(true, { forward: true });
   // win.setIgnoreMouseEvents(false);
 
   // 실행시 개발자 도구를 같이 실행(마우스 클릭 무시를 적용한 개발용) - 개발할 때는 주석 풀던지
