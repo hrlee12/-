@@ -30,14 +30,14 @@ let win: BrowserWindow | null;
 
 function createWindow() {
   const { width, height } = screen.getPrimaryDisplay().workAreaSize;
-  const windowWidth = 540;
-  const windowHeight = 600;
+  const windowWidth = width;
+  const windowHeight = height;
   const windowPosX = width - windowWidth;
   const windowPosY = height - windowHeight;
   win = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC!, 'electron-vite.svg'),
-    width: windowWidth,
-    height: windowHeight,
+    width: width,
+    height: height,
     x: windowPosX,
     y: windowPosY,
     webPreferences: {
@@ -62,7 +62,7 @@ function createWindow() {
   win.setIgnoreMouseEvents(true, { forward: true });
   // win.setIgnoreMouseEvents(false);
 
-  // 실행시 개발자 도구를 같이 실행(마우스 클릭 무시를 적용한 개발용)
+  // 실행시 개발자 도구를 같이 실행(마우스 클릭 무시를 적용한 개발용) - 개발할 때는 주석 풀던지
   win.webContents.openDevTools();
 
   // Test active push message to Renderer-process.
@@ -118,7 +118,8 @@ ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
 function getActiveWindowProcessName() {
   const psScript = `Add-Type @"\nusing System;\nusing System.Runtime.InteropServices;\npublic class User32 {\n[DllImport("user32.dll")]\npublic static extern IntPtr GetForegroundWindow();\n[DllImport("user32.dll")]\npublic static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);\n}\n"@\n$foregroundWindowHandle = [User32]::GetForegroundWindow()\n$processId = 0\n[User32]::GetWindowThreadProcessId($foregroundWindowHandle, [ref]$processId)\n$process = Get-Process | Where-Object { $_.Id -eq $processId }\n$process.Name`;
 
-  const ps = spawn('powershell.exe', ['-Command', psScript]);
+
+  const ps = spawn('powershell.exe', ["-Command", psScript]);
 
   ps.stdout.on('data', (data) => {
     // console.log(`stdout: ${data}`);

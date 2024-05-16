@@ -15,7 +15,7 @@ const BasicFrame = ({ children }: Props) => {
   return (
     <>
       <main>
-        <div className='m-4 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius shadow-inputBoxShadow clickable-area'>
+        <div className='fixed right-[100px] bottom-[50px] m-4 bg-frameColor w-boxWidth h-boxHeight rounded-boxRadius shadow-inputBoxShadow'>
           {children}
         </div>
       </main>
