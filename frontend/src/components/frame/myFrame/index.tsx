@@ -12,7 +12,7 @@ const MyFrame = ({ children }: Props) => {
   }, []);
   return (
     <>
-      <main className='m-4 bg-wordBox h-boxHeight clickable-area'>
+      <main className='fixed right-[10px] bottom-[50px] m-4 bg-wordBox h-boxHeight w-[480px] clickable-area'>
         {children}
       </main>
       <IdleCat catId={useSkinStore.getState().skinId} />

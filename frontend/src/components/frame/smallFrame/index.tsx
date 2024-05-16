@@ -9,7 +9,7 @@ const SmallFrame = ({ children }: Props) => {
     window.setClickableArea.make();
   }, []);
   return (
-    <main className='fixed bottom-3 m-4 bg-frameColor w-boxWidth h-60 rounded-boxRadius clickable-area'>
+    <main className='m-4 bg-frameColor w-boxWidth h-60 rounded-boxRadius clickable-area'>
       {children}
     </main>
   );
