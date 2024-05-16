@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 interface catProps {
   catId: number;
@@ -15,8 +15,7 @@ const IdleCat = ({ catId, onMouseEnter, onMouseLeave, onClick }: catProps) => {
   };
   useEffect(() => {
     window.setClickableArea.make();
-  }, [] 
-  )
+  }, []);
   return (
     <div
       className='character-idle fixed right-[0px] bottom-[0px] clickable-area'
