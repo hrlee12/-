@@ -18,6 +18,7 @@
     "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
   },
   "win": {
+    "icon" : "/public/assets/cat_profile_03.png",
     "target": [
       {
         "target": "nsis",

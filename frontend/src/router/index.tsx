@@ -16,7 +16,7 @@ import Drawing from '@/pages/drawing';
 import AlonePreview from '@/pages/preview/alonePreview';
 import GroupPreview from '@/pages/preview/groupPreview';
 import MyCatSkin from '@/pages/cat/skin';
-import Fabric from "@/pages/screenshare/Fabric.tsx";
+import Chatting from '@/pages/chatting';
 // import ScreenShare from '@/pages/screenshare';
 
 const RouterComponent = () => {
@@ -40,7 +40,7 @@ const RouterComponent = () => {
         <Route path={'/drawing'} element={<Drawing />} />
         <Route path={'/previewAlone'} element={<AlonePreview />} />
         <Route path={'/previewTwo'} element={<GroupPreview />} />
-        <Route path={'/fabric'} element={<Fabric/>}/>
+        <Route path={'/chatting/:groupId'} element={<Chatting />} />
       </Routes>
     </HashRouter>
   );
