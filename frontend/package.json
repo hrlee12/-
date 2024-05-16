@@ -2,6 +2,8 @@
   "name": "frontend",
   "private": true,
   "version": "1.0.0",
+  "description": "Your cat displayed at your own monitor, Mogaknyang",
+  "author": "A703",
   "type": "module",
   "scripts": {
     "dev": "vite",
