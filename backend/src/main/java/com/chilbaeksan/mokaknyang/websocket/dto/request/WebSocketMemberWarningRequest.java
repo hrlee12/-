@@ -5,12 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebSocketMemberListRequest {
-    private List<WebSocketMemberRequest> memberList;
+public class WebSocketMemberWarningRequest {
+    private Integer memberId;
 }
