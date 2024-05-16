@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebSocketMemberWarningResponse {
-    private Integer memberId;
+public class WebSocketDrawingResponse {
+    private String object;
 }
