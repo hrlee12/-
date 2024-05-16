@@ -34,9 +34,6 @@ const [test, setTest] = useState<string|null>(null);
       });
       setCanvas2(newCanvas2);
 
-
-
-      console.log(canvas);
     //언마운트 시 캔버스 정리, 이벤트 제거
     return () => {
       newCanvas.dispose();
@@ -65,7 +62,6 @@ const [test, setTest] = useState<string|null>(null);
 
         // setObjectCount(objects.length)
     // })
-
     canvas?.on('object:added', (e)=>{
         e.target!.animate('opacity', '0', {
             duration: 3000,
@@ -83,101 +79,101 @@ const [test, setTest] = useState<string|null>(null);
 
     })
 
-    // socket.onMessage((data:string) => {
-    //     console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-    //
-    //     const replace = JSON.stringify(JSON.parse(data).object).slice(1).replace(/\\"/g, '"');
-    //     console.log(replace);
-    //     if (test !== null) {
-    //         if (test === null){
-    //             console.log("same");
-    //             console.log(test);
-    //             // console.log(replace);
-    //
-    //         } else {
-    //             console.log("heart");
-    //             // console.log(replace);
-    //             console.log(test);
-    //
-    //
-    //         }
-    //     } else {
-    //         console.log("test is null");
-    //     }
-    //     //
-    //     // console.log("replace : " + replace);
-    //     // console.log("after : " + data);
-    //     // console.log('delete object : ' + JSON.parse(data).object);
-    //     fabric.util.enlivenObjects([JSON.parse(data).object], function(objects:fabric.Object[]) {
-    //         const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
-    //         if (canvas2 == undefined) return;
-    //         canvas2!.renderOnAddRemove = false;
-    //
-    //         objects.forEach(function(o) {
-    //             o.animate('opacity', '0', {
-    //                 duration: 3000,
-    //                 onChange: canvas2!.renderAll.bind(canvas2),
-    //                 onComplete: function () {
-    //                     canvas2!.remove(o);
-    //                 }
-    //             });
-    //             canvas2?.add(o);
-    //         });
-    //
-    //         if(canvas2 == undefined) return;
-    //         canvas2!.renderOnAddRemove = origRenderOnAddRemove;
-    //         canvas2?.renderAll();
-    //     }, "fabric");
-    // })
-    canvas?.on('object:added', (e)=>{
-    //     console.log("hi");
-    //     // const objects:fabric.Object[] = canvas!.getObjects();
-    //
-    //     // console.log(objects);
-    //     // if (objectCount < objects.length){
-    //     //     const newObjects = objects[objects.length-1];
-    //     // console.log(typeof e.target!);
-    //     // console.log(e.target);
-    //     // console.log("canvas : ", canvas);
-    //     e.target!.animate('opacity', '0', {
-    //         duration: 3000,
-    //         onChange: canvas!.renderAll.bind(canvas),
-    //         onComplete: function() {
-    //             canvas!.remove(e.target!);
-    //         }
-    //     })
-        const json = JSON.stringify(e.target?.toJSON());
-    //     // const data = JSON.parse(json);
-    //     // console.log(json);
-    //     // canvas2?.add(data);
-    //     // canvas2?.loadFromJSON(data!, ()=>{});
-    //     // canvas2?.loadFromJSON(data, canvas2.renderAll.bind(canvas2));
-    //     console.log("json : " + JSON.parse(json));
-        setTest(json);
-    //     //
-    //     // fabric.util.enlivenObjects([JSON.parse(json)], function(objects:fabric.Object[]) {
-    //     //     const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
-    //     //     canvas2!.renderOnAddRemove = false;
-    //     //
-    //     //     objects.forEach(function(o) {
-    //     //         o.animate('opacity', '0', {
-    //     //             duration: 3000,
-    //     //             onChange: canvas2!.renderAll.bind(canvas2),
-    //     //             onComplete: function () {
-    //     //                 canvas2!.remove(o);
-    //     //             }
-    //     //         });
-    //     //         canvas2?.add(o);
-    //     //     });
-    //     //
-    //     //     canvas2!.renderOnAddRemove = origRenderOnAddRemove;
-    //     //     canvas2?.renderAll();
-    //     // }, "fabric");
-    //
-    //     // }
-    //
-    //     // setObjectCount(objects.length)
+    socket.onMessage((data:string) => {
+        console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
+        const replace = JSON.stringify(JSON.parse(data).object).slice(1).replace(/\\"/g, '"');
+        console.log(replace);
+        if (test !== null) {
+            if (test === null){
+                console.log("same");
+                console.log(test);
+                // console.log(replace);
+
+            } else {
+                console.log("heart");
+                // console.log(replace);
+                console.log(test);
+
+
+            }
+        } else {
+            console.log("test is null");
+        }
+        //
+        // console.log("replace : " + replace);
+        // console.log("after : " + data);
+        // console.log('delete object : ' + JSON.parse(data).object);
+        fabric.util.enlivenObjects([JSON.parse(data).object], function(objects:fabric.Object[]) {
+            const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
+            if (canvas2 == undefined) return;
+            canvas2!.renderOnAddRemove = false;
+
+            objects.forEach(function(o) {
+                o.animate('opacity', '0', {
+                    duration: 3000,
+                    onChange: canvas2!.renderAll.bind(canvas2),
+                    onComplete: function () {
+                        canvas2!.remove(o);
+                    }
+                });
+                canvas2?.add(o);
+            });
+
+            if(canvas2 == undefined) return;
+            canvas2!.renderOnAddRemove = origRenderOnAddRemove;
+            canvas2?.renderAll();
+        }, "fabric");
     })
+    // canvas?.on('object:added', (e)=>{
+    // //     console.log("hi");
+    // //     // const objects:fabric.Object[] = canvas!.getObjects();
+    // //
+    // //     // console.log(objects);
+    // //     // if (objectCount < objects.length){
+    // //     //     const newObjects = objects[objects.length-1];
+    // //     // console.log(typeof e.target!);
+    // //     // console.log(e.target);
+    // //     // console.log("canvas : ", canvas);
+    // //     e.target!.animate('opacity', '0', {
+    // //         duration: 3000,
+    // //         onChange: canvas!.renderAll.bind(canvas),
+    // //         onComplete: function() {
+    // //             canvas!.remove(e.target!);
+    // //         }
+    // //     })
+    //     const json = JSON.stringify(e.target?.toJSON());
+    // //     // const data = JSON.parse(json);
+    // //     // console.log(json);
+    // //     // canvas2?.add(data);
+    // //     // canvas2?.loadFromJSON(data!, ()=>{});
+    // //     // canvas2?.loadFromJSON(data, canvas2.renderAll.bind(canvas2));
+    // //     console.log("json : " + JSON.parse(json));
+    //     setTest(json);
+    // //     //
+    // //     // fabric.util.enlivenObjects([JSON.parse(json)], function(objects:fabric.Object[]) {
+    // //     //     const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
+    // //     //     canvas2!.renderOnAddRemove = false;
+    // //     //
+    // //     //     objects.forEach(function(o) {
+    // //     //         o.animate('opacity', '0', {
+    // //     //             duration: 3000,
+    // //     //             onChange: canvas2!.renderAll.bind(canvas2),
+    // //     //             onComplete: function () {
+    // //     //                 canvas2!.remove(o);
+    // //     //             }
+    // //     //         });
+    // //     //         canvas2?.add(o);
+    // //     //     });
+    // //     //
+    // //     //     canvas2!.renderOnAddRemove = origRenderOnAddRemove;
+    // //     //     canvas2?.renderAll();
+    // //     // }, "fabric");
+    // //
+    // //     // }
+    // //
+    // //     // setObjectCount(objects.length)
+    // })
 
     // canvas3?.on('object:added', (e)=>{
     //     console.log("hi");
