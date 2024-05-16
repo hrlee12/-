@@ -1,6 +1,7 @@
 import BasicFrame from '@/components/frame/basicFrame';
 import InputBox from '@/components/inputbox';
 import Button from '@/components/button';
+// import Group from '@/pages/group/Group.tsx';
 
 const Example = () => {
   return (
@@ -25,6 +26,7 @@ const Example = () => {
         color={'navy'}
         onClick={() => {}}
       />
+      {/*<Group></Group>*/}
     </BasicFrame>
   );
 };
