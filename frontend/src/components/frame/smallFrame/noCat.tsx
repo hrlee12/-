@@ -12,7 +12,7 @@ const SmallFrameNoCat = ({ children }: Props) => {
   return (
     <>
       <main>
-        <div className='fixed bottom-20 left-10 bg-frameColor w-boxWidth h-48 rounded-boxRadius clickable-area'>
+        <div className='fixed right-[80px] bottom-[80px] bg-frameColor w-boxWidth h-48 rounded-boxRadius clickable-area'>
           {children}
         </div>
       </main>

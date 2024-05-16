@@ -60,15 +60,15 @@ const GroupPage = () => {
                 />
               </div>
             </div>
+            {showModal && (
+              <GroupMessage messages={messages} onClose={closeModal} />
+            )}
             {groups.length > 0 && (
               <div id='group-container' className='grid grid-cols-2 p-1'>
                 {groups.map((group, index) => (
                   <Group key={index} group={group} />
                 ))}
               </div>
-            )}
-            {showModal && (
-              <GroupMessage messages={messages} onClose={closeModal} />
             )}
           </div>
           {groups.length === 0 && (
