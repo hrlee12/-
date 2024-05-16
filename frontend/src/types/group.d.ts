@@ -46,3 +46,12 @@ export interface JoinGroupInfo {
   lastChatterContent: string;
   lastSendChatTime: string;
 }
+
+export interface GroupDetailProps {
+  group: {
+    partyId: number;
+    partyName: string;
+    partyGoal: string | null;
+    currentNum: number;
+  };
+}

@@ -23,6 +23,10 @@ export const INPUT_TEXT_BOX_SIZE = {
     width: '180px',
     height: '30px',
   },
+  chatting: {
+    width: '260px',
+    height: '50px',
+  },
 } as const;
 
 export const INPUT_TYPE = ['text', 'number', 'password'] as const;
