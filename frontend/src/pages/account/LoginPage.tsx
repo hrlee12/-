@@ -9,6 +9,7 @@ import CrouchCat from '@/components/cat/crouch';
 import { getMyInfo } from '@/apis/member.ts';
 import { useSkinStore } from '@/stores/useSkinStore.ts';
 
+
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -96,6 +97,12 @@ const LoginPage = () => {
               size={'small'}
               color={'green'}
               onClick={() => navigate('/signup')}
+            />
+            <Button
+                text={'그림그리기'}
+                size={'small'}
+                color={'green'}
+                onClick={() => navigate('/drawing')}
             />
           </div>
           {!isPassed && (
