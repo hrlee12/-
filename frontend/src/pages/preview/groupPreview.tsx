@@ -13,8 +13,12 @@ import ProfileCat from '@/components/cat/profile';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
 import { OpenVidu, Session, StreamEvent, Publisher } from 'openvidu-browser';
+import useActiveWindow from '@/hooks/useActiveWindow.ts';
+import { getValidProcess } from '@/apis/process.ts';
 
 const GroupPreview = () => {
+  const topProcess = useActiveWindow();
+  const [validProcess, setValidProcess] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [nowIsFocus, setNowIsFocus] = useState(false);
   const [nowTimeDuration, setNowTimeDuration] = useState(0);
@@ -49,9 +53,29 @@ const GroupPreview = () => {
       relaxTime: 0,
       timerId: -1,
     });
-
     navigate('/group');
   };
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      const fetchValidProcess = async () => {
+        try {
+          const result = await getValidProcess(topProcess);
+          setValidProcess(result); // result 바뀔 때마다 잘 저장됨
+        } catch (error) {
+          console.error('Failed to fetch valid process:', error);
+        }
+      };
+
+      if (topProcess) {
+        fetchValidProcess();
+      }
+    }, 2000); // Delay API call for 2 seconds after topProcess change
+
+    return () => clearTimeout(timerId);
+  }, [topProcess, myInfo.memberGoal]);
+
+  // Existing useEffect hooks and additional logic remain the same
 
   useEffect(() => {
     const currentTime = Date.now();
