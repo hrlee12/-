@@ -9,7 +9,6 @@ import CrouchCat from '@/components/cat/crouch';
 import { getMyInfo } from '@/apis/member.ts';
 import { useSkinStore } from '@/stores/useSkinStore.ts';
 
-
 const LoginPage = () => {
   const [userid, setUserId] = useState('');
   const [password, setPassword] = useState('');
@@ -31,11 +30,11 @@ const LoginPage = () => {
 
   return (
     <div>
-      <FaCircleXmark
-        className='absolute ml-[15px] mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
-        onClick={() => navigate('/')}
-      />
       <BasicFrame>
+        <FaCircleXmark
+          className='absolute left-0 mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
+          onClick={() => navigate('/')}
+        />
         <div className='flex justify-center items-center'>
           <h2 className='text-center font-dnf w-[200px] h-[60px] text-[36px] p-2 pt-[40px]'>
             모각냥
@@ -99,10 +98,10 @@ const LoginPage = () => {
               onClick={() => navigate('/signup')}
             />
             <Button
-                text={'그림그리기'}
-                size={'small'}
-                color={'green'}
-                onClick={() => navigate('/drawing')}
+              text={'그림그리기'}
+              size={'small'}
+              color={'green'}
+              onClick={() => navigate('/drawing')}
             />
           </div>
           {!isPassed && (

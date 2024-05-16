@@ -58,7 +58,7 @@ const GroupPreview = () => {
   };
 
   const handleNyanPunchClick = () => {
-    setIsSpecialVisible(true); // 특정 div 보이게 설정
+    setIsSpecialVisible(true);
 
     setTimeout(() => {
       setIsSpecialVisible(false);
