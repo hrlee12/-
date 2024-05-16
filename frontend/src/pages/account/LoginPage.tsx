@@ -102,7 +102,7 @@ const LoginPage = () => {
                 text={'그림그리기'}
                 size={'small'}
                 color={'green'}
-                onClick={() => navigate('/drawing')}
+                onClick={() => navigate('/drawing/11')}
             />
           </div>
           {!isPassed && (

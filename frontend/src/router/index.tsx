@@ -37,7 +37,7 @@ const RouterComponent = () => {
         <Route path={'/catInfo'} element={<MyCatInfo />} />
         <Route path={'/catSetting'} element={<MyCatSetting />} />
         <Route path={'/catSkin'} element={<MyCatSkin />} />
-        <Route path={'/drawing'} element={<Drawing />} />
+        <Route path={'/drawing/:groupId'} element={<Drawing />} />
         <Route path={'/previewAlone'} element={<AlonePreview />} />
         <Route path={'/previewTwo'} element={<GroupPreview />} />
         <Route path={'/chatting/:groupId'} element={<Chatting />} />
