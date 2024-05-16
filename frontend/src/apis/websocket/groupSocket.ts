@@ -2,13 +2,12 @@ import SockJS from 'sockjs-client';
 
 interface StatusMessage {
   userId: number;
-  userNickname: string;
   status: string;
 }
 
 export class GroupSocket {
   private sock: WebSocket | null = null;
-  private messageCallback: ((data: StatusMessage) => void) | null = null;
+  private messageCallback: ((data: StatusMessage[]) => void) | null = null;
   public connected: boolean = false;
   private reconnectTimeout: NodeJS.Timeout | null = null;
   private readonly memberId: number | null;
@@ -36,7 +35,14 @@ export class GroupSocket {
         if (messageBody === 'ping') {
           this.sendPong();
         } else {
-          this.handleMessage(JSON.parse(messageBody)); // Parse JSON message
+          const parsedData = JSON.parse(messageBody);
+          const statusMessages: StatusMessage[] = Object.entries(
+            parsedData,
+          ).map(([userId, status]) => ({
+            userId: Number(userId),
+            status: status as string,
+          }));
+          this.handleMessage(statusMessages);
         }
       };
 
@@ -82,11 +88,11 @@ export class GroupSocket {
     }
   }
 
-  public onMessage(callback: (data: StatusMessage) => void): void {
+  public onMessage(callback: (data: StatusMessage[]) => void): void {
     this.messageCallback = callback;
   }
 
-  private handleMessage(data: StatusMessage): void {
+  private handleMessage(data: StatusMessage[]): void {
     console.log('Processing message:', data);
     if (this.messageCallback) {
       this.messageCallback(data);
