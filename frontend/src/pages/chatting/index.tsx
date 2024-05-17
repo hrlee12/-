@@ -7,7 +7,8 @@ import { useAuthStore } from '@/stores/useAuthStore.ts';
 import { getChattingList } from '@/apis/group.ts';
 import ChatBox from '@/pages/chatting/chatBox.tsx';
 import { getMyInfo } from '@/apis/member.ts';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { FaCircleChevronLeft } from 'react-icons/fa6';
 
 interface ChatMessage {
   userId: number;
@@ -26,6 +27,8 @@ const Chatting = () => {
   const [message, setMessage] = useState('');
   const socketRef = useRef<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChattingList = async () => {
@@ -95,6 +98,10 @@ const Chatting = () => {
 
   return (
     <BasicFrame>
+      <FaCircleChevronLeft
+        className='absolute mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
+        onClick={() => navigate(-1)}
+      />
       <div
         id={'here'}
         className='flex flex-col overflow-y-auto max-h-[400px] space-y-1 scrollbar-hide'
