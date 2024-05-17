@@ -9,6 +9,7 @@ const Drawing = () => {
     const partyId = Number(groupId);
     const token = 1
 
+  const [isFromWebSocket, setIsFromWebSocket] = useState<boolean>();
   const [canvas, setCanvas] = useState<fabric.Canvas | null>();
   const [canvas2, setCanvas2] = useState<fabric.Canvas | null>();
   // const [nowPanel, setNowPanel] = useState(null);
@@ -63,6 +64,8 @@ const [test, setTest] = useState<string|null>(null);
         // setObjectCount(objects.length)
     // })
     canvas?.on('object:added', (e)=>{
+        if (isFromWebSocket)
+            return;
         e.target!.animate('opacity', '0', {
             duration: 3000,
             onChange: canvas!.renderAll.bind(canvas),
@@ -104,6 +107,7 @@ const [test, setTest] = useState<string|null>(null);
         // console.log("replace : " + replace);
         // console.log("after : " + data);
         // console.log('delete object : ' + JSON.parse(data).object);
+        setIsFromWebSocket(true);
         fabric.util.enlivenObjects([JSON.parse(replace)], function(objects:fabric.Object[]) {
             const origRenderOnAddRemove = canvas?.renderOnAddRemove;
             if (canvas == undefined) return;
@@ -123,6 +127,7 @@ const [test, setTest] = useState<string|null>(null);
             if(canvas == undefined) return;
             canvas!.renderOnAddRemove = origRenderOnAddRemove;
             canvas?.renderAll();
+            setIsFromWebSocket(false);
         }, "fabric");
     })
     // canvas?.on('object:added', (e)=>{
