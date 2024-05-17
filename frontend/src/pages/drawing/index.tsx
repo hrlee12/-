@@ -7,7 +7,7 @@ import {useAuthStore} from "@/stores/useAuthStore.ts";
 const Drawing = () => {
     const {groupId} = useParams();
     const partyId = Number(groupId);
-    const token = 1
+    const token = useAuthStore.getState().accessToken
 
   const [canvas, setCanvas] = useState<fabric.Canvas | null>();
   const [activeTool, setActiveTool] = useState('select');
