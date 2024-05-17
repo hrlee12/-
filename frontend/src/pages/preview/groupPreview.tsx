@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuthStore } from '@/stores/useAuthStore';
-import PomodoroTimer from '@/components/timer/PomodoroTimer';
-import { calculateTimerValues } from '@/components/timer/realTime';
-import { MyInfoProps } from '@/types/member';
-import { OpenVidu, Session, StreamEvent, Publisher } from 'openvidu-browser';
-import useActiveWindow from '@/hooks/useActiveWindow';
-import { WarningSocket } from '@/apis/websocket/AISocket';
+import { useEffect, useState } from 'react';
 import SmallFrameNoCat from '@/components/frame/smallFrame/noCat.tsx';
-import ProfileCat from '@/components/cat/profile';
+import PomodoroTimer from '@/components/timer/PomodoroTimer.tsx';
+import useTimerStore from '@/stores/useTimerStore';
+import { calculateTimerValues } from '@/components/timer/realTime';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { MyInfoProps } from '@/types/member';
+import { getMyInfo } from '@/apis/member';
+import ProgressBar from '@/components/progressbar/ProgressBar';
 import IdleCat from '@/components/cat/idle';
-import { useSkinStore } from '@/stores/useSkinStore.ts';
-import ProgressBar from '@/components/progressbar/ProgressBar.tsx';
-import useTimerStore from '@/stores/useTimerStore.ts';
-import { getValidProcess } from '@/apis/process.ts';
+import { useSkinStore } from '@/stores/useSkinStore';
+import ProfileCat from '@/components/cat/profile';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
-import { getMyInfo } from '@/apis/member.ts';
+import { OpenVidu, Session, StreamEvent, Publisher } from 'openvidu-browser';
 import NyanPunch from '@/components/cat/nyanPunch';
 
 const GroupPreview = () => {
-  const topProcess = useActiveWindow();
-  const [validProcess, setValidProcess] = useState<{ result: string } | null>(
-    null,
-  );
   const [isHovered, setIsHovered] = useState(false);
   const [nowIsFocus, setNowIsFocus] = useState(false);
   const [nowTimeDuration, setNowTimeDuration] = useState(0);
@@ -39,10 +32,9 @@ const GroupPreview = () => {
     titleContent: '',
     catAssetUrl: '',
   });
-  const [, setAlertMember] = useState<number | null>(null);
   const [isAttention, setIsAttention] = useState(false);
   const [isSpecialVisible, setIsSpecialVisible] = useState(false);
-  const [nyanPunchId, setNyanPunchId] = useState<number>(0);
+  // const [nyanPunchId, setNyanPunchId] = useState<number>(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,35 +46,18 @@ const GroupPreview = () => {
   const repeatCount = useTimerStore.getState().endPeriod;
 
   const movePage = () => {
-    useTimerStore.setState({
-      startTime: 0,
-      endPeriod: 0,
-      concentrateTime: 0,
-      relaxTime: 0,
-      timerId: -1,
-    });
-    navigate('/group');
+    // useTimerStore.setState({
+    //   startTime: 0,
+    //   endPeriod: 0,
+    //   concentrateTime: 0,
+    //   relaxTime: 0,
+    //   timerId: -1,
+    // });
+    // session.forceUnpublish;
+    // navigate('/group');
+    console.log(isAttention + ' CLICKCKCKCKCKCKC');
+    setIsAttention(!isAttention);
   };
-
-  useEffect(() => {
-    const timerId = setTimeout(() => {
-      const fetchValidProcess = async () => {
-        try {
-          const result = await getValidProcess(topProcess);
-          setValidProcess(result);
-          console.log(result);
-        } catch (error) {
-          console.error('Failed to fetch valid process:', error);
-        }
-      };
-
-      if (topProcess) {
-        fetchValidProcess();
-      }
-    }, 2000);
-
-    return () => clearTimeout(timerId);
-  }, [topProcess, myInfo.memberGoal]);
 
   const handleNyanPunchClick = () => {
     setIsSpecialVisible(true);
@@ -126,47 +101,63 @@ const GroupPreview = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    const OV: OpenVidu = new OpenVidu();
-    const session: Session = OV.initSession();
+  const OV: OpenVidu = new OpenVidu();
+  const session: Session = OV.initSession();
+  let publisher: Publisher;
 
-    const connectSession = async () => {
-      try {
-        await fetchSession(groupId.toString());
-        await fetchToken(useAuthStore.getState().openViduSession);
+  const connectSession = async () => {
+    try {
+      await fetchSession(groupId.toString());
+      await fetchToken(useAuthStore.getState().openViduSession);
 
-        const TOKEN = useAuthStore.getState().openViduToken;
+      const TOKEN = useAuthStore.getState().openViduToken;
 
-        session.on('streamCreated', (event: StreamEvent) => {
-          session.subscribe(event.stream, 'video-container');
-          console.log('내 화면 공유중');
-        });
+      session.on('streamCreated', (event: StreamEvent) => {
+        session.subscribe(event.stream, 'video-container');
+        console.log('공유된 화면 화면 구독중');
+      });
 
-        await session.connect(TOKEN, console.log('세션 연결 성공'));
+      await session.connect(TOKEN);
+      console.log('세션 연결 성공');
 
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: true })
-          .then(() => {
-            const publisher: Publisher = OV.initPublisher('publisher', {
-              videoSource: 'screen', // 화면 공유 활성화
-              publishAudio: false, // 오디오 활성화 여부 (화면 공유시 시스템 오디오 포함 여부)
-              publishVideo: true, // 비디오 활성화 여부 (화면 공유시에는 화면을)
-              resolution: '640x480', // 해상도 설정
-              frameRate: 30, // 프레임 레이트 설정
-              mirror: false, // 화면 공유일 때는 미러링을 비활성화
-            });
-            session.publish(publisher);
-          })
-          .catch((error) => {
-            console.error('카메라/마이크 접근 권한 문제:', error);
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then(() => {
+          publisher = OV.initPublisher('publisher', {
+            videoSource: 'screen', // 화면 공유 활성화
+            publishAudio: false, // 오디오 활성화 여부 (화면 공유시 시스템 오디오 포함 여부)
+            publishVideo: true, // 비디오 활성화 여부 (화면 공유시에는 화면을)
+            resolution: '640x480', // 해상도 설정
+            frameRate: 30, // 프레임 레이트 설정
+            mirror: false, // 화면 공유일 때는 미러링을 비활성화
           });
-      } catch (error) {
-        console.log(error);
+          session.publish(publisher);
+        })
+        .catch((error) => {
+          console.error('카메라/마이크 접근 권한 문제:', error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (isAttention) {
+      console.log('화면 공유 시작');
+      connectSession();
+    } else {
+      if (publisher) {
+        console.log('화면 공유 중지');
+        session.unpublish(publisher);
+      }
+    }
+    return () => {
+      if (publisher) {
+        console.log('클린업: 화면 공유 중지');
+        session.unpublish(publisher);
       }
     };
-
-    connectSession();
-  }, [groupId]);
+  }, [isAttention]);
 
   useEffect(() => {
     const fetchMyInfo = async () => {
@@ -181,40 +172,12 @@ const GroupPreview = () => {
     fetchMyInfo();
   }, [isHovered]);
 
-  useEffect(() => {
-    let warningSocket: WarningSocket | null = null;
-
-    if (validProcess?.result === 'NO') {
-      const memberId = useAuthStore.getState().accessToken;
-      warningSocket = new WarningSocket(memberId, groupId);
-      warningSocket.connect('https://mogaknyang-back.duckdns.org/ws', memberId);
-
-      warningSocket.onMessage((data) => {
-        setAlertMember(data.memberId);
-      });
-
-      // 연결 상태를 체크하고 메시지 발송
-      const interval = setInterval(() => {
-        if (warningSocket && warningSocket.connected) {
-          warningSocket.sendWarning();
-          clearInterval(interval); // 메시지 발송 후 인터벌 클리어
-        }
-      }, 1000); // 1초마다 연결 상태를 체크하고 메시지 발송
-    }
-
-    return () => {
-      if (warningSocket) {
-        warningSocket.disconnect();
-      }
-    };
-  }, [validProcess, groupId]);
-
   return (
     <>
-      {isSpecialVisible && <div id='video-container'></div>}
+      {/* {isSpecialVisible && <div id='video-container'></div>} */}
 
-      {/* <div id='publisher' className='h-1/2 w-1/2'></div>
-      <div id='video-container' className='h-1/2 w-1/2'></div> */}
+      {/* <div id='publisher' className='h-1/2 w-1/2'></div> */}
+      {/* <div id='video-container'></div> */}
 
       {isHovered && !isSpecialVisible && (
         <div>
@@ -276,7 +239,7 @@ const GroupPreview = () => {
       )}
       {!isAttention && !isSpecialVisible && (
         <div onClick={handleNyanPunchClick}>
-          <NyanPunch id={nyanPunchId} />
+          {/* <NyanPunch id={nyanPunchId} /> */}
         </div>
       )}
       <div id='cat-box'>
