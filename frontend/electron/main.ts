@@ -52,7 +52,6 @@ function createWindow() {
     //프레임
     frame: false,
   });
-  win.loadURL('http://localhost:5173');
 
   // 항상 상위에 위치
   win.setAlwaysOnTop(true, 'screen-saver');
