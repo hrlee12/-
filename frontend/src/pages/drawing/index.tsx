@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import { fabric } from 'fabric';
 import {Socket} from "@/apis/websocket/fabricSocket.ts";
 import {useParams} from "react-router-dom";
@@ -35,9 +35,12 @@ const Drawing = () => {
     socket.connect(chatWsUrl, partyId, token);
 
 
-    const onObjectAdded = (e)=>{
-        if (e.target.flag !== null && e.target.flag === true) {
-         console.log("HI");
+
+    canvas?.on('object:added',  (e)=> {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        if (e.target?.flag !== null && e.target?.flag === true) {
+            console.log("HI");
             return;
         }
         console.log("ADD@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@222");
@@ -45,17 +48,16 @@ const Drawing = () => {
         e.target!.animate('opacity', '0', {
             duration: 3000,
             onChange: canvas!.renderAll.bind(canvas),
-            onComplete: function() {
+            onComplete: function () {
                 canvas!.remove(e.target!);
             }
         })
 
         const data = JSON.stringify(e.target?.toJSON());
-        socket.sendMessage(partyId, data, chatWsUrl, token);
+        socket.sendMessage(partyId, data, chatWsUrl, token!);
 
 
-    };
-    canvas?.on('object:added', onObjectAdded);
+    });
 
     socket.onMessage((data:string) => {
 
@@ -68,6 +70,8 @@ const Drawing = () => {
             canvas!.renderOnAddRemove = false;
 
             objects.forEach(function(o) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 o.flag = true;
                 o.animate('opacity', '0', {
                     duration: 3000,
