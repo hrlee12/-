@@ -99,7 +99,7 @@ const LoginPage = () => {
             />
           </div>
           {!isPassed && (
-            <div clgassName='font-dnf flex justify-center items-center pt-[20px]'>
+            <div className='font-dnf flex justify-center items-center pt-[20px]'>
               아이디 혹은 비밀번호를 다시 확인해주세요
             </div>
           )}
