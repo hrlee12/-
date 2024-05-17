@@ -78,3 +78,16 @@ export const patchMySkin = async (catId: number) => {
     console.log(error);
   }
 };
+
+// memberId로 catId 조회
+interface MemberId {
+  memberId: number;
+}
+export const getCatId = async (memberIdList: MemberId[]) => {
+  try {
+    const response = await axiosInstance.post(`/member/cat`, { memberIdList });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
