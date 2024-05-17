@@ -52,6 +52,7 @@ export class Socket {
         if (this.stompClient && this.stompClient.connected) {
             console.log(`Sending message to /pub/drawing/${partyId}`);
             this.stompClient.send(
+
                 `/pub/drawing/${partyId}`,
                 {},
                 JSON.stringify({ object: message }),

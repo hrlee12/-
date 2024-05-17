@@ -72,8 +72,8 @@ const [test, setTest] = useState<string|null>(null);
         })
 
         const data = JSON.stringify(e.target?.toJSON());
-        console.log(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
-        console.log("before : " + data);
+        // console.log(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
+        // console.log("before : " + data);
         socket.sendMessage(partyId, data);
 
 
@@ -82,29 +82,29 @@ const [test, setTest] = useState<string|null>(null);
     socket.onMessage((data:string) => {
         console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 
-        const replace = JSON.stringify(JSON.parse(data).object).slice(1).replace(/\\"/g, '"');
-        console.log(replace);
-        if (test !== null) {
-            if (test === null){
-                console.log("same");
-                console.log(test);
-                // console.log(replace);
+        const replace = JSON.stringify(JSON.parse(data).object).slice(1, -1).replace(/\\"/g, '"');
+        // console.log(replace);
+        // if (test !== null) {
+        //     if (test === null){
+        //         console.log("same");
+        //         console.log(test);
+        //         console.log(replace);
+        //
+        //     } else {
+        //         console.log("heart");
+        //         console.log(replace);
+        //         console.log(test);
 
-            } else {
-                console.log("heart");
-                // console.log(replace);
-                console.log(test);
 
-
-            }
-        } else {
-            console.log("test is null");
-        }
+        //     }
+        // } else {
+        //     console.log("test is null");
+        // }
         //
         // console.log("replace : " + replace);
         // console.log("after : " + data);
         // console.log('delete object : ' + JSON.parse(data).object);
-        fabric.util.enlivenObjects([JSON.parse(data).object], function(objects:fabric.Object[]) {
+        fabric.util.enlivenObjects([JSON.parse(replace)], function(objects:fabric.Object[]) {
             const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
             if (canvas2 == undefined) return;
             canvas2!.renderOnAddRemove = false;
