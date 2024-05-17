@@ -63,9 +63,13 @@ const [test, setTest] = useState<string|null>(null);
 
         // setObjectCount(objects.length)
     // })
-    canvas?.on('object:added', (e)=>{
-        if (isFromWebSocket)
+    const onObjectAdded = (e)=>{
+        if (e.target.flag !== null && e.target.flag === true) {
+         console.log("HI");
             return;
+        }
+        console.log("ADD@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@222");
+
         e.target!.animate('opacity', '0', {
             duration: 3000,
             onChange: canvas!.renderAll.bind(canvas),
@@ -80,11 +84,13 @@ const [test, setTest] = useState<string|null>(null);
         socket.sendMessage(partyId, data, chatWsUrl, token);
 
 
-    })
+    };
+    canvas?.on('object:added', onObjectAdded);
 
     socket.onMessage((data:string) => {
+        // canvas?.off('object:added', onObjectAdded);
         console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-
+        canvas?.off('object:added', onObjectAdded);
         const replace = JSON.stringify(JSON.parse(data).object).slice(1, -1).replace(/\\"/g, '"');
         // console.log(replace);
         // if (test !== null) {
@@ -114,6 +120,7 @@ const [test, setTest] = useState<string|null>(null);
             canvas!.renderOnAddRemove = false;
 
             objects.forEach(function(o) {
+                o.flag = true;
                 o.animate('opacity', '0', {
                     duration: 3000,
                     onChange: canvas!.renderAll.bind(canvas),
