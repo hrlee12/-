@@ -21,22 +21,21 @@ const MyCatSetting = () => {
 
   return (
     <>
-      <FaCircleChevronLeft
-        className='absolute ml-[40px] mt-[25px] text-[35px] text-frameColor bg-inputBoxColor rounded-boxRadius'
-        onClick={() => {
-          navigate(-1); // '/catSetting' 경로가 왜인지 모르겠지만 작동하지 않음.
-        }}
-      />
-      <FaCircleXmark
-        className='absolute ml-[455px] mt-[25px] text-[35px] text-frameColor bg-inputBoxColor rounded-boxRadius'
-        onClick={() => navigate('/')}
-      />
       <MyFrame>
+        <FaCircleChevronLeft
+          className='absolute ml-[30px] mt-[25px] text-[35px] text-frameColor bg-inputBoxColor rounded-boxRadius'
+          onClick={() => {
+            navigate(-1); // '/catSetting' 경로가 왜인지 모르겠지만 작동하지 않음.
+          }}
+        />
+        <FaCircleXmark
+          className='absolute ml-[440px] mt-[25px] text-[35px] text-frameColor bg-inputBoxColor rounded-boxRadius'
+          onClick={() => navigate('/')}
+        />
         <div className={'pt-10'}>
           <div className={'flex flex-row justify-center'}>
             <div
               className='character-idle'
-              id='clickable-area'
               style={{
                 backgroundImage: `url(${import.meta.env.VITE_IMG_URL}/cat_idle_0${mySkin}.png)`,
               }}
