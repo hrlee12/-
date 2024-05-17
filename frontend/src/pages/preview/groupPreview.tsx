@@ -16,6 +16,7 @@ import useTimerStore from '@/stores/useTimerStore.ts';
 import { getValidProcess } from '@/apis/process.ts';
 import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
 import { getMyInfo } from '@/apis/member.ts';
+import NyanPunch from '@/components/cat/nyanPunch';
 
 const GroupPreview = () => {
   const topProcess = useActiveWindow();
@@ -39,6 +40,9 @@ const GroupPreview = () => {
     catAssetUrl: '',
   });
   const [, setAlertMember] = useState<number | null>(null);
+  const [isAttention, setIsAttention] = useState(false);
+  const [isSpecialVisible, setIsSpecialVisible] = useState(false);
+  const [nyanPunchId, setNyanPunchId] = useState<number>(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -79,6 +83,14 @@ const GroupPreview = () => {
 
     return () => clearTimeout(timerId);
   }, [topProcess, myInfo.memberGoal]);
+
+  const handleNyanPunchClick = () => {
+    setIsSpecialVisible(true);
+
+    setTimeout(() => {
+      setIsSpecialVisible(false);
+    }, 31000);
+  };
 
   useEffect(() => {
     const currentTime = Date.now();
@@ -199,7 +211,12 @@ const GroupPreview = () => {
 
   return (
     <>
-      {isHovered && (
+      {isSpecialVisible && <div id='video-container'></div>}
+
+      {/* <div id='publisher' className='h-1/2 w-1/2'></div>
+      <div id='video-container' className='h-1/2 w-1/2'></div> */}
+
+      {isHovered && !isSpecialVisible && (
         <div>
           <SmallFrameNoCat>
             <div className='flex flex-col justify-between p-4 space-y-4 w-[205px] font-neo font-bold text-lg'>
@@ -255,6 +272,11 @@ const GroupPreview = () => {
               </div>
             </div>
           </SmallFrameNoCat>
+        </div>
+      )}
+      {!isAttention && !isSpecialVisible && (
+        <div onClick={handleNyanPunchClick}>
+          <NyanPunch id={nyanPunchId} />
         </div>
       )}
       <div id='cat-box'>
