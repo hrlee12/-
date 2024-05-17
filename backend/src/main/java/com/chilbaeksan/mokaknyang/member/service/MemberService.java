@@ -3,6 +3,8 @@ package com.chilbaeksan.mokaknyang.member.service;
 import com.chilbaeksan.mokaknyang.member.domain.Cat;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.domain.Title;
+import com.chilbaeksan.mokaknyang.member.dto.MemberFindCatListRequest;
+import com.chilbaeksan.mokaknyang.member.dto.MemberFindCatListResponse;
 import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
 import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
 import org.springframework.data.domain.Pageable;
@@ -26,4 +28,6 @@ public interface MemberService {
     Cat setSkin(Integer userId, Integer catId);
 
     Member getJoinParty(Integer memberId);
+
+    MemberFindCatListResponse findByMemberId(MemberFindCatListRequest memberFindCatListRequest);
 }

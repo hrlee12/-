@@ -5,9 +5,7 @@ import com.chilbaeksan.mokaknyang.exception.ErrorCode;
 import com.chilbaeksan.mokaknyang.member.domain.Cat;
 import com.chilbaeksan.mokaknyang.member.domain.Member;
 import com.chilbaeksan.mokaknyang.member.domain.Title;
-import com.chilbaeksan.mokaknyang.member.dto.MemberModifyRequestDto;
-import com.chilbaeksan.mokaknyang.member.dto.MemberRegisterRequestDto;
-import com.chilbaeksan.mokaknyang.member.dto.MemberTitleResponseDto;
+import com.chilbaeksan.mokaknyang.member.dto.*;
 import com.chilbaeksan.mokaknyang.member.repository.CatRepository;
 import com.chilbaeksan.mokaknyang.member.repository.MemberRepository;
 import com.chilbaeksan.mokaknyang.member.repository.TitleRepository;
@@ -16,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,4 +92,26 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member getJoinParty(Integer memberId){ return memberRepository.findByMemberId(memberId)
             .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));}
+
+    @Override
+    public MemberFindCatListResponse findByMemberId(MemberFindCatListRequest memberFindCatListRequest) {
+        List<MemberFindCatResponse> catIdList = new ArrayList<>();
+
+        for(MemberFindCatRequest memberFindCatRequest : memberFindCatListRequest.getMemberIdList()){
+            Member member = memberRepository.findByMemberId(memberFindCatRequest.getMemberId())
+                    .orElseThrow(() -> new BaseException(ErrorCode.MEMBER_NOT_FOUND));
+
+            Cat cat = catRepository.findByCatId(member.getCat().getCatId())
+                            .orElseThrow(() -> new BaseException(ErrorCode.CAT_NOT_FOUND));
+
+            catIdList.add(MemberFindCatResponse.builder()
+                    .memberId(member.getMemberId())
+                    .catId(cat.getCatId())
+                    .build());
+        }
+
+        return MemberFindCatListResponse.builder()
+                .catIdList(catIdList)
+                .build();
+    }
 }
