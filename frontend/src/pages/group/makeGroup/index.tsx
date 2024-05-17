@@ -70,11 +70,11 @@ const MakeGroupPage = () => {
 
   return (
     <>
-      <FaCircleChevronLeft
-        className='absolute ml-[15px] mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
-        onClick={() => navigate('/group')}
-      />
       <BasicFrame>
+        <FaCircleChevronLeft
+          className='absolute mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
+          onClick={() => navigate('/group')}
+        />
         <div className='pt-8 pl-9'>
           <div className='font-dnf text-4xl pb-8'>{constants.MAKE_GROUP}</div>
         </div>
