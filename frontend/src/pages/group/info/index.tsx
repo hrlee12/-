@@ -30,7 +30,7 @@ const GroupInfoPage = () => {
   const partyId = Number(groupId);
   const myId = useAuthStore.getState().accessToken; // 변경: memberId를 가져옴
   const [groupInfo, setGroupInfo] = useState<GroupProps>(defaultGroupInfo);
-  const [userIds, setUserIds] = useState<number[]>([]); // userIds 배열을 상태로 추가
+  const [, setUserIds] = useState<number[]>([]); // userIds 배열을 상태로 추가
   const socketRef = useRef<GroupSocket | null>(null);
 
   useEffect(() => {
