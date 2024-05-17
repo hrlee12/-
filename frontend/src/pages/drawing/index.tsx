@@ -105,24 +105,24 @@ const [test, setTest] = useState<string|null>(null);
         // console.log("after : " + data);
         // console.log('delete object : ' + JSON.parse(data).object);
         fabric.util.enlivenObjects([JSON.parse(replace)], function(objects:fabric.Object[]) {
-            const origRenderOnAddRemove = canvas2?.renderOnAddRemove;
-            if (canvas2 == undefined) return;
-            canvas2!.renderOnAddRemove = false;
+            const origRenderOnAddRemove = canvas?.renderOnAddRemove;
+            if (canvas == undefined) return;
+            canvas!.renderOnAddRemove = false;
 
             objects.forEach(function(o) {
                 o.animate('opacity', '0', {
                     duration: 3000,
-                    onChange: canvas2!.renderAll.bind(canvas2),
+                    onChange: canvas!.renderAll.bind(canvas),
                     onComplete: function () {
-                        canvas2!.remove(o);
+                        canvas!.remove(o);
                     }
                 });
-                canvas2?.add(o);
+                canvas?.add(o);
             });
 
-            if(canvas2 == undefined) return;
-            canvas2!.renderOnAddRemove = origRenderOnAddRemove;
-            canvas2?.renderAll();
+            if(canvas == undefined) return;
+            canvas!.renderOnAddRemove = origRenderOnAddRemove;
+            canvas?.renderAll();
         }, "fabric");
     })
     // canvas?.on('object:added', (e)=>{
