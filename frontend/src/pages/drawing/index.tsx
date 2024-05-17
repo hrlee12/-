@@ -77,7 +77,7 @@ const [test, setTest] = useState<string|null>(null);
         const data = JSON.stringify(e.target?.toJSON());
         // console.log(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::")
         // console.log("before : " + data);
-        socket.sendMessage(partyId, data);
+        socket.sendMessage(partyId, data, chatWsUrl, token);
 
 
     })
@@ -371,7 +371,7 @@ const [test, setTest] = useState<string|null>(null);
   return (
       <>
 
-          <canvas id='canvas2' style={{border: '1px solid red'}}/>
+          {/*<canvas id='canvas2' style={{border: '1px solid red'}}/>*/}
          <canvas id='canvas' style={{border: '1px solid red'}}/>
           <button
               style={{width: '48px', height: '48px', border: '1px solid black'}}

@@ -48,7 +48,7 @@ export class Socket {
         }
     }
 
-    public sendMessage(partyId: number, message: string): void {
+    public sendMessage(partyId: number, message: string, url:string, jwtToken:number): void {
         if (this.stompClient && this.stompClient.connected) {
             console.log(`Sending message to /pub/drawing/${partyId}`);
             this.stompClient.send(
@@ -59,6 +59,7 @@ export class Socket {
             );
         } else {
             console.error('WebSocket is not connected');
+            this.connect(url, partyId, jwtToken);
         }
     }
 
