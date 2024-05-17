@@ -158,4 +158,11 @@ public class MemberController {
 
         return ResponseEntity.ok(result);
     }
+
+    @PostMapping("/cat")
+    public ResponseEntity<?> findByCatIdFromMemberId(@RequestBody MemberFindCatListRequest memberFindCatListRequest){
+        MemberFindCatListResponse result = memberService.findByMemberId(memberFindCatListRequest);
+
+        return ResponseEntity.ok(result);
+    }
 }
