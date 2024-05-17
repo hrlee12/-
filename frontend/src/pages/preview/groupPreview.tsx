@@ -62,7 +62,7 @@ const GroupPreview = () => {
 
     setTimeout(() => {
       setIsSpecialVisible(false);
-    }, 30000);
+    }, 31000);
   };
 
   useEffect(() => {
@@ -157,6 +157,10 @@ const GroupPreview = () => {
   return (
     <>
       {isSpecialVisible && <div id='video-container'></div>}
+
+      {/* <div id='publisher' className='h-1/2 w-1/2'></div>
+      <div id='video-container' className='h-1/2 w-1/2'></div> */}
+
       {isHovered && !isSpecialVisible && (
         <div>
           <SmallFrameNoCat>
