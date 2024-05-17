@@ -10,13 +10,13 @@ import { WarningSocket } from '@/apis/websocket/AISocket';
 import SmallFrameNoCat from '@/components/frame/smallFrame/noCat.tsx';
 import ProfileCat from '@/components/cat/profile';
 import IdleCat from '@/components/cat/idle';
-import { useSkinStore } from '@/stores/useSkinStore.ts';
 import ProgressBar from '@/components/progressbar/ProgressBar.tsx';
 import useTimerStore from '@/stores/useTimerStore.ts';
 import { getValidProcess } from '@/apis/process.ts';
 import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
 import { getMyInfo } from '@/apis/member.ts';
 import NyanPunch from '@/components/cat/nyanPunch';
+import { useCatStore } from '@/stores/useGroupCatStore.ts'; // 전역 상태 임포트
 
 const GroupPreview = () => {
   const topProcess = useActiveWindow();
@@ -40,9 +40,9 @@ const GroupPreview = () => {
     catAssetUrl: '',
   });
   const [, setAlertMember] = useState<number | null>(null);
-  const [isAttention, setIsAttention] = useState(false);
+  const [isAttention] = useState(false);
   const [isSpecialVisible, setIsSpecialVisible] = useState(false);
-  const [nyanPunchId, setNyanPunchId] = useState<number>(0);
+  const [nyanPunchId] = useState<number>(0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -52,6 +52,8 @@ const GroupPreview = () => {
   const focusTime = useTimerStore.getState().concentrateTime;
   const breakTime = useTimerStore.getState().relaxTime;
   const repeatCount = useTimerStore.getState().endPeriod;
+
+  const catIdList = useCatStore((state) => state.catIdList);
 
   const movePage = () => {
     useTimerStore.setState({
@@ -213,9 +215,6 @@ const GroupPreview = () => {
     <>
       {isSpecialVisible && <div id='video-container'></div>}
 
-      {/* <div id='publisher' className='h-1/2 w-1/2'></div>
-      <div id='video-container' className='h-1/2 w-1/2'></div> */}
-
       {isHovered && !isSpecialVisible && (
         <div>
           <SmallFrameNoCat>
@@ -279,13 +278,17 @@ const GroupPreview = () => {
           <NyanPunch id={nyanPunchId} />
         </div>
       )}
-      <div id='cat-box'>
-        <IdleCat
-          catId={useSkinStore.getState().skinId}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onClick={() => movePage()}
-        />
+      <div id='here' className='fixed right-0 bottom-0'>
+        {catIdList.map((cat, index) => (
+          <IdleCat
+            key={cat.catId}
+            catId={cat.catId}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 60 * index, bottom: 0 }}
+            onClick={() => movePage()}
+          />
+        ))}
       </div>
     </>
   );
