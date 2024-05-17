@@ -17,6 +17,7 @@ import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
 import { getMyInfo } from '@/apis/member.ts';
 import NyanPunch from '@/components/cat/nyanPunch';
 import { useCatStore } from '@/stores/useGroupCatStore.ts'; // 전역 상태 임포트
+import Drawing from '../drawing';
 
 const GroupPreview = () => {
   const topProcess = useActiveWindow();
@@ -43,6 +44,8 @@ const GroupPreview = () => {
   const [isPunchVisible, setIsPunchVisible] = useState(false);
   // const [nyanPunchId, setNyanPunchId] = useState<number>(0);
   const [alertMember, setAlertMember] = useState<number | null>(null);
+  const [hasChanged, setHasChanged] = useState(false);
+  const [isSubscribeVisible, setIsSubscribeVisible] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,6 +57,7 @@ const GroupPreview = () => {
   const repeatCount = useTimerStore.getState().endPeriod;
 
   const catIdList = useCatStore((state) => state.catIdList);
+  const index = catIdList.findIndex((item) => item.memberId === alertMember);
 
   const movePage = () => {
     useTimerStore.setState({
@@ -87,11 +91,11 @@ const GroupPreview = () => {
   }, [topProcess, myInfo.memberGoal]);
 
   const handleNyanPunchClick = () => {
-    setIsPunchVisible(true);
+    setIsSubscribeVisible(true);
 
     setTimeout(() => {
-      setIsPunchVisible(false);
-    }, 31000);
+      setIsSubscribeVisible(false);
+    }, 35000);
   };
 
   useEffect(() => {
@@ -169,14 +173,18 @@ const GroupPreview = () => {
   };
 
   useEffect(() => {
-    if (isAttention) {
-      console.log('화면 공유 시작');
-      connectSession();
-    } else {
-      if (publisher) {
-        console.log('화면 공유 중지');
-        session.unpublish(publisher);
+    // 1회성 비디오 띄우기
+    if (!hasChanged) {
+      if (isAttention) {
+        console.log('화면 공유 시작');
+        connectSession();
+      } else {
+        if (publisher) {
+          console.log('화면 공유 중지');
+          session.unpublish(publisher);
+        }
       }
+      setHasChanged(true);
     }
     return () => {
       if (publisher) {
@@ -232,17 +240,19 @@ const GroupPreview = () => {
     if (!alertMember) return;
     const memberId = useAuthStore.getState().accessToken;
     if (alertMember === memberId) {
+      setIsAttention(true);
+    } else {
       setIsPunchVisible(true);
     }
   }, [alertMember]);
 
   return (
     <>
-      {/* {isSpecialVisible && <div id='video-container'></div>} */}
-
-      {/* <div id='publisher' className='h-1/2 w-1/2'></div> */}
-      {/* <div id='video-container'></div> */}
-
+      {isSubscribeVisible && (
+        <div id='video-container'>
+          <Drawing />
+        </div>
+      )}
       {isHovered && (
         <div>
           <SmallFrameNoCat>
@@ -301,9 +311,9 @@ const GroupPreview = () => {
           </SmallFrameNoCat>
         </div>
       )}
-      {!isAttention && !isPunchVisible && (
+      {isPunchVisible && (
         <div onClick={handleNyanPunchClick}>
-          <NyanPunch id={2} />
+          <NyanPunch pos={index + 1} />
         </div>
       )}
       <div id='here' className='fixed right-0 bottom-0'>
