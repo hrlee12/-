@@ -52,7 +52,6 @@ function createWindow() {
     //프레임
     frame: false,
   });
-  win.loadURL('http://localhost:5173');
 
   // 항상 상위에 위치
   win.setAlwaysOnTop(true, 'screen-saver');
@@ -108,18 +107,13 @@ app.on('window-all-closed', () => {
 ipcMain.on('set-ignore-mouse-events', (event, ignore, options) => {
   const win = BrowserWindow.fromWebContents(event.sender);
   win!.setIgnoreMouseEvents(ignore, options);
-  // console.log('Received set-ignore-mouse-events event');
-  // console.log('Ignore:', ignore);
-  // console.log('Options:', options);
-  // console.log('BrowserWindow:', win);
 });
 
 // PowerShell 스크립트 실행 함수
 function getActiveWindowProcessName() {
   const psScript = `Add-Type @"\nusing System;\nusing System.Runtime.InteropServices;\npublic class User32 {\n[DllImport("user32.dll")]\npublic static extern IntPtr GetForegroundWindow();\n[DllImport("user32.dll")]\npublic static extern int GetWindowThreadProcessId(IntPtr hWnd, out int lpdwProcessId);\n}\n"@\n$foregroundWindowHandle = [User32]::GetForegroundWindow()\n$processId = 0\n[User32]::GetWindowThreadProcessId($foregroundWindowHandle, [ref]$processId)\n$process = Get-Process | Where-Object { $_.Id -eq $processId }\n$process.Name`;
 
-
-  const ps = spawn('powershell.exe', ["-Command", psScript]);
+  const ps = spawn('powershell.exe', ['-Command', psScript]);
 
   ps.stdout.on('data', (data) => {
     // console.log(`stdout: ${data}`);

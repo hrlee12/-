@@ -1,21 +1,28 @@
-import { useEffect, useState } from 'react';
-import SmallFrameNoCat from '@/components/frame/smallFrame/noCat.tsx';
-import PomodoroTimer from '@/components/timer/PomodoroTimer.tsx';
-import useTimerStore from '@/stores/useTimerStore';
-import { calculateTimerValues } from '@/components/timer/realTime';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { MyInfoProps } from '@/types/member';
-import { getMyInfo } from '@/apis/member';
-import ProgressBar from '@/components/progressbar/ProgressBar';
-import IdleCat from '@/components/cat/idle';
-import { useSkinStore } from '@/stores/useSkinStore';
-import ProfileCat from '@/components/cat/profile';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
+import PomodoroTimer from '@/components/timer/PomodoroTimer';
+import { calculateTimerValues } from '@/components/timer/realTime';
+import { MyInfoProps } from '@/types/member';
 import { OpenVidu, Session, StreamEvent, Publisher } from 'openvidu-browser';
-import NyanPunch from '@/components/cat/nyanPunch';
+import useActiveWindow from '@/hooks/useActiveWindow';
+import { WarningSocket } from '@/apis/websocket/AISocket';
+import SmallFrameNoCat from '@/components/frame/smallFrame/noCat.tsx';
+import ProfileCat from '@/components/cat/profile';
+import IdleCat from '@/components/cat/idle';
+import ProgressBar from '@/components/progressbar/ProgressBar.tsx';
+import useTimerStore from '@/stores/useTimerStore.ts';
+import { getValidProcess } from '@/apis/process.ts';
+import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
+import { getMyInfo } from '@/apis/member.ts';
+// import NyanPunch from '@/components/cat/nyanPunch';
+import { useCatStore } from '@/stores/useGroupCatStore.ts'; // 전역 상태 임포트
 
 const GroupPreview = () => {
+  const topProcess = useActiveWindow();
+  const [validProcess, setValidProcess] = useState<{ result: string } | null>(
+    null,
+  );
   const [isHovered, setIsHovered] = useState(false);
   const [nowIsFocus, setNowIsFocus] = useState(false);
   const [nowTimeDuration, setNowTimeDuration] = useState(0);
@@ -32,9 +39,11 @@ const GroupPreview = () => {
     titleContent: '',
     catAssetUrl: '',
   });
-  const [isAttention, setIsAttention] = useState(false);
+  // const [isAttention, setIsAttention] = useState(false);
+  const [isAttention] = useState(false);
   const [isSpecialVisible, setIsSpecialVisible] = useState(false);
   // const [nyanPunchId, setNyanPunchId] = useState<number>(0);
+  const [, setAlertMember] = useState<number | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,19 +54,38 @@ const GroupPreview = () => {
   const breakTime = useTimerStore.getState().relaxTime;
   const repeatCount = useTimerStore.getState().endPeriod;
 
+  const catIdList = useCatStore((state) => state.catIdList);
+
   const movePage = () => {
-    // useTimerStore.setState({
-    //   startTime: 0,
-    //   endPeriod: 0,
-    //   concentrateTime: 0,
-    //   relaxTime: 0,
-    //   timerId: -1,
-    // });
-    // session.forceUnpublish;
-    // navigate('/group');
-    console.log(isAttention + ' CLICKCKCKCKCKCKC');
-    setIsAttention(!isAttention);
+    useTimerStore.setState({
+      startTime: 0,
+      endPeriod: 0,
+      concentrateTime: 0,
+      relaxTime: 0,
+      timerId: -1,
+    });
+    navigate('/group');
   };
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      const fetchValidProcess = async () => {
+        try {
+          const result = await getValidProcess(topProcess);
+          setValidProcess(result);
+          console.log(result);
+        } catch (error) {
+          console.error('Failed to fetch valid process:', error);
+        }
+      };
+
+      if (topProcess) {
+        fetchValidProcess();
+      }
+    }, 2000);
+
+    return () => clearTimeout(timerId);
+  }, [topProcess, myInfo.memberGoal]);
 
   const handleNyanPunchClick = () => {
     setIsSpecialVisible(true);
@@ -172,6 +200,34 @@ const GroupPreview = () => {
     fetchMyInfo();
   }, [isHovered]);
 
+  useEffect(() => {
+    let warningSocket: WarningSocket | null = null;
+
+    if (validProcess?.result === 'NO') {
+      const memberId = useAuthStore.getState().accessToken;
+      warningSocket = new WarningSocket(memberId, groupId);
+      warningSocket.connect('https://mogaknyang-back.duckdns.org/ws', memberId);
+
+      warningSocket.onMessage((data) => {
+        setAlertMember(data.memberId);
+      });
+
+      // 연결 상태를 체크하고 메시지 발송
+      const interval = setInterval(() => {
+        if (warningSocket && warningSocket.connected) {
+          warningSocket.sendWarning();
+          clearInterval(interval); // 메시지 발송 후 인터벌 클리어
+        }
+      }, 1000); // 1초마다 연결 상태를 체크하고 메시지 발송
+    }
+
+    return () => {
+      if (warningSocket) {
+        warningSocket.disconnect();
+      }
+    };
+  }, [validProcess, groupId]);
+
   return (
     <>
       {/* {isSpecialVisible && <div id='video-container'></div>} */}
@@ -242,13 +298,17 @@ const GroupPreview = () => {
           {/* <NyanPunch id={nyanPunchId} /> */}
         </div>
       )}
-      <div id='cat-box'>
-        <IdleCat
-          catId={useSkinStore.getState().skinId}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onClick={() => movePage()}
-        />
+      <div id='here' className='fixed right-0 bottom-0'>
+        {catIdList.map((cat, index) => (
+          <IdleCat
+            key={cat.catId}
+            catId={cat.catId}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 60 * index, bottom: 0 }}
+            onClick={() => movePage()}
+          />
+        ))}
       </div>
     </>
   );
