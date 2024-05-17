@@ -15,7 +15,7 @@ import useTimerStore from '@/stores/useTimerStore.ts';
 import { getValidProcess } from '@/apis/process.ts';
 import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
 import { getMyInfo } from '@/apis/member.ts';
-// import NyanPunch from '@/components/cat/nyanPunch';
+import NyanPunch from '@/components/cat/nyanPunch';
 import { useCatStore } from '@/stores/useGroupCatStore.ts'; // 전역 상태 임포트
 
 const GroupPreview = () => {
@@ -39,11 +39,10 @@ const GroupPreview = () => {
     titleContent: '',
     catAssetUrl: '',
   });
-  // const [isAttention, setIsAttention] = useState(false);
-  const [isAttention] = useState(false);
-  const [isSpecialVisible, setIsSpecialVisible] = useState(false);
+  const [isAttention, setIsAttention] = useState(false);
+  const [isPunchVisible, setIsPunchVisible] = useState(false);
   // const [nyanPunchId, setNyanPunchId] = useState<number>(0);
-  const [, setAlertMember] = useState<number | null>(null);
+  const [alertMember, setAlertMember] = useState<number | null>(null);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -88,10 +87,10 @@ const GroupPreview = () => {
   }, [topProcess, myInfo.memberGoal]);
 
   const handleNyanPunchClick = () => {
-    setIsSpecialVisible(true);
+    setIsPunchVisible(true);
 
     setTimeout(() => {
-      setIsSpecialVisible(false);
+      setIsPunchVisible(false);
     }, 31000);
   };
 
@@ -228,6 +227,15 @@ const GroupPreview = () => {
     };
   }, [validProcess, groupId]);
 
+  // 딴짓하면 냥펀치 아이콘 뜨기
+  useEffect(() => {
+    if (!alertMember) return;
+    const memberId = useAuthStore.getState().accessToken;
+    if (alertMember === memberId) {
+      setIsPunchVisible(true);
+    }
+  }, [alertMember]);
+
   return (
     <>
       {/* {isSpecialVisible && <div id='video-container'></div>} */}
@@ -235,7 +243,7 @@ const GroupPreview = () => {
       {/* <div id='publisher' className='h-1/2 w-1/2'></div> */}
       {/* <div id='video-container'></div> */}
 
-      {isHovered && !isSpecialVisible && (
+      {isHovered && (
         <div>
           <SmallFrameNoCat>
             <div className='flex flex-col justify-between p-4 space-y-4 w-[205px] font-neo font-bold text-lg'>
@@ -293,9 +301,9 @@ const GroupPreview = () => {
           </SmallFrameNoCat>
         </div>
       )}
-      {!isAttention && !isSpecialVisible && (
+      {!isAttention && !isPunchVisible && (
         <div onClick={handleNyanPunchClick}>
-          {/* <NyanPunch id={nyanPunchId} /> */}
+          <NyanPunch id={2} />
         </div>
       )}
       <div id='here' className='fixed right-0 bottom-0'>
