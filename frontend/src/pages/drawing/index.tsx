@@ -115,7 +115,7 @@ const Drawing = () => {
 
 
   return (
-      <div style={{position: 'relative'}}>
+      <div className = "drawing-container" style={{position: 'relative'}}>
          <canvas id='canvas' />
           {/*<button*/}
           {/*    style={{width: '48px', height: '48px', border: '1px solid black'}}*/}
