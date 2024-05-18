@@ -101,6 +101,14 @@ const GroupPreview = () => {
     }, 35000);
   };
 
+  const handleDrawOn = () => {
+    setDrawOn(true);
+
+    setTimeout(() => {
+      setDrawOn(false);
+    }, 55000);
+  };
+
   useEffect(() => {
     const currentTime = Date.now();
     const { nowIsFocus, nowTimeDuration, nowRepeat } = calculateTimerValues(
@@ -165,7 +173,7 @@ const GroupPreview = () => {
             mirror: false, // 화면 공유일 때는 미러링을 비활성화
           });
           session.publish(publisher);
-          setDrawOn(true);
+          handleDrawOn();
         })
         .catch((error) => {
           console.error('카메라/마이크 접근 권한 문제:', error);
@@ -285,16 +293,8 @@ const GroupPreview = () => {
 
   return (
     <>
-      {isSubscribeVisible && (
-        // <div id='video-container'>
-        <Drawing id='video-container' />
-        // </div>
-      )}
-      {drawOn && (
-        // <div id='video-container'>
-        <Drawing />
-        // </div>
-      )}
+      {isSubscribeVisible && <div id='video-container'></div>}
+      {drawOn && <Drawing />}
       {isHovered && (
         <div>
           <SmallFrameNoCat>
