@@ -45,6 +45,7 @@ const GroupPreview = () => {
   // const [nyanPunchId, setNyanPunchId] = useState<number>(0);
   const [alertMember, setAlertMember] = useState<number | null>(null);
   const [hasChanged, setHasChanged] = useState(false);
+  const [hasChanged2, setHasChanged2] = useState(false);
   const [isSubscribeVisible, setIsSubscribeVisible] = useState(false);
 
   const navigate = useNavigate();
@@ -238,12 +239,17 @@ const GroupPreview = () => {
   // 딴짓하면 냥펀치 아이콘 뜨기
   useEffect(() => {
     if (!alertMember) return;
-    const memberId = useAuthStore.getState().accessToken;
-    if (alertMember == memberId) {
-      setIsAttention(true);
-    } else {
-      setIsPunchVisible(true);
+    // 1회성
+    if (!hasChanged2) {
+      const memberId = useAuthStore.getState().accessToken;
+      if (alertMember == memberId) {
+        setIsAttention(true);
+      } else {
+        setIsPunchVisible(true);
+      }
     }
+    setHasChanged2(true);
+    console.log('작동');
   }, [alertMember]);
 
   return (
