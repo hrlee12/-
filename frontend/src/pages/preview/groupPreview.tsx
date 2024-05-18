@@ -239,7 +239,7 @@ const GroupPreview = () => {
   useEffect(() => {
     if (!alertMember) return;
     const memberId = useAuthStore.getState().accessToken;
-    if (alertMember === memberId) {
+    if (alertMember == memberId) {
       setIsAttention(true);
     } else {
       setIsPunchVisible(true);

@@ -8,6 +8,10 @@ const NyanPunch = ({ pos }: NyanPunchProps) => {
   const [position, setPosition] = useState(2);
 
   useEffect(() => {
+    window.setClickableArea.make();
+  }, []);
+
+  useEffect(() => {
     if (pos) {
       setPosition(pos);
     }
