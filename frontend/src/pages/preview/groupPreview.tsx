@@ -242,14 +242,17 @@ const GroupPreview = () => {
     // 1회성
     if (!hasChanged2) {
       const memberId = useAuthStore.getState().accessToken;
+      console.log('얼럿 멤버 : ' + alertMember);
+      console.log('멤버 아디 : ' + memberId);
       if (alertMember == memberId) {
         setIsAttention(true);
+        console.log('어텐션 작동');
       } else {
         setIsPunchVisible(true);
+        console.log('펀치보기작동');
       }
     }
     setHasChanged2(true);
-    console.log('작동');
   }, [alertMember]);
 
   return (
