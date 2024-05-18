@@ -47,6 +47,7 @@ const GroupPreview = () => {
   const [hasChanged, setHasChanged] = useState(false);
   const [hasChanged2, setHasChanged2] = useState(false);
   const [isSubscribeVisible, setIsSubscribeVisible] = useState(false);
+  const [drawOn, setDrawOn] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -164,6 +165,7 @@ const GroupPreview = () => {
             mirror: false, // 화면 공유일 때는 미러링을 비활성화
           });
           session.publish(publisher);
+          setDrawOn(true);
         })
         .catch((error) => {
           console.error('카메라/마이크 접근 권한 문제:', error);
@@ -284,9 +286,14 @@ const GroupPreview = () => {
   return (
     <>
       {isSubscribeVisible && (
-        <div id='video-container'>
-          <Drawing />
-        </div>
+        // <div id='video-container'>
+        <Drawing id='video-container' />
+        // </div>
+      )}
+      {drawOn && (
+        // <div id='video-container'>
+        <Drawing />
+        // </div>
       )}
       {isHovered && (
         <div>
