@@ -42,7 +42,12 @@ const LoginPage = () => {
           </h2>
           <CrouchCat
             catId={1}
-            addStyle={{ left: 60, top: 80, width: 150, height: 150 }}
+            addStyle={{
+              left: 60,
+              top: 80,
+              width: 150,
+              height: 150,
+            }}
           />
           <CrouchCat
             catId={2}
@@ -97,6 +102,7 @@ const LoginPage = () => {
               color={'green'}
               onClick={() => navigate('/signup')}
             />
+
           </div>
           {!isPassed && (
             <div className='font-dnf flex justify-center items-center pt-[20px]'>
