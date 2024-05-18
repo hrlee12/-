@@ -15,6 +15,7 @@ contextBridge.exposeInMainWorld("setClickableArea", {
   }
 });
 
+
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
   on(...args: Parameters<typeof ipcRenderer.on>) {
@@ -45,6 +46,8 @@ type CallbackType = (data:string)=> void;
 contextBridge.exposeInMainWorld('electronAPI', {
   getActiveWindowProcessName: () => ipcRenderer.send('get-active-window-process-name'),
   onActiveWindowProcessName: (callback:CallbackType) => ipcRenderer.on('active-window-process-name', (_, data) => callback(data)),
+  fullscreen: () => ipcRenderer.send('fullscreen')
 });
+
 
 

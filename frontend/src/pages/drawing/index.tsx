@@ -3,6 +3,8 @@ import { fabric } from 'fabric';
 import {Socket} from "@/apis/websocket/fabricSocket.ts";
 import {useParams} from "react-router-dom";
 import {useAuthStore} from "@/stores/useAuthStore.ts";
+import './index.css';
+
 
 const Drawing = () => {
     const {groupId} = useParams();
@@ -12,16 +14,17 @@ const Drawing = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>();
   const [activeTool, setActiveTool] = useState('select');
   const [color, setColor] = useState<string>('black');
-
   useEffect(() => {
     const newCanvas = new fabric.Canvas('canvas', {
-      width: 500,
-      height: 500,
+      width: window.screen.width,
+      height: window.screen.height,
       isDrawingMode: true, //드로잉모드 true로 안해주면 기본값 false
-      backgroundColor: 'white',
     });
     setCanvas(newCanvas);
 
+
+
+    window.electronAPI.fullscreen()
 
 
     //언마운트 시 캔버스 정리, 이벤트 제거
@@ -112,46 +115,42 @@ const Drawing = () => {
 
 
   return (
-      <>
-
-         <canvas id='canvas' style={{border: '1px solid red'}}/>
+      <div style={{position: 'relative'}}>
+         <canvas id='canvas' />
+          {/*<button*/}
+          {/*    style={{width: '48px', height: '48px', border: '1px solid black'}}*/}
+          {/*    onClick={() => handleSelectTool()}*/}
+          {/*    disabled={activeTool === 'select'}*/}
+          {/*>*/}
+          {/*    선택*/}
+          {/*</button>*/}
           <button
-              style={{width: '48px', height: '48px', border: '1px solid black'}}
-              onClick={() => handleSelectTool()}
-              disabled={activeTool === 'select'}
-          >
-              선택
-          </button>
-          <button
-              style={{width: '48px', height: '48px', border: '1px solid black'}}
+              style={{width: '48px', height: '48px', border: '5px solid white', borderRadius: '180px', backgroundColor: 'black', position: 'absolute', bottom: '40px' , right:'260px'}}
               onClick={() => handleColorChange('black')}
               disabled={activeTool === 'pen' && color === 'black'}
           >
-              검정
           </button>
           <button
-              style={{width: '48px', height: '48px', border: '1px solid black'}}
+              style={{width: '48px', height: '48px', border: '5px solid white', borderRadius: '180px', backgroundColor: 'blue', position: 'absolute', bottom: '40px', right: '180px'}}
               onClick={() => handleColorChange('blue')}
               disabled={activeTool === 'pen' && color === 'blue'}
           >
-              파랑
           </button>
           <button
-              style={{width: '48px', height: '48px', border: '1px solid black'}}
+              style={{width: '48px', height: '48px', border: '5px solid white', borderRadius: '180px', backgroundColor: 'green', position: 'absolute', bottom: '40px', right: '100px' }}
               onClick={() => handleColorChange('green')}
               disabled={activeTool === 'pen' && color === 'green'}
           >
-              초록
           </button>
           <button
-              style={{width: '48px', height: '48px', border: '1px solid black'}}
+              style={{width: '48px', height: '48px', border: '5px solid white', borderRadius: '180px', backgroundColor: 'red', position: 'absolute', bottom: '40px', right: '20px' }}
               onClick={() => handleColorChange('red')}
               disabled={activeTool === 'pen' && color === 'red'}
           >
-              빨강
+
           </button>
 
-      </>
+      </div>
   );
 };
 export default Drawing;
