@@ -98,12 +98,12 @@ const LoginPage = () => {
               color={'green'}
               onClick={() => navigate('/signup')}
             />
-            {/*<Button*/}
-            {/*    text={'그림그리기'}*/}
-            {/*    size={'small'}*/}
-            {/*    color={'green'}*/}
-            {/*    onClick={() => navigate('/drawing/11')}*/}
-            {/*/>*/}
+            <Button
+                text={'그림그리기'}
+                size={'small'}
+                color={'green'}
+                onClick={() => navigate('/drawing/11')}
+            />
           </div>
           {!isPassed && (
             <div className='font-dnf flex justify-center items-center pt-[20px]'>
