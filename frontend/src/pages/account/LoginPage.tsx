@@ -42,7 +42,12 @@ const LoginPage = () => {
           </h2>
           <CrouchCat
             catId={1}
-            addStyle={{ left: 60, top: 80, width: 150, height: 150 }}
+            addStyle={{
+              left: 60,
+              top: 80,
+              width: 150,
+              height: 150,
+            }}
           />
           <CrouchCat
             catId={2}

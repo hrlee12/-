@@ -16,7 +16,7 @@ const SearchModal = ({ loginId, onClose, addMember }: ModalProps) => {
   };
 
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
+    <div className='fixed left-[880px] top-[280px] inset-0 bg-black bg-opacity-50 flex justify-center items-center'>
       <div className='bg-groupColor rounded-lg p-8 flex flex-col justify-center items-center'>
         <div className={'font-dnf text-4xl p-5'}>@{loginId}</div>
         <div className='font-dnf text-2xl'>
