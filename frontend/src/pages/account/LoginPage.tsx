@@ -97,6 +97,7 @@ const LoginPage = () => {
               color={'green'}
               onClick={() => navigate('/signup')}
             />
+
           </div>
           {!isPassed && (
             <div className='font-dnf flex justify-center items-center pt-[20px]'>
