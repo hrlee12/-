@@ -14,6 +14,7 @@ declare global {
         electronAPI: {
             getActiveWindowProcessName: () => void;
             onActiveWindowProcessName: (callback: (name: string) => void) => void;
+            fullscreen: ()=>void;
         };
     }
 }
