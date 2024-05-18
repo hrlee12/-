@@ -36,11 +36,11 @@ const GroupPage = () => {
 
   return (
     <>
-      <FaCircleXmark
-        className='absolute ml-[15px] mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
-        onClick={() => navigate('/')}
-      />
       <BasicFrame>
+        <FaCircleXmark
+          className='absolute mt-[0px] text-[35px] text-inputBoxColor bg-frameColor rounded-boxRadius'
+          onClick={() => navigate('/')}
+        />
         <div className='flex flex-col justify-between h-96'>
           <div>
             <div className='flex place-content-around gap-40 pt-8'>
