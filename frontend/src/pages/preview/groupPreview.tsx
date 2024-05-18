@@ -92,6 +92,7 @@ const GroupPreview = () => {
   }, [topProcess, myInfo.memberGoal]);
 
   const handleNyanPunchClick = () => {
+    connectSessionNoVid();
     setIsSubscribeVisible(true);
 
     setTimeout(() => {
@@ -167,6 +168,27 @@ const GroupPreview = () => {
         .catch((error) => {
           console.error('카메라/마이크 접근 권한 문제:', error);
         });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const connectSessionNoVid = async () => {
+    const OV: OpenVidu = new OpenVidu();
+    const session: Session = OV.initSession();
+    try {
+      await fetchSession(groupId.toString());
+      await fetchToken(useAuthStore.getState().openViduSession);
+
+      const TOKEN = useAuthStore.getState().openViduToken;
+
+      session.on('streamCreated', (event: StreamEvent) => {
+        session.subscribe(event.stream, 'video-container');
+        console.log('공유된 화면 화면 구독중');
+      });
+
+      await session.connect(TOKEN);
+      console.log('세션 연결 성공');
     } catch (error) {
       console.log(error);
     }
@@ -324,7 +346,7 @@ const GroupPreview = () => {
           </SmallFrameNoCat>
         </div>
       )}
-      {isPunchVisible && (
+      {isPunchVisible && !isSubscribeVisible && (
         <div onClick={handleNyanPunchClick}>
           <NyanPunch pos={index + 1} />
         </div>
