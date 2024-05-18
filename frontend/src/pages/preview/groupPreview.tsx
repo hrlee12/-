@@ -133,11 +133,10 @@ const GroupPreview = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const OV: OpenVidu = new OpenVidu();
-  const session: Session = OV.initSession();
-  let publisher: Publisher;
-
   const connectSession = async () => {
+    const OV: OpenVidu = new OpenVidu();
+    const session: Session = OV.initSession();
+    let publisher: Publisher;
     try {
       await fetchSession(groupId.toString());
       await fetchToken(useAuthStore.getState().openViduSession);
@@ -179,19 +178,24 @@ const GroupPreview = () => {
       if (isAttention) {
         console.log('화면 공유 시작');
         connectSession();
-      } else {
-        if (publisher) {
-          console.log('화면 공유 중지');
-          session.unpublish(publisher);
-        }
+        setHasChanged(true);
       }
-      setHasChanged(true);
+      // else {
+      //   if (publisher) {
+      //     console.log('화면 공유 중지');
+      //     session.unpublish(publisher);
+      //   }
+      // }
     }
     return () => {
-      if (publisher) {
-        console.log('클린업: 화면 공유 중지');
-        session.unpublish(publisher);
+      if (isAttention) {
+        console.log('화면 공유 시작');
+        connectSession();
       }
+      //   if (publisher) {
+      //     console.log('클린업: 화면 공유 중지');
+      //     session.unpublish(publisher);
+      //   }
     };
   }, [isAttention]);
 
@@ -251,8 +255,8 @@ const GroupPreview = () => {
         setIsPunchVisible(true);
         console.log('펀치보기작동');
       }
+      setHasChanged2(true);
     }
-    setHasChanged2(true);
   }, [alertMember]);
 
   return (
