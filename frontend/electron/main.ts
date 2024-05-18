@@ -75,10 +75,17 @@ function createWindow() {
     // win.loadFile('dist/index.html')
     win.loadFile(path.join(RENDERER_DIST, 'index.html'));
   }
+
+
+
+  ipcMain.on('fullscreen', ()=>{
+    win?.setFullScreen(true);
+  })
 }
 
 app.whenReady().then(() => {
   createWindow();
+
 });
 //
 // setInterval(async () => {
@@ -92,6 +99,7 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -131,3 +139,4 @@ function getActiveWindowProcessName() {
 
 // 렌더러 프로세스에서 메시지 수신
 ipcMain.on('get-active-window-process-name', getActiveWindowProcessName);
+
