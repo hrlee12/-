@@ -63,6 +63,7 @@ const MakeGroupPage = () => {
     };
     try {
       await makeGroup(groupInfo);
+      navigate('/group');
     } catch (error) {
       console.error('그룹 생성 실패', error);
     }
