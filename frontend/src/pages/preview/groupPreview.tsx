@@ -295,7 +295,7 @@ const GroupPreview = () => {
     <>
       {isSubscribeVisible && <div id='video-container'></div>}
       {drawOn && <Drawing />}
-      {isHovered && (
+      {isHovered && !isSubscribeVisible && !drawOn && (
         <div>
           <SmallFrameNoCat>
             <div className='flex flex-col justify-between p-4 space-y-4 w-[205px] font-neo font-bold text-lg'>
