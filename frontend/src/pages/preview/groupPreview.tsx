@@ -358,27 +358,29 @@ const GroupPreview = () => {
           <NyanPunch pos={index + 1} />
         </div>
       )}
-      <div>
-        <IdleCat
-          catId={1}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          position={{ right: 120, bottom: 0 }}
-        />
-        <IdleCat
-          catId={2}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          position={{ right: 60, bottom: 0 }}
-        />
-        <IdleCat
-          catId={3}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          position={{ right: 0, bottom: 0 }}
-          onClick={() => movePage()}
-        />
-      </div>
+      {!drawOn && (
+        <div>
+          <IdleCat
+            catId={1}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 120, bottom: 0 }}
+          />
+          <IdleCat
+            catId={2}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 60, bottom: 0 }}
+          />
+          <IdleCat
+            catId={3}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 0, bottom: 0 }}
+            onClick={() => movePage()}
+          />
+        </div>
+      )}
       {/* <div id='here' className='fixed right-0 bottom-0'>
         {catIdList.map((cat, index) => (
           <IdleCat
