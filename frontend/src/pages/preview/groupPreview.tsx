@@ -17,6 +17,7 @@ import { fetchSession, fetchToken } from '@/apis/openvidu.ts';
 import { getMyInfo } from '@/apis/member.ts';
 import NyanPunch from '@/components/cat/nyanPunch';
 import { useCatStore } from '@/stores/useGroupCatStore.ts'; // 전역 상태 임포트
+import Drawing from '../drawing';
 
 const GroupPreview = () => {
   const topProcess = useActiveWindow();
@@ -39,10 +40,14 @@ const GroupPreview = () => {
     titleContent: '',
     catAssetUrl: '',
   });
-  const [, setAlertMember] = useState<number | null>(null);
-  const [isAttention] = useState(false);
-  const [isSpecialVisible, setIsSpecialVisible] = useState(false);
-  const [nyanPunchId] = useState<number>(0);
+  const [isAttention, setIsAttention] = useState(false);
+  const [isPunchVisible, setIsPunchVisible] = useState(false);
+  // const [nyanPunchId, setNyanPunchId] = useState<number>(0);
+  const [alertMember, setAlertMember] = useState<number | null>(null);
+  const [hasChanged, setHasChanged] = useState(false);
+  const [hasChanged2, setHasChanged2] = useState(false);
+  const [isSubscribeVisible, setIsSubscribeVisible] = useState(false);
+  const [drawOn, setDrawOn] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,6 +59,7 @@ const GroupPreview = () => {
   const repeatCount = useTimerStore.getState().endPeriod;
 
   const catIdList = useCatStore((state) => state.catIdList);
+  const index = catIdList.findIndex((item) => item.memberId === alertMember);
 
   const movePage = () => {
     useTimerStore.setState({
@@ -87,11 +93,20 @@ const GroupPreview = () => {
   }, [topProcess, myInfo.memberGoal]);
 
   const handleNyanPunchClick = () => {
-    setIsSpecialVisible(true);
+    connectSessionNoVid();
+    setIsSubscribeVisible(true);
 
     setTimeout(() => {
-      setIsSpecialVisible(false);
-    }, 31000);
+      setIsSubscribeVisible(false);
+    }, 35000);
+  };
+
+  const handleDrawOn = () => {
+    setDrawOn(true);
+
+    setTimeout(() => {
+      setDrawOn(false);
+    }, 55000);
   };
 
   useEffect(() => {
@@ -128,47 +143,93 @@ const GroupPreview = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
+  const connectSession = async () => {
     const OV: OpenVidu = new OpenVidu();
     const session: Session = OV.initSession();
+    let publisher: Publisher;
+    try {
+      await fetchSession(groupId.toString());
+      await fetchToken(useAuthStore.getState().openViduSession);
 
-    const connectSession = async () => {
-      try {
-        await fetchSession(groupId.toString());
-        await fetchToken(useAuthStore.getState().openViduSession);
+      const TOKEN = useAuthStore.getState().openViduToken;
 
-        const TOKEN = useAuthStore.getState().openViduToken;
+      session.on('streamCreated', (event: StreamEvent) => {
+        session.subscribe(event.stream, 'video-container');
+        console.log('공유된 화면 화면 구독중');
+      });
 
-        session.on('streamCreated', (event: StreamEvent) => {
-          session.subscribe(event.stream, 'video-container');
-          console.log('내 화면 공유중');
-        });
+      await session.connect(TOKEN);
+      console.log('세션 연결 성공');
 
-        await session.connect(TOKEN, console.log('세션 연결 성공'));
-
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: true })
-          .then(() => {
-            const publisher: Publisher = OV.initPublisher('publisher', {
-              videoSource: 'screen', // 화면 공유 활성화
-              publishAudio: false, // 오디오 활성화 여부 (화면 공유시 시스템 오디오 포함 여부)
-              publishVideo: true, // 비디오 활성화 여부 (화면 공유시에는 화면을)
-              resolution: '640x480', // 해상도 설정
-              frameRate: 30, // 프레임 레이트 설정
-              mirror: false, // 화면 공유일 때는 미러링을 비활성화
-            });
-            session.publish(publisher);
-          })
-          .catch((error) => {
-            console.error('카메라/마이크 접근 권한 문제:', error);
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then(() => {
+          publisher = OV.initPublisher('publisher', {
+            videoSource: 'screen', // 화면 공유 활성화
+            publishAudio: false, // 오디오 활성화 여부 (화면 공유시 시스템 오디오 포함 여부)
+            publishVideo: true, // 비디오 활성화 여부 (화면 공유시에는 화면을)
+            resolution: '640x480', // 해상도 설정
+            frameRate: 30, // 프레임 레이트 설정
+            mirror: false, // 화면 공유일 때는 미러링을 비활성화
           });
-      } catch (error) {
-        console.log(error);
-      }
-    };
+          session.publish(publisher);
+          handleDrawOn();
+        })
+        .catch((error) => {
+          console.error('카메라/마이크 접근 권한 문제:', error);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    connectSession();
-  }, [groupId]);
+  const connectSessionNoVid = async () => {
+    const OV: OpenVidu = new OpenVidu();
+    const session: Session = OV.initSession();
+    try {
+      await fetchSession(groupId.toString());
+      await fetchToken(useAuthStore.getState().openViduSession);
+
+      const TOKEN = useAuthStore.getState().openViduToken;
+
+      session.on('streamCreated', (event: StreamEvent) => {
+        session.subscribe(event.stream, 'video-container');
+        console.log('공유된 화면 화면 구독중');
+      });
+
+      await session.connect(TOKEN);
+      console.log('세션 연결 성공');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // 1회성 비디오 띄우기
+    if (!hasChanged) {
+      if (isAttention) {
+        console.log('화면 공유 시작');
+        connectSession();
+        setHasChanged(true);
+      }
+      // else {
+      //   if (publisher) {
+      //     console.log('화면 공유 중지');
+      //     session.unpublish(publisher);
+      //   }
+      // }
+    }
+    return () => {
+      if (isAttention) {
+        console.log('화면 공유 시작');
+        connectSession();
+      }
+      //   if (publisher) {
+      //     console.log('클린업: 화면 공유 중지');
+      //     session.unpublish(publisher);
+      //   }
+    };
+  }, [isAttention]);
 
   useEffect(() => {
     const fetchMyInfo = async () => {
@@ -211,11 +272,30 @@ const GroupPreview = () => {
     };
   }, [validProcess, groupId]);
 
+  // 딴짓하면 냥펀치 아이콘 뜨기
+  useEffect(() => {
+    if (!alertMember) return;
+    // 1회성
+    if (!hasChanged2) {
+      const memberId = useAuthStore.getState().accessToken;
+      console.log('얼럿 멤버 : ' + alertMember);
+      console.log('멤버 아디 : ' + memberId);
+      if (alertMember == memberId) {
+        setIsAttention(true);
+        console.log('어텐션 작동');
+      } else {
+        setIsPunchVisible(true);
+        console.log('펀치보기작동');
+      }
+      setHasChanged2(true);
+    }
+  }, [alertMember]);
+
   return (
     <>
-      {isSpecialVisible && <div id='video-container'></div>}
-
-      {isHovered && !isSpecialVisible && (
+      {isSubscribeVisible && <div id='video-container'></div>}
+      {drawOn && <Drawing />}
+      {isHovered && !isSubscribeVisible && !drawOn && (
         <div>
           <SmallFrameNoCat>
             <div className='flex flex-col justify-between p-4 space-y-4 w-[205px] font-neo font-bold text-lg'>
@@ -273,12 +353,35 @@ const GroupPreview = () => {
           </SmallFrameNoCat>
         </div>
       )}
-      {!isAttention && !isSpecialVisible && (
+      {isPunchVisible && !isSubscribeVisible && (
         <div onClick={handleNyanPunchClick}>
-          <NyanPunch id={nyanPunchId} />
+          <NyanPunch pos={index + 1} />
         </div>
       )}
-      <div id='here' className='fixed right-0 bottom-0'>
+      {!drawOn && (
+        <div>
+          <IdleCat
+            catId={1}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 120, bottom: 0 }}
+          />
+          <IdleCat
+            catId={2}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 60, bottom: 0 }}
+          />
+          <IdleCat
+            catId={3}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            position={{ right: 0, bottom: 0 }}
+            onClick={() => movePage()}
+          />
+        </div>
+      )}
+      {/* <div id='here' className='fixed right-0 bottom-0'>
         {catIdList.map((cat, index) => (
           <IdleCat
             key={cat.catId}
@@ -289,7 +392,7 @@ const GroupPreview = () => {
             onClick={() => movePage()}
           />
         ))}
-      </div>
+      </div> */}
     </>
   );
 };
