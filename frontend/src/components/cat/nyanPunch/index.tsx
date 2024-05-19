@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 
 interface NyanPunchProps {
-  id: number;
+  pos: number;
 }
 
-const NyanPunch = ({ id }: NyanPunchProps) => {
+const NyanPunch = ({ pos }: NyanPunchProps) => {
   const [position, setPosition] = useState(2);
 
   useEffect(() => {
-    if (id) {
-      setPosition(id);
+    window.setClickableArea.make();
+  }, []);
+
+  useEffect(() => {
+    if (pos) {
+      setPosition(pos);
     }
-  }, [id]);
+  }, [pos]);
 
   const getPositionClass = (condition: number) => {
     switch (condition) {
