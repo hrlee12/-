@@ -62,7 +62,7 @@ function createWindow() {
   // win.setIgnoreMouseEvents(false);
 
   // 실행시 개발자 도구를 같이 실행(마우스 클릭 무시를 적용한 개발용) - 개발할 때는 주석 풀던지
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -76,16 +76,13 @@ function createWindow() {
     win.loadFile(path.join(RENDERER_DIST, 'index.html'));
   }
 
-
-
-  ipcMain.on('fullscreen', ()=>{
+  ipcMain.on('fullscreen', () => {
     win?.setFullScreen(true);
-  })
+  });
 }
 
 app.whenReady().then(() => {
   createWindow();
-
 });
 //
 // setInterval(async () => {
@@ -99,7 +96,6 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
-
 });
 
 // Quit when all windows are closed, except on macOS. There, it's common
@@ -139,4 +135,3 @@ function getActiveWindowProcessName() {
 
 // 렌더러 프로세스에서 메시지 수신
 ipcMain.on('get-active-window-process-name', getActiveWindowProcessName);
-
