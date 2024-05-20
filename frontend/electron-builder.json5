@@ -1,9 +1,9 @@
 // @see - https://www.electron.build/configuration/configuration
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "Mokak-Nyang",
   "asar": true,
-  "productName": "YourAppName",
+  "productName": "모각냥",
   "directories": {
     "output": "release/${version}"
   },
@@ -18,6 +18,7 @@
     "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
   },
   "win": {
+    "icon" : "/public/assets/cat_profile_03.png",
     "target": [
       {
         "target": "nsis",

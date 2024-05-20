@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'NeoDunggeunmo';
+  src:
+    url('/public/fonts/neodgm.ttf') format('truetype'),
+    url('/public/fonts/neodgm.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DNFBitBitv2';
+  src:
+    url('/public/fonts/DNFBitBitv2.ttf') format('truetype'),
+    url('/public/fonts/DNFBitBitv2.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* inputBox 숫자 토글 숨기기 */
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* inputBox placeholder의 글자 크기 수정 */
+.inputBox-font-medium::placeholder {
+  font-size: 20px;
+  color: #888;
+}
