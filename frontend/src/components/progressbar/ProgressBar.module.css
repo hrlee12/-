@@ -1,0 +1,21 @@
+.progressContainer {
+  width: 100%;
+  background-color: #eee;
+  border-radius: 8px;
+  position: relative;
+}
+
+.progressBar {
+  height: 20px;
+  background-color: #007bff;
+  border-radius: 8px 0 0 8px;
+  transition: width 0.4s ease;
+}
+
+.progressLabel {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  font-size: 12px;
+  color: black;
+}

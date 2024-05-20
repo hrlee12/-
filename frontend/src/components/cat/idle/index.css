@@ -1,0 +1,15 @@
+@keyframes spriteAnimation {
+  from {
+    background-position: 0;
+  }
+  to {
+    background-position: -700%; /* 마지막 이미지까지 이동하기 위해 */
+  }
+}
+
+.character-idle {
+  width: 100px; /* 각 이미지 프레임의 너비 */
+  height: 100px; /* 각 이미지 프레임의 높이 */
+  background-size: 800% 100%; /* 가로로 8개 이미지가 있으므로 전체 스프라이트 시트의 크기 조정 */
+  animation: spriteAnimation 1.15s steps(7) infinite; /* 애니메이션 설정 */
+}
