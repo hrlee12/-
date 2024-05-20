@@ -9,6 +9,7 @@
 |IntelliJ |UE 2023.3.4|
 | AWS EC2 | Ubuntu 20.04.6 LTS|
 |GCP VM | Debian GNU/Linux 12, e2-standard-2|
+|AWS S3 | |
 |Java|jdk17|
 |Spring Boot|3.2.5|
 |Gradle|8.7|
@@ -56,6 +57,9 @@ sudo apt-get update -y
 | 3001 (v6)     |ALLOW IN|AnyWhere (v6)
 | 3003 (v6)     |ALLOW IN|AnyWhere (v6)
 <br>
+
+## S3 설정  
+exec/assets 내의 어셋을 S3에 올리기
 
 ## Docker 설치
 <hr>
@@ -434,6 +438,18 @@ pipeline {
 ```
 <br>
 
+### mogaknyan-frontend .env파일
+```
+VITE_API_URL=https://mogaknyang-back.duckdns.org/api/v1
+
+VITE_IMG_URL=https://mogaknyan.s3.ap-northeast-2.amazonaws.com
+
+VITE_AI_URL=https://mogaknyang-ai.duckdns.org
+
+VITE_OPENVIDU_URL=https://mogaknyang-back.duckdns.org/api
+VITE_OPENVIDU_SERVER_URL=https://34.152.10.124:443
+VITE_OPENVIDU_ SERVER_SECRET=Ssafy703
+```
 
 ### gitlab webhook 설정하기
 <br>
