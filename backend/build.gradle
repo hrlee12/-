@@ -3,7 +3,10 @@ plugins {
 	id 'org.springframework.boot' version '3.2.5'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
-
+// plain jar 생성 X 설정
+jar {
+	enabled = false
+}
 group = 'com.chilbaeksan'
 version = '0.0.1-SNAPSHOT'
 
@@ -27,11 +30,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'io.openvidu:openvidu-java-client:2.29.0'
+
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.1")
+	implementation "org.springframework.cloud:spring-cloud-starter-openfeign"
 }
 
 tasks.named('test') {
