@@ -1,14 +1,55 @@
 {
-  "name": "my-electron-app",
+  "name": "frontend",
+  "private": true,
   "version": "1.0.0",
-  "description": "Hello World!",
-  "main": "main.js",
-  "author": "Jane Doe",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^29.3.0"
-  },
+  "description": "Your cat displayed at your own monitor, Mogaknyang",
+  "author": "A703",
+  "type": "module",
   "scripts": {
-    "start": "electron ."
-  }
+    "dev": "vite",
+    "build": "tsc && vite build && electron-builder",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@types/sockjs-client": "^1.5.4",
+    "@typescript-eslint/eslint-plugin": "^7.7.1",
+    "@typescript-eslint/parser": "^7.7.1",
+    "autoprefixer": "^10.4.19",
+    "axios": "^1.6.8",
+    "electron-updater": "^6.1.8",
+    "fabric": "^5.3.0",
+    "openvidu-browser": "^2.29.1",
+    "react": "^18.2.0",
+    "react-countdown-circle-timer": "^3.2.1",
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.1.0",
+    "react-router-dom": "^6.23.0",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "tailwindcss": "^3.4.3",
+    "vite-plugin-node-polyfills": "^0.21.0",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/fabric": "^5.3.7",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.21",
+    "@types/stompjs": "^2.3.9",
+    "@vitejs/plugin-react": "^4.2.1",
+    "app-builder-lib": "25.0.0-alpha.6",
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "jest": "^29.7.0",
+    "prettier": "3.2.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.6",
+    "vite-plugin-electron": "^0.28.6",
+    "vite-plugin-electron-renderer": "^0.14.5"
+  },
+  "main": "dist-electron/main.js"
 }
