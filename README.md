@@ -26,7 +26,7 @@
 ### Specification
 
 **시스템 아키텍쳐**
- <img alt="시스템아키텍쳐" src="" />
+ <img alt="시스템아키텍쳐" src="./architecture.png" />
 
 -----
 
